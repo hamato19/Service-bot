@@ -27,11 +27,8 @@ p.subtitle{font-size:18px;color:#a0aec0;max-width:600px;margin:0 auto 30px}
 
 /* الأزرار التسويقية */
 .btn-group{display:flex;justify-content:center;gap:15px;flex-wrap:wrap}
-.primary-btn, .secondary-btn{padding:16px 32px;border-radius:16px;font-weight:900;font-size:16px;text-decoration:none;transition:0.3s;display:inline-block}
-.primary-btn{background:linear-gradient(135deg,#00ffd5,#00bfa5);color:#070b12;box-shadow:0 10px 30px rgba(0,255,213,0.3)}
+.primary-btn{padding:16px 48px;border-radius:16px;font-weight:900;font-size:16px;text-decoration:none;transition:0.3s;display:inline-block;background:linear-gradient(135deg,#00ffd5,#00bfa5);color:#070b12;box-shadow:0 10px 30px rgba(0,255,213,0.3)}
 .primary-btn:hover{transform:scale(1.05);box-shadow:0 15px 40px rgba(0,255,213,0.5)}
-.secondary-btn{background:rgba(255,255,255,0.05);color:#fff;border:1px solid rgba(255,255,255,0.1);backdrop-filter:blur(5px)}
-.secondary-btn:hover{background:rgba(255,255,255,0.1);transform:scale(1.05)}
 
 /* شبكة المميزات */
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:25px;margin-top:50px}
@@ -65,13 +62,13 @@ input:focus, select:focus{outline:none;border-color:#00ffd5}
 .msg.bot {background:#182533;color:#fff;align-self:flex-start;border-bottom-right-radius:2px}
 .msg.user {background:#2b5278;color:#fff;align-self:flex-end;border-bottom-left-radius:2px}
 .chat-options {display:flex;flex-direction:column;gap:8px;padding:12px 20px;background:#17212b;border-top:1px solid rgba(255,255,255,0.05)}
-.opt-btn {padding:11px 14px;background:#242f3d;border:1px solid #00ffd5;color:#00ffd5;border-radius:12px;cursor:pointer;text-align:center;font-size:13px;font-weight:700;transition:0.2s;font-family:inherit}
+.opt-btn {width:100%;padding:11px 14px;background:#242f3d;border:1px solid #00ffd5;color:#00ffd5;border-radius:12px;cursor:pointer;text-align:center;font-size:13px;font-weight:700;transition:0.2s;font-family:inherit}
 .opt-btn:hover {background:#00ffd5;color:#070b12}
 
 @keyframes fadeIn { from {opacity:0;transform:translateY(10px)} to {opacity:1;transform:translateY(0)} }
 @media(max-width:400px){ .chat-window { width:300px; height:450px; right:-10px } }
 
-/* الفوتر المعدل بالكامل */
+/* الفوتر */
 footer{position:relative;z-index:1;padding:30px 20px;text-align:center;border-top:1px solid rgba(255,255,255,0.05);background:rgba(7,11,18,0.9);color:#718096;font-size:14px}
 
 @media(max-width:768px){
@@ -99,8 +96,7 @@ footer{position:relative;z-index:1;padding:30px 20px;text-align:center;border-to
     <h1>أتمتة وإشارات <span>أسواق المال الذكية</span> على التلجرام</h1>
     <p class="subtitle">اربط مؤشرات TradingView، وأرسل تنبيهات الأوبشن والأسهم الأمريكية والسعودية (تداول) تلقائياً إلى مجموعاتك وقنواتك بسرعة البرق ⚡</p>
     <div class="btn-group">
-        <a href="#order" class="primary-btn">برمج بوت الإشارات الخاص بك</a>
-        <a href="https://t.me/alokalive" target="_blank" class="secondary-btn">انضم لقناتنا الرسمية</a>
+        <a href="#order" class="primary-btn">برمج بوت الإشارات الخاص بك الآن</a>
     </div>
 </section>
 
@@ -232,7 +228,7 @@ function showOpts(options) {
     });
 }
 
-// 🌴 شجرة السيناريو التفاعلي المتخصص لبوتات أسواق المال والتداول
+// 🌴 شجرة السيناريو التفاعلي لبوتات التداول
 function startBotScenario() {
     addMsg("مرحباً بك في محاكي أنظمة أتمتة وبوتات التداول وأسواق المال! 📊📈", "bot");
     setTimeout(() => {
@@ -272,13 +268,9 @@ function stepSaudiMarket() {
 function askForAction() {
     addMsg("هل ترغب في برمجة واستضافة نظام مالي ذكي أو بوت إشارات متكامل لعملائك ومجموعتك الآن؟ 👇🎯", "bot");
     showOpts([
-        { text: "✅ نعم، أريد طلب تصميم بوت تداول", action: () => {
+        { text: "⚡ نعم، أريد طلب تصميم بوت تداول", action: () => {
             addMsg("اختيار احترافي! توجه فوراً لنموذج الطلب الموجود بالصفحة، عب بياناتك وسيتواصل معك مهندس الأتمتة لبدء التنفيذ الفوري! 🚀", "bot");
             window.location.hash = '#order';
-        }},
-        { text: "💬 انضم لقناتنا وتابع التحديثات", action: () => {
-            addMsg("تشرفنا يا غالي! اضغط على الزر للانتقال لقناتنا الرسمية ومتابعة آخر مشاريع الأتمتة المخصصة.", "bot");
-            window.open('https://t.me/alokalive', '_blank');
         }}
     ]);
 }

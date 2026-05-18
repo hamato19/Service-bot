@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ServerNet | أتمتة وبوتات أسواق المال والتداول الاحترافية</title>
+<title>ServerNet | أتمتة وبوتات أسواق المال والتداول الاحترافية بالذكاء الاصطناعي</title>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
 /* إعدادات التصميم العامة */
@@ -20,13 +20,23 @@ header{position:fixed;top:0;width:100%;background:rgba(7,11,18,0.8);backdrop-fil
 
 /* الأقسام وحاويات المحتوى */
 section{position:relative;z-index:1;padding:80px 20px;max-width:1100px;margin:0 auto;text-align:center}
-.hero{padding-top:160px;padding-bottom:100px}
-h1{font-size:42px;font-weight:900;color:#fff;margin-bottom:10px;line-height:1.4}
+.hero{padding-top:160px;padding-bottom:80px;display:flex;align-items:center;justify-content:between;gap:40px;text-align:right}
+.hero-content{flex:1}
+.hero-image-container{flex:1;position:relative;display:flex;justify-content:center;align-items:center}
+.hero-image{width:100%;max-width:450px;border-radius:24px;border:2px solid rgba(0,255,213,0.2);box-shadow:0 20px 50px rgba(0,255,213,0.15);transition:0.5s;animation:float 4s ease-in-out infinite}
+.hero-image:hover{border-color:#00ffd5;box-shadow:0 25px 60px rgba(0,255,213,0.3)}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+h1{font-size:42px;font-weight:900;color:#fff;margin-top:0;margin-bottom:15px;line-height:1.4}
 h1 span{color:#00ffd5}
-p.subtitle{font-size:18px;color:#a0aec0;max-width:600px;margin:0 auto 30px}
+p.subtitle{font-size:18px;color:#a0aec0;max-width:600px;margin-bottom:35px;line-height:1.6}
 
 /* الأزرار التسويقية */
-.btn-group{display:flex;justify-content:center;gap:15px;flex-wrap:wrap}
+.btn-group{display:flex;justify-content:flex-start;gap:15px;flex-wrap:wrap}
 .primary-btn{padding:16px 48px;border-radius:16px;font-weight:900;font-size:16px;text-decoration:none;transition:0.3s;display:inline-block;background:linear-gradient(135deg,#00ffd5,#00bfa5);color:#070b12;box-shadow:0 10px 30px rgba(0,255,213,0.3)}
 .primary-btn:hover{transform:scale(1.05);box-shadow:0 15px 40px rgba(0,255,213,0.5)}
 
@@ -71,10 +81,14 @@ input:focus, select:focus{outline:none;border-color:#00ffd5}
 /* الفوتر */
 footer{position:relative;z-index:1;padding:30px 20px;text-align:center;border-top:1px solid rgba(255,255,255,0.05);background:rgba(7,11,18,0.9);color:#718096;font-size:14px}
 
+/* التجاوب مع الشاشات */
 @media(max-width:768px){
+    .hero{flex-direction:column;text-align:center;padding-top:120px}
+    .btn-group{justify-content:center}
     h1{font-size:30px}
     p.subtitle{font-size:15px}
     .nav-links{display:none}
+    .hero-image-container{width:100%}
 }
 </style>
 </head>
@@ -93,31 +107,36 @@ footer{position:relative;z-index:1;padding:30px 20px;text-align:center;border-to
 </header>
 
 <section class="hero">
-    <h1>أتمتة وإشارات <span>أسواق المال الذكية</span> على التلجرام</h1>
-    <p class="subtitle">اربط مؤشرات TradingView، وأرسل تنبيهات الأوبشن والأسهم الأمريكية والسعودية (تداول) تلقائياً إلى مجموعاتك وقنواتك بسرعة البرق ⚡</p>
-    <div class="btn-group">
-        <a href="#order" class="primary-btn">برمج بوت الإشارات الخاص بك الآن</a>
+    <div class="hero-content">
+        <h1>أتمتة وإشارات <span>أسواق المال الذكية</span> وهندسة الـ AI</h1>
+        <p class="subtitle">ربط متكامل ومباشر بين مؤشرات TradingView الذكية، ونماذج الرؤية الحاسوبية (Vision AI) لتوليد إشارات الأوبشن والأسهم الأمريكية والسعودية الفورية بسرعة فائقة ⚡</p>
+        <div class="btn-group">
+            <a href="#order" class="primary-btn">برمج نظام الأتمتة والـ AI الخاص بك</a>
+        </div>
+    </div>
+    <div class="hero-image-container">
+        <img src="https://images.unsplash.com/photo-1642543492481-44e81e3914a7?auto=format&fit=crop&w=600&q=80" alt="Trading AI Interface" class="hero-image">
     </div>
 </section>
 
 <section id="features">
-    <h2 style="font-size: 28px; font-weight: 900;">حلول الأتمتة البرمجية للمتداولين والمحللين</h2>
-    <p style="color: #a0aec0; margin-bottom: 40px;">نوفر بنية تحتية سحابية متكاملة لربط استراتيجيات التداول وإرسال التحليلات الفورية.</p>
+    <h2 style="font-size: 28px; font-weight: 900;">دمج حلول الأتمتة السحابية والذكاء الاصطناعي للمستثمرين</h2>
+    <p style="color: #a0aec0; margin-bottom: 40px;">نوفر بنية تحتية سحابية متقدمة مبنية على معالجة البيانات الفورية وتحليل سلوك السوق الذكي.</p>
     <div class="grid">
+        <div class="card">
+            <span class="card-icon">🧠</span>
+            <h3>قراءة الشارت بالذكاء الاصطناعي (Vision)</h3>
+            <p>دمج أنظمة تحليل الصور ومعالجة الرؤية التلقائية لقراءة نماذج الشارت، وتوليد نصوص إعلانية وتسويقية فخمة لقنواتك VIP فوراً عبر طاقة نماذج الـ AI المتقدمة.</p>
+        </div>
         <div class="card">
             <span class="card-icon">📈</span>
             <h3>ربط إشارات TradingView (Webhook)</h3>
-            <p>تحويل تنبيهات مؤشراتك الخاصة واستراتيجيات التداول إلى رسائل فورية منسقة وفخمة داخل قنوات التلجرام للـ VIP في أجزاء من الثانية.</p>
-        </div>
-        <div class="card">
-            <span class="card-icon">🇺🇸 🇸🇦</span>
-            <h3>السوق السعودي والأمريكي</h3>
-            <p>سحب لحظي لبيانات الأسهم، تتبع فجوات السوق، رصد السيولة الداخلة والخارجة، وإرسال تقارير يومية تلقائية للمشتركين.</p>
+            <p>تحويل تنبيهات مؤشراتك الخاصة واستراتيجيات التداول إلى رسائل فورية منسقة ومعززة ببيانات الأهداف ووقف الخسارة إلى التلجرام في أجزاء من الثانية.</p>
         </div>
         <div class="card">
             <span class="card-icon">💎</span>
-            <h3>مراقبة تنبيهات الأوبشن</h3>
-            <p>تنقية وفلترة تدفق عقود الأوبشن غير الاعتيادية (Unusual Options Activity)، وتوليد تنبيهات الدخول والخروج (Call / Put) بدقة مذهلة.</p>
+            <h3>مراقبة الأوبشن والسيولة الفورية</h3>
+            <p>تنقية وفلترة تدفق عقود الأوبشن غير الاعتيادية للأسهم الأمريكية (Unusual Options)، وتتبع أحجام السيولة اللحظية لشركات وقطاعات السوق السعودي (تداول).</p>
         </div>
     </div>
 </section>
@@ -130,9 +149,9 @@ footer{position:relative;z-index:1;padding:30px 20px;text-align:center;border-to
             <input type="tel" id="custPhone" placeholder="رقم التواصل (واتساب أو تلفون)" required>
             <select id="custService" required>
                 <option value="" disabled selected>اختر نظام الأتمتة المالي المطلوب</option>
-                <option value="بوت ربط إشارات TradingView وقنوات الـ VIP">بوت ربط إشارات TradingView وقنوات الـ VIP</option>
-                <option value="بوت تحليل ورصد السيولة (سعودي / أمريكي)">بوت تحليل ورصد السيولة (سعودي / أمريكي)</option>
-                <option value="بوت تنبيهات عقود الأوبشن والتحليل الفني">بوت تنبيهات عقود الأوبشن والتحليل الفني</option>
+                <option value="بوت ربط إشارات TradingView وتحليلات الـ AI">بوت ربط إشارات TradingView وتحليلات الـ AI</option>
+                <option value="بوت تحليل ورصد سيولة السوق (سعودي / أمريكي)">بوت تحليل ورصد سيولة السوق (سعودي / أمريكي)</option>
+                <option value="بوت تنبيهات عقود الأوبشن والتحليل الفني الذكي">بوت تنبيهات عقود الأوبشن والتحليل الفني الذكي</option>
             </select>
             <button type="submit" class="submit-btn">إرسال تفاصيل النظام المالي</button>
             <div id="formStatus" class="form-message"></div>
@@ -148,14 +167,12 @@ footer{position:relative;z-index:1;padding:30px 20px;text-align:center;border-to
         <div class="chat-header">
             <div class="bot-avatar">📊</div>
             <div class="bot-info">
-                <h4>ServerNet Trading Bot ⚡</h4>
-                <span>bot (يجيب فوراً كالمحرك المالي الأصلي)</span>
+                <h4>ServerNet AI Trading Bot ⚡</h4>
+                <span>bot (محرك مالي مدعوم بالذكاء الاصطناعي)</span>
             </div>
         </div>
-        <div class="chat-body" id="chatBody">
-            </div>
-        <div class="chat-options" id="chatOpts">
-            </div>
+        <div class="chat-body" id="chatBody"></div>
+        <div class="chat-options" id="chatOpts"></div>
     </div>
 </div>
 
@@ -189,7 +206,7 @@ function animate2(){
 }
 animate2();
 
-/* ⚙️ كود إدارة نظام شات التلجرام المالي التفاعلي المحاكي ⚙ * */
+/* ⚙️ كود إدارة نظام شات التلجرام المالي التفاعلي المحاكي ⚙️ */
 let chatInitialized = false;
 
 function toggleChat() {
@@ -228,52 +245,60 @@ function showOpts(options) {
     });
 }
 
-// 🌴 شجرة السيناريو التفاعلي لبوتات التداول
 function startBotScenario() {
-    addMsg("مرحباً بك في محاكي أنظمة أتمتة وبوتات التداول وأسواق المال! 📊📈", "bot");
+    addMsg("مرحباً بك في محرك أنظمة أتمتة وبوتات التداول المالي والذكاء الاصطناعي! 📊🧠", "bot");
     setTimeout(() => {
-        addMsg("نقوم ببناء أقوى بوتات ربط التنبيهات والتحليل الفني للأسهم الأمريكية والأوبشن والسوق السعودي (تداول). اختبر سرعة وكفاءة النظام السحابي الخاص بنا الآن: 👇", "bot");
+        addMsg("نقوم ببناء أقوى حلول ربط التنبيهات ونماذج تحليل الشارت عبر الـ AI الفوري للأسواق المحلية والعالمية. اختبر الأنظمة الذكية: 👇", "bot");
         showOpts([
-            { text: "🔗 ربط تنبيهات مؤشرات TradingView", action: stepTradingView },
-            { text: "🇺🇸 أوبشن وتحليل أسهم أمريكية", action: stepUSOptions },
-            { text: "🇸🇦 رصد سيولة وتحليل السوق السعودي", action: stepSaudiMarket }
+            { text: "🧠 تحليل الشارت بنماذج الذكاء الاصطناعي Vision", action: stepAIVision },
+            { text: "🔗 ربط ويبهوك إشارات TradingView الفورية", action: stepTradingView },
+            { text: "🇺🇸 🇸🇦 أوبشن وسيولة السوق السعودي والأمريكي", action: stepMarkets }
         ]);
     }, 1000);
 }
 
+function stepAIVision() {
+    addMsg("مستقبل التحليل الفني بالذكاء الاصطناعي! 🧠⚡", "bot");
+    setTimeout(() => {
+        addMsg("نربط أنظمتك بنماذج ذكاء اصطناعي للرؤية (Vision Models) قادرة على تحليل لقطات شارت الأسهم فوراً، ثم توليد وصف فني دقيق وإعلانات قنوات الـ VIP وصياغة الصفقات آلياً دون تدخل بشري.", "bot");
+        askForAction();
+    }, 1200);
+}
+
 function stepTradingView() {
-    addMsg("اختيار ممتاز ومطلوب جداً! 🔗🔥", "bot");
+    addMsg("سرعة البرق مع سيرفرات الـ Webhook! 🔗🔥", "bot");
     setTimeout(() => {
-        addMsg("نقوم بإنشاء سيرفر ويبهوك (Webhook Server) مخصص لاستقبال التنبيهات من استراتيجياتك أو مؤشراتك الخاصة على TradingView فوراً. يقوم البوت بصياغة رسالة فخمة تحتوي على (نقطة الدخول، الهدف، ووقف الخسارة) ويرسلها لقناتك الـ VIP بالتلجرام في أقل من 0.2 ثانية!", "bot");
+        addMsg("نقوم بإنشاء سيرفر ويبهوك سحابي مخصص يستقبل إشارات استراتيجياتك من TradingView، ويعيد تنسيق البيانات الفنية (الدخول، الأهداف، الوقف) ويرسلها لمجموعات التلجرام في أجزاء من الثانية.", "bot");
         askForAction();
     }, 1200);
 }
 
-function stepUSOptions() {
-    addMsg("عقود الأوبشن والأسهم الأمريكية الفورية! 💎🇺🇸", "bot");
+function stepMarkets() {
+    addMsg("تتبع تدفق السيولة وعقود الأوبشن الاحترافية! 🇺🇸🇸🇦", "bot");
     setTimeout(() => {
-        addMsg("نربط البوت بمزودي بيانات للحصول على تدفقات السيولة غير الاعتيادية وعقود الـ Call والـ Put الكبيرة (Whale Alerts)، بالإضافة لبناء محرك تحليل فني ذكي يعطي المشتركين تحديثات فورية لأسهم مثل AAPL, NVDA, TSLA بضغطة زر.", "bot");
-        askForAction();
-    }, 1200);
-}
-
-function stepSaudiMarket() {
-    addMsg("السوق السعودي (تداول) بالكامل بين يديك! 🇸🇦📈", "bot");
-    setTimeout(() => {
-        addMsg("نصمم بوتات متخصصة لمجموعات وقنوات التداول السعودية؛ لمراقبة اختراقات المقاومات، رصد السيولة التاريخية الداخلة للشركات، وإرسال تقرير فني شامل للأسهم والقطاعات القيادية قبل وبعد إغلاق السوق تلقائياً.", "bot");
+        addMsg("البوت يسحب الصفقات الضخمة وتدفقات الأوبشن غير الاعتيادية (Whale Alerts)، ويرصد حركة السيولة اللحظية لشركات تداول والسوق الأمريكي لتوفير تحليلات متكاملة للمشتركين.", "bot");
         askForAction();
     }, 1200);
 }
 
 function askForAction() {
-    addMsg("هل ترغب في برمجة واستضافة نظام مالي ذكي أو بوت إشارات متكامل لعملائك ومجموعتك الآن؟ 👇🎯", "bot");
+    addMsg("هل ترغب في بناء واستضافة نظام أتمتة مالي ذكي أو معزز بالذكاء الاصطناعي لعملائك ومجموعتك الآن؟ 👇🎯", "bot");
     showOpts([
-        { text: "⚡ نعم، أريد طلب تصميم بوت تداول", action: () => {
+        { text: "⚡ نعم، أريد طلب تصميم نظام مالي مخصص", action: () => {
             addMsg("اختيار احترافي! توجه فوراً لنموذج الطلب الموجود بالصفحة، عب بياناتك وسيتواصل معك مهندس الأتمتة لبدء التنفيذ الفوري! 🚀", "bot");
             window.location.hash = '#order';
         }}
     ]);
 }
+
+/* ⚡ التوجيه التلقائي وسحب الشاشة لقسم الطلب فور دخول الرابط الأساسي */
+window.addEventListener('DOMContentLoaded', () => {
+    if (window.location.hash === '' && document.getElementById('order')) {
+        setTimeout(() => {
+            document.getElementById('order').scrollIntoView({ behavior: 'smooth' });
+        }, 600);
+    }
+});
 
 /* ⚙️ كود إرسال طلبات الفورم للتلجرام الخاص بك */
 document.getElementById('botOrderForm').addEventListener('submit', function(e) {

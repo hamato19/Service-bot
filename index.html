@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ServerNet | أتمتة وبوتات أسواق المال والتداول الاحترافية</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+/* إعدادات التصميم العامة */
+*{box-sizing:border-box;scroll-behavior:smooth}
+body{margin:0;font-family:'Cairo', sans-serif;color:#fff;background-color:#070b12;overflow-x:hidden}
+canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
+
+/* الهيدر وقائمة التنقل */
+header{position:fixed;top:0;width:100%;background:rgba(7,11,18,0.8);backdrop-filter:blur(10px);z-index:10;border-bottom:1px solid rgba(0,255,213,0.1)}
+.nav-container{max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;padding:15px 20px}
+.logo{font-size:22px;font-weight:900;color:#00ffd5;text-decoration:none}
+.nav-links a{color:#fff;text-decoration:none;margin-right:20px;font-size:14px;font-weight:700;transition:0.3s}
+.nav-links a:hover{color:#00ffd5}
+
+/* الأقسام وحاويات المحتوى */
+section{position:relative;z-index:1;padding:80px 20px;max-width:1100px;margin:0 auto;text-align:center}
+.hero{padding-top:160px;padding-bottom:100px}
+h1{font-size:42px;font-weight:900;color:#fff;margin-bottom:10px;line-height:1.4}
+h1 span{color:#00ffd5}
+p.subtitle{font-size:18px;color:#a0aec0;max-width:600px;margin:0 auto 30px}
+
+/* الأزرار التسويقية */
+.btn-group{display:flex;justify-content:center;gap:15px;flex-wrap:wrap}
+.primary-btn, .secondary-btn{padding:16px 32px;border-radius:16px;font-weight:900;font-size:16px;text-decoration:none;transition:0.3s;display:inline-block}
+.primary-btn{background:linear-gradient(135deg,#00ffd5,#00bfa5);color:#070b12;box-shadow:0 10px 30px rgba(0,255,213,0.3)}
+.primary-btn:hover{transform:scale(1.05);box-shadow:0 15px 40px rgba(0,255,213,0.5)}
+.secondary-btn{background:rgba(255,255,255,0.05);color:#fff;border:1px solid rgba(255,255,255,0.1);backdrop-filter:blur(5px)}
+.secondary-btn:hover{background:rgba(255,255,255,0.1);transform:scale(1.05)}
+
+/* شبكة المميزات */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:25px;margin-top:50px}
+.card{background:rgba(0,0,0,0.4);padding:30px;border-radius:24px;border:1px solid rgba(0,255,213,0.1);backdrop-filter:blur(15px);text-align:right;transition:0.3s}
+.card:hover{transform:translateY(-5px);border-color:#00ffd5}
+.card-icon{font-size:35px;margin-bottom:15px;display:block}
+.card h3{color:#00ffd5;margin:0 0 10px;font-size:20px}
+.card p{color:#a0aec0;font-size:14px;line-height:1.6;margin:0}
+
+/* نموذج الطلب */
+.form-box{max-width:500px;margin:40px auto 0;background:rgba(0,0,0,0.5);padding:40px;border-radius:24px;backdrop-filter:blur(15px);border:1px solid rgba(255,255,255,0.05);box-shadow:0 20px 50px rgba(0,0,0,0.5)}
+.form-box h2{color:#00ffd5;margin-top:0;margin-bottom:20px;font-size:24px}
+input, select, textarea{width:100%;padding:16px;border-radius:14px;border:1px solid rgba(255,255,255,0.1);margin-bottom:15px;font-size:15px;background:rgba(7,11,18,0.6);color:#fff;font-family:inherit}
+input:focus, select:focus{outline:none;border-color:#00ffd5}
+.submit-btn{width:100%;padding:16px;border-radius:14px;border:0;background:linear-gradient(135deg,#00ffd5,#00bfa5);color:#070b12;font-weight:900;font-size:16px;cursor:pointer;transition:0.3s;font-family:inherit}
+.submit-btn:hover{transform:scale(1.02);box-shadow:0 10px 25px rgba(0,255,213,0.3)}
+.form-message {margin-top:15px;font-weight:700;display:none}
+
+/* 🔵 تصميم نافذة البوت التفاعلي المحاكي للتليجرام المالي 🔵 */
+.chat-widget {position:fixed;bottom:25px;right:25px;z-index:1000;direction:rtl;text-align:right}
+.chat-trigger {width:60px;height:60px;border-radius:50%;background:#0088cc;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(0,136,204,0.4);cursor:pointer;transition:0.3s}
+.chat-trigger:hover {transform:scale(1.1)}
+.chat-trigger svg {width:32px;height:32px;fill:#fff}
+.chat-window {width:360px;height:500px;background:#17212b;border-radius:24px;box-shadow:0 15px 40px rgba(0,0,0,0.6);display:none;flex-direction:column;overflow:hidden;border:1px solid rgba(0,255,213,0.15);position:absolute;bottom:75px;right:0}
+.chat-header {background:#242f3d;padding:15px;display:flex;align-items:center;gap:12px;color:#fff;border-bottom:1px solid rgba(0,0,0,0.2)}
+.bot-avatar {width:40px;height:40px;border-radius:50%;background:#00ffd5;display:flex;align-items:center;justify-content:center;font-size:20px}
+.bot-info h4 {margin:0;font-size:16px;font-weight:700}
+.bot-info span {font-size:12px;color:#00ffd5;display:block}
+.chat-body {flex:1;padding:20px;overflow-y:auto;display:flex;flex-direction:column;gap:12px;background:#0e1621}
+.msg {max-width:85%;padding:12px 16px;border-radius:16px;font-size:14px;line-height:1.5;animation:fadeIn 0.3s ease}
+.msg.bot {background:#182533;color:#fff;align-self:flex-start;border-bottom-right-radius:2px}
+.msg.user {background:#2b5278;color:#fff;align-self:flex-end;border-bottom-left-radius:2px}
+.chat-options {display:flex;flex-direction:column;gap:8px;padding:12px 20px;background:#17212b;border-top:1px solid rgba(255,255,255,0.05)}
+.opt-btn {padding:11px 14px;background:#242f3d;border:1px solid #00ffd5;color:#00ffd5;border-radius:12px;cursor:pointer;text-align:center;font-size:13px;font-weight:700;transition:0.2s;font-family:inherit}
+.opt-btn:hover {background:#00ffd5;color:#070b12}
+
+@keyframes fadeIn { from {opacity:0;transform:translateY(10px)} to {opacity:1;transform:translateY(0)} }
+@media(max-width:400px){ .chat-window { width:300px; height:450px; right:-10px } }
+
+/* الفوتر المعدل بالكامل */
+footer{position:relative;z-index:1;padding:30px 20px;text-align:center;border-top:1px solid rgba(255,255,255,0.05);background:rgba(7,11,18,0.9);color:#718096;font-size:14px}
+
+@media(max-width:768px){
+    h1{font-size:30px}
+    p.subtitle{font-size:15px}
+    .nav-links{display:none}
+}
+</style>
+</head>
+<body>
+
+<canvas id="bg"></canvas>
+
+<header>
+    <div class="nav-container">
+        <a href="#" class="logo">SERVER<span>NET</span></a>
+        <div class="nav-links">
+            <a href="#features">تقنيات التداول</a>
+            <a href="#order">اطلب بوتك المالي</a>
+        </div>
+    </div>
+</header>
+
+<section class="hero">
+    <h1>أتمتة وإشارات <span>أسواق المال الذكية</span> على التلجرام</h1>
+    <p class="subtitle">اربط مؤشرات TradingView، وأرسل تنبيهات الأوبشن والأسهم الأمريكية والسعودية (تداول) تلقائياً إلى مجموعاتك وقنواتك بسرعة البرق ⚡</p>
+    <div class="btn-group">
+        <a href="#order" class="primary-btn">برمج بوت الإشارات الخاص بك</a>
+        <a href="https://t.me/alokalive" target="_blank" class="secondary-btn">انضم لقناتنا الرسمية</a>
+    </div>
+</section>
+
+<section id="features">
+    <h2 style="font-size: 28px; font-weight: 900;">حلول الأتمتة البرمجية للمتداولين والمحللين</h2>
+    <p style="color: #a0aec0; margin-bottom: 40px;">نوفر بنية تحتية سحابية متكاملة لربط استراتيجيات التداول وإرسال التحليلات الفورية.</p>
+    <div class="grid">
+        <div class="card">
+            <span class="card-icon">📈</span>
+            <h3>ربط إشارات TradingView (Webhook)</h3>
+            <p>تحويل تنبيهات مؤشراتك الخاصة واستراتيجيات التداول إلى رسائل فورية منسقة وفخمة داخل قنوات التلجرام للـ VIP في أجزاء من الثانية.</p>
+        </div>
+        <div class="card">
+            <span class="card-icon">🇺🇸 🇸🇦</span>
+            <h3>السوق السعودي والأمريكي</h3>
+            <p>سحب لحظي لبيانات الأسهم، تتبع فجوات السوق، رصد السيولة الداخلة والخارجة، وإرسال تقارير يومية تلقائية للمشتركين.</p>
+        </div>
+        <div class="card">
+            <span class="card-icon">💎</span>
+            <h3>مراقبة تنبيهات الأوبشن</h3>
+            <p>تنقية وفلترة تدفق عقود الأوبشن غير الاعتيادية (Unusual Options Activity)، وتوليد تنبيهات الدخول والخروج (Call / Put) بدقة مذهلة.</p>
+        </div>
+    </div>
+</section>
+
+<section id="order">
+    <div class="form-box">
+        <h2>اطلب بناء نظام مالي مخصص</h2>
+        <form id="botOrderForm">
+            <input type="text" id="custName" placeholder="اسمك الكريم / اسم المجموعة الاقتصادية" required>
+            <input type="tel" id="custPhone" placeholder="رقم التواصل (واتساب أو تلفون)" required>
+            <select id="custService" required>
+                <option value="" disabled selected>اختر نظام الأتمتة المالي المطلوب</option>
+                <option value="بوت ربط إشارات TradingView وقنوات الـ VIP">بوت ربط إشارات TradingView وقنوات الـ VIP</option>
+                <option value="بوت تحليل ورصد السيولة (سعودي / أمريكي)">بوت تحليل ورصد السيولة (سعودي / أمريكي)</option>
+                <option value="بوت تنبيهات عقود الأوبشن والتحليل الفني">بوت تنبيهات عقود الأوبشن والتحليل الفني</option>
+            </select>
+            <button type="submit" class="submit-btn">إرسال تفاصيل النظام المالي</button>
+            <div id="formStatus" class="form-message"></div>
+        </form>
+    </div>
+</section>
+
+<div class="chat-widget">
+    <div class="chat-trigger" onclick="toggleChat()">
+        <svg viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.161l-1.875 8.832c-.141.626-.514.781-1.038.487l-2.859-2.107-1.379 1.327c-.153.153-.281.281-.576.281l.205-2.912 5.301-4.789c.23-.205-.05-.319-.357-.114l-6.551 4.123-2.823-.883c-.614-.192-.626-.614.128-.909l11.026-4.249c.511-.192.958.114.793.916z"/></svg>
+    </div>
+    <div class="chat-window" id="chatWin">
+        <div class="chat-header">
+            <div class="bot-avatar">📊</div>
+            <div class="bot-info">
+                <h4>ServerNet Trading Bot ⚡</h4>
+                <span>bot (يجيب فوراً كالمحرك المالي الأصلي)</span>
+            </div>
+        </div>
+        <div class="chat-body" id="chatBody">
+            </div>
+        <div class="chat-options" id="chatOpts">
+            </div>
+    </div>
+</div>
+
+<footer>
+    <p>&copy; 2026 ServerNet. جميع الحقوق محفوظة لـ خدمات الإنترنت.</p>
+</footer>
+
+<script>
+/* كود الـ Canvas الخلفية المتحركة */
+const canvas2=document.getElementById('bg');
+const ctx2=canvas2.getContext('2d');
+function resizeCanvas() { canvas2.width=window.innerWidth; canvas2.height=window.innerHeight; }
+resizeCanvas(); window.addEventListener('resize', resizeCanvas);
+
+const lines2=[];
+for(let i=0;i<35;i++){
+    lines2.push({x1:Math.random()*canvas2.width,y1:Math.random()*canvas2.height,
+                 x2:Math.random()*canvas2.width,y2:Math.random()*canvas2.height,
+                 dx:(Math.random()-0.5)*1.2,dy:(Math.random()-0.5)*1.2});
+}
+function animate2(){
+    ctx2.fillStyle='rgba(7,11,18,0.15)'; ctx2.fillRect(0,0,canvas2.width,canvas2.height);
+    lines2.forEach(l=>{
+        ctx2.beginPath(); ctx2.moveTo(l.x1,l.y1); ctx2.lineTo(l.x2,l.y2);
+        ctx2.strokeStyle='rgba(0,255,213,0.3)'; ctx2.lineWidth=1.2; ctx2.stroke();
+        l.x1+=l.dx;l.y1+=l.dy;l.x2+=l.dx;l.y2+=l.dy;
+        if(l.x1<0||l.x1>canvas2.width||l.x2<0||l.x2>canvas2.width) l.dx*=-1;
+        if(l.y1<0||l.y1>canvas2.height||l.y2<0||l.y2>canvas2.height) l.dy*=-1;
+    });
+    requestAnimationFrame(animate2);
+}
+animate2();
+
+/* ⚙️ كود إدارة نظام شات التلجرام المالي التفاعلي المحاكي ⚙ * */
+let chatInitialized = false;
+
+function toggleChat() {
+    const win = document.getElementById('chatWin');
+    if (win.style.display === 'none' || win.style.display === '') {
+        win.style.display = 'flex';
+        if (!chatInitialized) { startBotScenario(); chatInitialized = true; }
+    } else {
+        win.style.display = 'none';
+    }
+}
+
+const chatBody = document.getElementById('chatBody');
+const chatOpts = document.getElementById('chatOpts');
+
+function addMsg(text, sender) {
+    const m = document.createElement('div');
+    m.className = `msg ${sender}`;
+    m.innerText = text;
+    chatBody.appendChild(m);
+    chatBody.scrollTop = chatBody.scrollHeight;
+}
+
+function showOpts(options) {
+    chatOpts.innerHTML = '';
+    options.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.className = 'opt-btn';
+        btn.innerText = opt.text;
+        btn.onclick = () => {
+            addMsg(opt.text, 'user');
+            chatOpts.innerHTML = ''; 
+            setTimeout(() => opt.action(), 600);
+        };
+        chatOpts.appendChild(btn);
+    });
+}
+
+// 🌴 شجرة السيناريو التفاعلي المتخصص لبوتات أسواق المال والتداول
+function startBotScenario() {
+    addMsg("مرحباً بك في محاكي أنظمة أتمتة وبوتات التداول وأسواق المال! 📊📈", "bot");
+    setTimeout(() => {
+        addMsg("نقوم ببناء أقوى بوتات ربط التنبيهات والتحليل الفني للأسهم الأمريكية والأوبشن والسوق السعودي (تداول). اختبر سرعة وكفاءة النظام السحابي الخاص بنا الآن: 👇", "bot");
+        showOpts([
+            { text: "🔗 ربط تنبيهات مؤشرات TradingView", action: stepTradingView },
+            { text: "🇺🇸 أوبشن وتحليل أسهم أمريكية", action: stepUSOptions },
+            { text: "🇸🇦 رصد سيولة وتحليل السوق السعودي", action: stepSaudiMarket }
+        ]);
+    }, 1000);
+}
+
+function stepTradingView() {
+    addMsg("اختيار ممتاز ومطلوب جداً! 🔗🔥", "bot");
+    setTimeout(() => {
+        addMsg("نقوم بإنشاء سيرفر ويبهوك (Webhook Server) مخصص لاستقبال التنبيهات من استراتيجياتك أو مؤشراتك الخاصة على TradingView فوراً. يقوم البوت بصياغة رسالة فخمة تحتوي على (نقطة الدخول، الهدف، ووقف الخسارة) ويرسلها لقناتك الـ VIP بالتلجرام في أقل من 0.2 ثانية!", "bot");
+        askForAction();
+    }, 1200);
+}
+
+function stepUSOptions() {
+    addMsg("عقود الأوبشن والأسهم الأمريكية الفورية! 💎🇺🇸", "bot");
+    setTimeout(() => {
+        addMsg("نربط البوت بمزودي بيانات للحصول على تدفقات السيولة غير الاعتيادية وعقود الـ Call والـ Put الكبيرة (Whale Alerts)، بالإضافة لبناء محرك تحليل فني ذكي يعطي المشتركين تحديثات فورية لأسهم مثل AAPL, NVDA, TSLA بضغطة زر.", "bot");
+        askForAction();
+    }, 1200);
+}
+
+function stepSaudiMarket() {
+    addMsg("السوق السعودي (تداول) بالكامل بين يديك! 🇸🇦📈", "bot");
+    setTimeout(() => {
+        addMsg("نصمم بوتات متخصصة لمجموعات وقنوات التداول السعودية؛ لمراقبة اختراقات المقاومات، رصد السيولة التاريخية الداخلة للشركات، وإرسال تقرير فني شامل للأسهم والقطاعات القيادية قبل وبعد إغلاق السوق تلقائياً.", "bot");
+        askForAction();
+    }, 1200);
+}
+
+function askForAction() {
+    addMsg("هل ترغب في برمجة واستضافة نظام مالي ذكي أو بوت إشارات متكامل لعملائك ومجموعتك الآن؟ 👇🎯", "bot");
+    showOpts([
+        { text: "✅ نعم، أريد طلب تصميم بوت تداول", action: () => {
+            addMsg("اختيار احترافي! توجه فوراً لنموذج الطلب الموجود بالصفحة، عب بياناتك وسيتواصل معك مهندس الأتمتة لبدء التنفيذ الفوري! 🚀", "bot");
+            window.location.hash = '#order';
+        }},
+        { text: "💬 انضم لقناتنا وتابع التحديثات", action: () => {
+            addMsg("تشرفنا يا غالي! اضغط على الزر للانتقال لقناتنا الرسمية ومتابعة آخر مشاريع الأتمتة المخصصة.", "bot");
+            window.open('https://t.me/alokalive', '_blank');
+        }}
+    ]);
+}
+
+/* ⚙️ كود إرسال طلبات الفورم للتلجرام الخاص بك */
+document.getElementById('botOrderForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const TELEGRAM_TOKEN = 'ضع_هنا_توكن_البوت'; 
+    const CHAT_ID = 'ضع_هنا_أيدي_حسابك'; 
+    const name = document.getElementById('custName').value;
+    const phone = document.getElementById('custPhone').value;
+    const service = document.getElementById('custService').value;
+    const statusDiv = document.getElementById('formStatus');
+
+    const textMessage = `🔔 *طلب بوت تداول مالي جديد - ServerNet*\n\n👤 *الاسم:* ${name}\n📞 *رقم التواصل:* ${phone}\n🛠️ *النظام المطلوب:* ${service}`;
+    statusDiv.style.display = 'block'; statusDiv.innerText = 'جاري إرسال تفاصيل طلبك المالي...';
+
+    fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ chat_id: CHAT_ID, text: textMessage, parse_mode: 'Markdown' })
+    }).then(res => {
+        if(res.ok) {
+            statusDiv.style.color = '#00ffd5';
+            statusDiv.innerText = '✅ تم إرسال طلبك بنجاح! سيتواصل معك مهندس الأتمتة لمناقشة استراتيجية التداول والبوت الخاص بك.';
+            document.getElementById('botOrderForm').reset();
+        }
+    });
+});
+</script>
+</body>
+</html>

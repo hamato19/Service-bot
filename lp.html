@@ -4,9 +4,8 @@
     <script src="protection.js"></script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/webp" href="1000015120.webp">
-    <title>ServerNet | متجر قوالب صفحات الهبوط الاحترافية</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <title>ServerNet | متجر المنتجات والأكواد الرقمية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght=400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
@@ -19,43 +18,33 @@
         .nav-container { max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; }
         .logo { font-size: 22px; font-weight: 900; color: #00ffd5; text-decoration: none; }
         .logo span { color: #fff; }
-        .nav-links a { color: #fff; text-decoration: none; margin-right: 20px; font-size: 14px; font-weight: 700; transition: 0.3s; }
-        .nav-links a:hover { color: #00ffd5; }
+        .nav-links a { color: #fff; text-decoration: none; margin-right: 20px; font-size: 14px; font-weight: 700; }
 
         section { position: relative; z-index: 1; padding: 140px 20px 80px; max-width: 1100px; margin: 0 auto; text-align: center; }
-        h1 { font-size: 42px; font-weight: 900; color: #fff; margin-top: 0; margin-bottom: 15px; line-height: 1.4; }
+        h1 { font-size: 42px; font-weight: 900; color: #fff; margin-bottom: 15px; }
         h1 span { color: #00ffd5; }
-        p.subtitle { font-size: 18px; color: #a0aec0; max-width: 600px; margin: 0 auto 40px; line-height: 1.6; }
+        .subtitle { font-size: 18px; color: #a0aec0; margin-bottom: 40px; }
 
-        .filter-buttons { display: flex; justify-content: center; gap: 15px; margin-bottom: 45px; }
-        .filter-btn { padding: 12px 30px; border: 1px solid rgba(0,255,213,0.15); border-radius: 14px; background: rgba(0,0,0,0.4); color: #fff; cursor: pointer; font-size: 15px; font-weight: 700; font-family: inherit; transition: 0.3s; backdrop-filter: blur(15px); }
-        .filter-btn.active, .filter-btn:hover { background: linear-gradient(135deg,#00ffd5,#00bfa5); color: #070b12; border-color: transparent; box-shadow: 0 10px 25px rgba(0,255,213,0.3); }
-
-        .templates-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 20px; }
-        .template-card { background: rgba(0,0,0,0.4); border: 1px solid rgba(0,255,213,0.1); border-radius: 24px; backdrop-filter: blur(15px); text-align: right; transition: 0.3s; overflow: hidden; position: relative; display: flex; flex-direction: column; }
-        .template-card:hover { transform: translateY(-5px); border-color: #00ffd5; box-shadow: 0 15px 40px rgba(0,255,213,0.15); }
-
-        .badge { position: absolute; top: 15px; right: 15px; padding: 6px 14px; border-radius: 10px; font-size: 12px; font-weight: 900; z-index: 10; font-family: inherit; }
-        .badge.free { background: #10b981; color: #fff; }
+        .templates-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .template-card { background: rgba(0,0,0,0.4); border: 1px solid rgba(0,255,213,0.1); border-radius: 24px; text-align: right; overflow: hidden; position: relative; display: flex; flex-direction: column; }
+        
+        .badge { position: absolute; top: 15px; right: 15px; padding: 6px 14px; border-radius: 10px; font-size: 12px; font-weight: 900; z-index: 10; }
+        .badge.free { background: #10b981; color: #fff; } 
         .badge.premium { background: linear-gradient(135deg, #ffca28, #f59e0b); color: #070b12; }
+        .tech-badge { position: absolute; top: 15px; left: 15px; padding: 6px 12px; border-radius: 10px; font-size: 11px; background: rgba(0,0,0,0.8); border: 1px solid rgba(255,255,255,0.1); }
 
-        .template-preview { width: 100%; height: 190px; background-color: rgba(7,11,18,0.6); background-size: cover; background-position: top center; border-bottom: 1px solid rgba(0,255,213,0.1); }
+        .template-preview { width: 100%; height: 190px; background-size: cover; background-position: center; background-color: #111; }
         .template-info { padding: 25px; display: flex; flex-direction: column; flex-grow: 1; }
-        .template-info h3 { color: #00ffd5; margin: 0 0 10px; font-size: 20px; font-weight: 700; }
-        .template-info p { color: #a0aec0; font-size: 14px; line-height: 1.6; margin: 0 0 25px; flex-grow: 1; }
+        .template-info h3 { color: #00ffd5; margin: 0 0 10px; font-size: 20px; }
+        .template-info p { color: #a0aec0; font-size: 14px; line-height: 1.6; margin-bottom: 25px; flex-grow: 1; }
 
-        .card-actions { display: flex; gap: 12px; margin-top: auto; }
-        .btn { flex: 1; padding: 12px; border-radius: 12px; text-align: center; text-decoration: none; font-size: 14px; font-weight: 900; transition: 0.3s; display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-family: inherit; }
+        .card-actions { display: flex; gap: 12px; }
+        .btn { flex: 1; padding: 12px; border-radius: 12px; text-align: center; text-decoration: none; font-size: 14px; font-weight: 900; display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-family: inherit; cursor: pointer; border: 0; }
         .btn-demo { background: rgba(255,255,255,0.05); color: #fff; border: 1px solid rgba(255,255,255,0.1); }
-        .btn-demo:hover { background: rgba(255,255,255,0.1); border-color: rgba(0,255,213,0.3); }
-        .btn-use { background: linear-gradient(135deg,#00ffd5,#00bfa5); color: #070b12; border: 0; }
-        .btn-use:hover { transform: scale(1.03); box-shadow: 0 5px 15px rgba(0,255,213,0.3); }
-
-        .clear-btn { background: rgba(255, 74, 74, 0.1); color: #ff4a4a; border: 1px solid rgba(255, 74, 74, 0.2); padding: 6px 14px; border-radius: 10px; font-size: 12px; cursor: pointer; font-family: inherit; margin-top: 20px; transition: 0.3s; }
-        .clear-btn:hover { background: #ff4a4a; color: #fff; }
-
-        @media(max-width:768px) { section { padding-top: 120px; } h1 { font-size: 30px; } .nav-links { display: none; } .filter-buttons { flex-wrap: wrap; } }
-        footer { position: relative; z-index: 1; padding: 30px 20px; text-align: center; border-top: 1px solid rgba(255,255,255,0.05); background: rgba(7,11,18,0.9); color: #718096; font-size: 14px; margin-top: 60px; }
+        .btn-demo:hover { background: rgba(255,255,255,0.15); }
+        .btn-use { background: linear-gradient(135deg,#00ffd5,#00bfa5); color: #070b12; }
+        .btn-use:hover { transform: scale(1.02); }
+        .clear-btn { background: rgba(255, 74, 74, 0.1); color: #ff4a4a; border: 1px solid rgba(255, 74, 74, 0.2); padding: 6px 14px; border-radius: 10px; cursor: pointer; margin-top: 40px; }
     </style>
 </head>
 <body>
@@ -75,80 +64,61 @@
 </header>
 
 <section>
-    <h1>متجر وقوالب <span>صفحات الهبوط الاحترافية</span></h1>
-    <p class="subtitle">تصفّح واشترِ قوالب جاهزة ومصممة بالكامل دون أكواد تخدم جميع متطلبات أتمتة الإشارات والتسويق الرقمي</p>
-
-    <div class="filter-buttons">
-        <button class="filter-btn active" onclick="filterTemplates('all')">كل القوالby</button>
-        <button class="filter-btn" onclick="filterTemplates('free')">القوالب المجانية</button>
-        <button class="filter-btn" onclick="filterTemplates('premium')">القوالب المدفوعة النخبة <i class="fa-solid fa-crown" style="margin-right: 4px;"></i></button>
-    </div>
+    <h1>متجر الأكواد <span>والتصاميم الحية</span></h1>
+    <p class="subtitle">استعرض وجرب الأكواد البرمجية وصفحات الـ HTML المصممة بالكامل من لوحة التحكم مباشرة</p>
 
     <div class="templates-grid" id="templatesGrid"></div>
-
-    <button class="clear-btn" onclick="resetStore()"><i class="fa-solid fa-trash-can"></i> إعادة تهيئة المتجر للمظهر الافتراضي</button>
+    <button class="clear-btn" onclick="resetStore()"><i class="fa-solid fa-trash-can"></i> مسح الذاكرة وإعادة ضبط المصنع</button>
 </section>
 
-<footer>
-    <p>&copy; 2026 ServerNet. جميع الحقوق محفوظة لـ خدمات الإنترنت.</p>
-</footer>
-
 <script>
-/* تشغيل خلفية الـ Canvas */
+/* تأثيرات الخلفية */
 const canvas2 = document.getElementById('bg'); const ctx2 = canvas2.getContext('2d');
 function resizeCanvas() { canvas2.width = window.innerWidth; canvas2.height = window.innerHeight; }
 resizeCanvas(); window.addEventListener('resize', resizeCanvas);
 const lines2 = [];
-for(let i=0; i<35; i++){ lines2.push({x1:Math.random()*canvas2.width, y1:Math.random()*canvas2.height, x2:Math.random()*canvas2.width, y2:Math.random()*canvas2.height, dx:(Math.random()-0.5)*1.2, dy:(Math.random()-0.5)*1.2}); }
-function animate2(){ ctx2.fillStyle = 'rgba(7,11,18,0.15)'; ctx2.fillRect(0,0,canvas2.width,canvas2.height); lines2.forEach(l=>{ ctx2.beginPath(); ctx2.moveTo(l.x1,l.y1); ctx2.lineTo(l.x2,l.y2); ctx2.strokeStyle = 'rgba(0,255,213,0.3)'; ctx2.lineWidth = 1.2; ctx2.stroke(); l.x1+=l.dx; l.y1+=l.dy; l.x2+=l.dx; l.y2+=l.dy; if(l.x1<0||l.x1>canvas2.width||l.x2<0||l.x2>canvas2.width) l.dx*=-1; if(l.y1<0||l.y1>canvas2.height||l.y2<0||l.y2>canvas2.height) l.dy*=-1; }); requestAnimationFrame(animate2); }
+for(let i=0; i<25; i++){ lines2.push({x1:Math.random()*canvas2.width, y1:Math.random()*canvas2.height, x2:Math.random()*canvas2.width, y2:Math.random()*canvas2.height, dx:(Math.random()-0.5)*1, dy:(Math.random()-0.5)*1}); }
+function animate2(){ ctx2.fillStyle = 'rgba(7,11,18,0.15)'; ctx2.fillRect(0,0,canvas2.width,canvas2.height); lines2.forEach(l=>{ ctx2.beginPath(); ctx2.moveTo(l.x1,l.y1); ctx2.lineTo(l.x2,l.y2); ctx2.strokeStyle = 'rgba(0,255,213,0.2)'; ctx2.stroke(); l.x1+=l.dx; l.y1+=l.dy; l.x2+=l.dx; l.y2+=l.dy; if(l.x1<0||l.x1>canvas2.width) l.dx*=-1; if(l.y1<0||l.y1>canvas2.height) l.dy*=-1; }); requestAnimationFrame(animate2); }
 animate2();
 
-/* مصفوفة القوالب الثابتة الافتراضية بموقعك */
-const defaultTemplates = [
-    {
-        id: 'free_lead',
-        title: 'قالب اقتناص الإشارات والبيانات',
-        description: 'قالب ذكي وسريع مخصص لجمع أرقام هواتف وبيانات العملاء المهتمين بنظام إشاراتك للتواصل التلقائي معهم.',
-        type: 'free',
-        previewImage: 'https://via.placeholder.com/400x200/070b12/00ffd5?text=Lead+Capture+Free',
-        demoUrl: 'template-engine.html?type=free&title=مركز اقتناص الإشارات المجاني&desc=سجل معنا الآن لتصلك أقوى تنبيهات التداول مباشرة على حسابك ⚡',
-        useUrl: 'index.html#order'
-    },
-    {
-        id: 'premium_vip',
-        title: 'قالب اشتراكات الـ VIP المتكامل',
-        description: 'تصميم فخم يحتوي على عداد تنازلي ذكي للعروض، آراء عملاء تفاعلية، ومجهز لربط الويب هوك وبوابات الدفع الفوري.',
-        type: 'premium',
-        previewImage: 'https://via.placeholder.com/400x200/070b12/00ffd5?text=VIP+Subscription+Pro',
-        demoUrl: 'template-engine.html?type=premium&title=أكاديمية تداول النخبة VIP&desc=انضم الآن إلى أقوى نظام لإدارة استراتيجيات أسواق المال واستغل العرض قبل فوات الأوان! 🏆',
-        useUrl: 'index.html#order'
-    }
-];
-
-// دالة دمج القوالب الافتراضية مع القوالب التي تم رفعها من لوحة التحكم
-function getCombinedTemplates() {
-    const customTemplates = JSON.parse(localStorage.getItem('servernet_custom_templates')) || [];
-    return [...defaultTemplates, ...customTemplates];
-}
-
-function renderTemplates(data) {
+function renderTemplates() {
     const grid = document.getElementById('templatesGrid');
     grid.innerHTML = '';
+    const templates = JSON.parse(localStorage.getItem('servernet_custom_templates')) || [];
 
-    data.forEach(tmpl => {
+    if(templates.length === 0) {
+        grid.innerHTML = '<p style="color:#718096; grid-column: 1/-1; padding: 40px;">لا توجد منتجات مرفوعة حالياً، اذهب للوحة التحكم واصنع قالبك الأول.</p>';
+        return;
+    }
+
+    templates.forEach((tmpl, index) => {
         const isFree = tmpl.type === 'free';
+        const techIcon = tmpl.tech === 'python' ? '<i class="fa-brands fa-python" style="color:#3776ab;"></i> Python' : '<i class="fa-brands fa-html5" style="color:#e34f26;"></i> HTML5';
         const card = document.createElement('div');
         card.className = `template-card`;
 
+        // إعداد زر التحميل أو الشراء بناءً على السعر والنوع
+        let actionButton = '';
+        if(isFree) {
+            if(tmpl.tech === 'html') {
+                actionButton = `<button class="btn btn-use" onclick="downloadCode(${index})"><i class="fa-solid fa-download"></i> تحميل القالب (HTML)</button>`;
+            } else {
+                actionButton = `<button class="btn btn-use" onclick="downloadCode(${index})"><i class="fa-solid fa-download"></i> تحميل السكربت (Python)</button>`;
+            }
+        } else {
+            actionButton = `<a href="index.html#order" class="btn btn-use"><i class="fa-solid fa-credit-card"></i> شراء فوري</a>`;
+        }
+
         card.innerHTML = `
-            <span class="badge ${tmpl.type}">${isFree ? 'مجاني' : 'مدفوع نُخبة <i class="fa-solid fa-crown"></i>'}</span>
+            <span class="badge ${tmpl.type}">${isFree ? 'مجاني' : tmpl.price + ' <i class="fa-solid fa-crown"></i>'}</span>
+            <span class="tech-badge">${techIcon}</span>
             <div class="template-preview" style="background-image: url('${tmpl.previewImage}')"></div>
             <div class="template-info">
                 <h3>${tmpl.title}</h3>
                 <p>${tmpl.description}</p>
                 <div class="card-actions">
-                    <a href="${tmpl.demoUrl}" class="btn btn-demo" target="_blank"><i class="fa-solid fa-eye"></i> معاينة</a>
-                    <a href="${tmpl.useUrl}" class="btn btn-use">${isFree ? '<i class="fa-solid fa-bolt"></i> استخدام القالب' : '<i class="fa-solid fa-credit-card"></i> شراء الآن'}</a>
+                    <button class="btn btn-demo" onclick="viewLiveCode(${index})"><i class="fa-solid fa-eye"></i> معاينة حية</button>
+                    ${actionButton}
                 </div>
             </div>
         `;
@@ -156,29 +126,58 @@ function renderTemplates(data) {
     });
 }
 
-function filterTemplates(type) {
-    const buttons = document.querySelectorAll('.filter-btn');
-    buttons.forEach(btn => btn.classList.remove('active'));
-    if(event && event.target) event.target.classList.add('active');
+// دالة المعاينة الحية المصلحة والمضمونة لفتح نافذة نظيفة وحقن كود العميل
+function viewLiveCode(index) {
+    const templates = JSON.parse(localStorage.getItem('servernet_custom_templates'));
+    const item = templates[index];
+    const codeToRender = item.rawCode || item.templateCode; // فحص مسميات المتغيرات لضمان القراءة
 
-    const allTemplates = getCombinedTemplates();
-    if (type === 'all') {
-        renderTemplates(allTemplates);
-    } else {
-        const filtered = allTemplates.filter(t => t.type === type);
-        renderTemplates(filtered);
+    if(!codeToRender) {
+        alert("⚠️ لم يتم العثور على كود مخزن لهذا القالب! يرجى إعادة رفعه من لوحة التحكم.");
+        return;
     }
+
+    if(item.tech === 'python') {
+        // إذا كان بايثون يظهر الكود في صندوق نصي منسق
+        const nWin = window.open();
+        nWin.document.write(`<html dir="ltr"><head><title>Python Code</title></head><body style="background:#0f172a;color:#10b981;padding:30px;font-family:monospace;white-space:pre;">${codeToRender.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</body></html>`);
+    } else {
+        // إذا كان HTML يفتح صفحة جديدة مستقلة ويحقن الكود ليعمل فورا
+        const newWindow = window.open();
+        newWindow.document.open();
+        newWindow.document.write(codeToRender);
+        newWindow.document.close();
+    }
+}
+
+// دالة التحميل الفوري للملف المخصص إلى جهاز المستخدم مباشرة
+function downloadCode(index) {
+    const templates = JSON.parse(localStorage.getItem('servernet_custom_templates'));
+    const item = templates[index];
+    const codeToDownload = item.rawCode || item.templateCode;
+
+    if(!codeToDownload) {
+        alert("⚠️ خطأ في التحميل، الكود فارغ!");
+        return;
+    }
+
+    const blob = new Blob([codeToDownload], { type: "text/html;charset=utf-8" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = item.tech === 'python' ? `${item.id}.py` : `${item.id}.html`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
 }
 
 function resetStore() {
-    if(confirm('هل أنت متأكد من مسح جميع القوالب المرفوعة مؤخراً وإعادة المتجر للوضع الافتراضي؟')) {
-        localStorage.removeItem('servernet_custom_templates');
-        renderTemplates(defaultTemplates);
+    if(confirm('هل تود مسح كل القوالب والأكواد المرفوعة وإعادة ضبط كاش المتجر؟')) { 
+        localStorage.removeItem('servernet_custom_templates'); 
+        renderTemplates(); 
     }
 }
 
-// التشغيل الأولي للمتجر يجمع كل الأكواد الحالية والمرفوعة تلقائياً
-renderTemplates(getCombinedTemplates());
+window.onload = renderTemplates;
 </script>
 </body>
 </html>

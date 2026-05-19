@@ -9,7 +9,7 @@
 <style>
 /* إعدادات التصميم العامة */
 *{box-sizing:border-box;scroll-behavior:smooth}
-body{margin:0;font-family:'Cairo', sans-serif;color:#fff;background-color:#070b12;min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:20px;overflow-x:hidden}
+body{margin:0;font-family:'Cairo', sans-serif;color:#fff;background-color:#070b12;min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:40px 20px;overflow-x:hidden}
 canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
 
 /* حاوية منشئ الصفحات (الوضع الافتراضي) */
@@ -31,16 +31,32 @@ input:focus, select:focus, textarea:focus{outline:none;border-color:#00ffd5;box-
 .copy-btn {background:#242f3d;color:#fff;border:1px solid rgba(255,255,255,0.1);padding:12px;width:100%;border-radius:12px;font-weight:700;cursor:pointer;font-family:inherit;transition:0.2s}
 .copy-btn:hover {background:#00ffd5;color:#070b12}
 
+/* أزرار التواصل المضافة أسفل التوليد */
+.contact-group {margin-top: 20px; display: flex; gap: 15px;}
+.nav-btn {flex: 1; padding: 14px; text-align: center; border-radius: 12px; font-weight: 700; text-decoration: none; transition: 0.3s; font-size: 14px;}
+.btn-back {background: rgba(255,255,255,0.05); color: #fff; border: 1px solid rgba(255,255,255,0.1);}
+.btn-back:hover {background: rgba(255,255,255,0.15);}
+.btn-order-now {background: #00ffd5; color: #070b12; font-weight: 900;}
+.btn-order-now:hover {box-shadow: 0 0 15px rgba(0,255,213,0.6); transform: scale(1.02);}
+
 /* 📥 تصميم صفحة الهبوط المتولدة النهائية عند العرض 📥 */
 .view-container {display:none;position:relative;z-index:1;max-width:600px;width:100%;background:rgba(255,255,255,0.03);padding:50px 40px;border-radius:28px;backdrop-filter:blur(15px);text-align:center;box-shadow:0 20px 50px rgba(0,0,0,0.4);animation:fadeIn 0.5s ease}
-.view-container h1 {font-size:36px;font-weight:900;margin-bottom:20px;line-height:1.4}
-.view-container p {font-size:17px;color:#a0aec0;line-height:1.8;margin-bottom:40px}
+.view-container h1 {font-size:34px;font-weight:900;margin-top:0;margin-bottom:20px;line-height:1.4}
+.view-container p {font-size:16px;color:#a0aec0;line-height:1.8;margin-bottom:35px}
 .action-link {display:inline-block;width:100%;max-width:400px;padding:18px;border-radius:16px;font-size:18px;font-weight:900;text-decoration:none;transition:0.3s}
 .action-link:hover {transform:translateY(-4px)}
 .lp-footer {margin-top:40px;font-size:12px;color:#4a5568}
 
+/* أنماط صورة المنتج داخل واجهة العرض */
+.lp-product-img {width: 100%; max-width: 320px; border-radius: 20px; margin-bottom: 25px; object-fit: cover; display: none; border: 2px solid rgba(255,255,255,0.1); animation: float 4s ease-in-out infinite;}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
 @keyframes fadeIn { from{opacity:0;transform:translateY(15px)} to{opacity:1;transform:translateY(0)} }
-@media(max-width:768px){ .builder-container, .view-container { padding:25px 20px; } .view-container h1{font-size:28px} }
+@media(max-width:768px){ .builder-container, .view-container { padding:35px 20px; } .view-container h1{font-size:26px} .contact-group {flex-direction: column; gap: 10px;} }
 </style>
 </head>
 <body>
@@ -55,6 +71,9 @@ input:focus, select:focus, textarea:focus{outline:none;border-color:#00ffd5;box-
         <label>عنوان الصفحة التسويقي:</label>
         <input type="text" id="lpTitle" placeholder="مثال: أكاديمية النخبة لتوصيات الأسهم الأمريكية" required>
         
+        <label>رابط صورة المنتج أو شعار القناة (اختياري):</label>
+        <input type="url" id="lpImg" placeholder="مثال: https://site.com/image.png (اتركه فارغاً إن لم ترغب بصورة)">
+
         <label>الوصف التسويقي للخدمة أو القناة:</label>
         <textarea id="lpDesc" rows="3" placeholder="مثال: انضم لأقوى قناة توصيات ومراقبة عقود الأوبشن الفورية المدعومة بأدوات الذكاء الاصطناعي السحابية." required></textarea>
         
@@ -81,10 +100,16 @@ input:focus, select:focus, textarea:focus{outline:none;border-color:#00ffd5;box-
         <div class="url-display" id="urlDisplay"></div>
         <button class="copy-btn" onclick="copyGeneratedUrl()">📋 نسخ الرابط الفريد</button>
     </div>
+
+    <div class="contact-group">
+        <a href="index.html" class="nav-btn btn-back">⬅️ العودة للرئيسية</a>
+        <a href="index.html#order" class="nav-btn btn-order-now">🎯 اطلب صفحتك / تواصل معنا</a>
+    </div>
 </div>
 
 <div class="view-container" id="viewInterface">
     <h1 id="viewTitle"></h1>
+    <center><img src="" id="viewProductImg" class="lp-product-img" alt="Product Image"></center>
     <p id="viewDesc"></p>
     <a href="#" id="viewBtn" target="_blank" class="action-link"></a>
     <div class="lp-footer">تمت الأتمتة والاستضافة عبر <a href="index.html" style="color:#00ffd5; text-decoration:none; font-weight:700;">ServerNet</a></div>
@@ -102,6 +127,7 @@ animate();
 /* ⚙️ منطق تشفير البيانات وتوليد الرابط المستقل ⚙️ */
 function generateLpLink() {
     const title = document.getElementById('lpTitle').value;
+    const imgUrl = document.getElementById('lpImg').value;
     const desc = document.getElementById('lpDesc').value;
     const link = document.getElementById('lpLink').value;
     const btnText = document.getElementById('lpBtnText').value;
@@ -112,8 +138,8 @@ function generateLpLink() {
         return;
     }
 
-    // تجميع البيانات في كائن واحد
-    const dataObject = { t: title, d: desc, l: link, b: btnText, c: color };
+    // تجميع البيانات في كائن واحد (بما في ذلك الصورة)
+    const dataObject = { t: title, i: imgUrl, d: desc, l: link, b: btnText, c: color };
     
     // تحويل الكائن إلى نص مدمج وتشفيره بصيغة Base64 الآمنة للروابط
     const jsonString = JSON.stringify(dataObject);
@@ -156,6 +182,17 @@ function checkRouting() {
             document.querySelector('#viewInterface h1 span').style.color = data.c;
             document.getElementById('viewDesc').innerText = data.d;
             
+            // معالجة وإظهار صورة المنتج إن وجدت
+            const imgElement = document.getElementById('viewProductImg');
+            if(data.i && data.i.trim() !== "") {
+                imgElement.src = data.i;
+                imgElement.style.display = 'block';
+                imgElement.style.borderColor = data.c + '40';
+                imgElement.style.boxShadow = `0 15px 40px ${data.c}20`;
+            } else {
+                imgElement.style.display = 'none';
+            }
+
             // تخصيص الزر
             const btn = document.getElementById('viewBtn');
             btn.innerText = data.b;

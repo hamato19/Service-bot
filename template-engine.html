@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="meta-title">جاري تحميل الصفحة...</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* المتغيرات الديناميكية للألوان */
+        :root {
+            --primary-color: #00ffd5;
+            --bg-color: #070b12;
+            --card-bg: rgba(0, 0, 0, 0.4);
+        }
+
+        * { box-sizing: border-box; }
+        body { 
+            margin: 0; 
+            font-family: 'Cairo', sans-serif; 
+            background-color: var(--bg-color); 
+            color: #fff;
+            text-align: center;
+        }
+
+        .container { max-width: 800px; margin: 0 auto; padding: 40px 20px; }
+        
+        /* قسم الهيرو المشترك */
+        .hero { padding: 60px 20px; }
+        .hero h1 { font-size: 36px; font-weight: 900; margin-bottom: 15px; }
+        .hero p { font-size: 18px; color: #a0aec0; margin-bottom: 30px; }
+
+        /* الأزرار الديناميكية */
+        .cta-btn { 
+            display: inline-block; 
+            padding: 16px 40px; 
+            border-radius: 14px; 
+            font-weight: 900; 
+            text-decoration: none; 
+            background: var(--primary-color); 
+            color: #070b12; 
+            box-shadow: 0 10px 25px rgba(0,255,213,0.2);
+            transition: 0.3s;
+        }
+        .cta-btn:hover { transform: scale(1.05); }
+
+        /* الأقسام الإضافية (خاصة بالمدفوع Premium) */
+        .premium-section { 
+            margin-top: 40px; 
+            padding: 30px; 
+            background: var(--card-bg); 
+            border: 1px solid rgba(255,255,255,0.05); 
+            border-radius: 24px; 
+            display: none; /* مخفي تلقائياً ويظهر للمدفوع فقط */
+        }
+
+        /* عداد تنازلي للمدفوع */
+        .countdown { font-size: 24px; font-weight: 700; color: #ffca28; margin-top: 15px; }
+
+        footer { margin-top: 80px; padding: 20px; color: #718096; font-size: 14px; border-top: 1px solid rgba(255,255,255,0.05); }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <section class="hero">
+        <h1 id="main-title">جاري بناء العرض...</h1>
+        <p id="main-desc"></p>
+        <a href="#" id="cta-link" class="cta-btn">تواصل معنا الآن</a>
+    </section>
+
+    <div id="countdown-area" class="premium-section">
+        <h3>🎯 ينتهي هذا العرض الحصري خلال:</h3>
+        <div class="countdown">04:59:59</div>
+    </div>
+
+    <div id="reviews-area" class="premium-section">
+        <h3>⭐ ماذا قالوا عن خدماتنا؟</h3>
+        <p style="font-style: italic; color: #a0aec0;">"أفضل نظام أتمتة تعاملت معه، سرعة ودقة متناهية!" - أبو أحمد</p>
+    </div>
+
+    <footer>
+        <p id="footer-text">&copy; 2026 ServerNet. جميع الحقوق محفوظة.</p>
+    </footer>
+</div>
+
+<script>
+    // 1. قراءة البيانات الممررة عبر الرابط (URL Parameters)
+    const urlParams = new URLSearchParams(window.location.search);
+    const templateType = urlParams.get('type') || 'free'; // نوع القالب: free أو premium
+    const title = urlParams.get('title') || 'عرض خاص ومميز';
+    const desc = urlParams.get('desc') || 'أهلاً بك في صفحتنا المخصصة، نوفر لك أفضل الحلول الرقمية.';
+    const phone = urlParams.get('phone') || '966500000000';
+    const msg = urlParams.get('msg') || 'مرحباً، أريد الاستفسار عن الخدمة';
+
+    // 2. حقن البيانات الأساسية في الصفحة
+    document.title = title;
+    document.getElementById('meta-title').innerText = title;
+    document.getElementById('main-title').innerText = title;
+    document.getElementById('main-desc').innerText = desc;
+    
+    // تجهيز رابط الواتساب التلقائي لزر الـ CTA
+    const whatsappUrl = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
+    document.getElementById('cta-link').href = whatsappUrl;
+
+    // 3. التحكم بالميزات بناءً على نوع القالب (مجاني أم مدفوع نُخبة)
+    if (templateType === 'premium') {
+        // تغيير الثيم إلى الألوان الفخمة للمدفوع (الذهبي والبنفسجي كمثال)
+        document.documentElement.style.setProperty('--primary-color', 'linear-gradient(135deg, #ffca28, #f59e0b)');
+        document.documentElement.style.setProperty('--bg-color', '#0f0a1c'); // خلفية داكنة ملكية
+        
+        // إظهار الأقسام المتقدمة (العداد التنازلي والآراء)
+        document.getElementById('countdown-area').style.display = 'block';
+        document.getElementById('reviews-area').style.display = 'block';
+        document.getElementById('footer-text').innerHTML = `حقوق النشر محفوظة لـ صاحب الصفحة المتميزة`;
+    } else {
+        // الثيم المجاني الافتراضي (الأزرق أو الفيروزي البسيط)
+        document.documentElement.style.setProperty('--primary-color', '#3b82f6');
+        document.getElementById('footer-text').innerHTML = `&copy; 2026 تم إنشاء الصفحة بواسطة <a href="index.html" style="color:#00ffd5; text-decoration:none;">ServerNet</a>`;
+    }
+</script>
+</body>
+</html>

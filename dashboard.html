@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+    <script src="protection.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ServerNet | لوحة تحكم وتوليد صفحات الهبوط</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* منع التحديد للحفاظ على الحماية */
+        body {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        * { box-sizing: border-box; scroll-behavior: smooth; }
+        body { margin: 0; font-family: 'Cairo', sans-serif; color: #fff; background-color: #070b12; overflow-x: hidden; }
+        canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+
+        /* الهيدر وقائمة التنقل */
+        header { position: fixed; top: 0; width: 100%; background: rgba(7,11,18,0.8); backdrop-filter: blur(10px); z-index: 10; border-bottom: 1px solid rgba(0,255,213,0.1); }
+        .nav-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; }
+        .logo { font-size: 22px; font-weight: 900; color: #00ffd5; text-decoration: none; }
+        .logo span { color: #fff; }
+        .nav-links a { color: #fff; text-decoration: none; margin-right: 20px; font-size: 14px; font-weight: 700; transition: 0.3s; }
+        .nav-links a:hover { color: #00ffd5; }
+
+        /* الحاوية الرئيسية للوحة التحكم مقسمة لقسمين */
+        .dashboard-container { position: relative; z-index: 1; padding: 120px 20px 60px; max-width: 1200px; margin: 0 auto; display: flex; gap: 30px; }
+        
+        /* قسم المدخلات والفورم */
+        .control-panel { flex: 1; background: rgba(0,0,0,0.5); padding: 30px; border-radius: 24px; border: 1px solid rgba(0,255,213,0.15); backdrop-filter: blur(15px); text-align: right; }
+        .control-panel h2 { color: #00ffd5; margin-top: 0; margin-bottom: 25px; font-size: 22px; font-weight: 900; border-bottom: 1px solid rgba(0,255,213,0.1); padding-bottom: 10px; }
+        
+        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 14px; color: #e2e8f0; }
+        input, select, textarea { width: 100%; padding: 14px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 20px; font-size: 14px; background: rgba(7,11,18,0.7); color: #fff; font-family: inherit; }
+        input:focus, select:focus, textarea:focus { outline: none; border-color: #00ffd5; box-shadow: 0 0 10px rgba(0,255,213,0.2); }
+        
+        .generate-btn { width: 100%; padding: 15px; border-radius: 12px; border: 0; background: linear-gradient(135deg,#00ffd5,#00bfa5); color: #070b12; font-weight: 900; font-size: 16px; cursor: pointer; transition: 0.3s; font-family: inherit; }
+        .generate-btn:hover { transform: scale(1.02); box-shadow: 0 10px 25px rgba(0,255,213,0.3); }
+
+        /* قسم المخرجات والمعاينة الحية */
+        .preview-panel { flex: 1.2; display: flex; flex-direction: column; gap: 20px; }
+        
+        /* صندوق الروابط الناتجة */
+        .result-box { background: rgba(10, 17, 28, 0.7); border: 1px dashed rgba(0, 255, 213, 0.3); padding: 25px; border-radius: 24px; text-align: right; display: none; animation: fadeIn 0.4s ease; }
+        .result-box h3 { color: #00ffd5; margin-top: 0; font-size: 18px; }
+        
+        .url-display { background: #111; color: #00ff66; padding: 12px; border-radius: 10px; font-family: monospace; font-size: 13px; direction: ltr; text-align: left; overflow-x: auto; border: 1px solid #222; margin-bottom: 15px; white-space: nowrap; }
+        
+        .action-btns { display: flex; gap: 10px; }
+        .btn-action { flex: 1; padding: 12px; text-align: center; border-radius: 10px; font-weight: 700; text-decoration: none; cursor: pointer; transition: 0.2s; font-family: inherit; font-size: 14px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+        .btn-copy { background: #242f3d; color: #fff; border: 1px solid rgba(255,255,255,0.1); }
+        .btn-copy:hover { background: #344457; }
+        .btn-visit { background: #00ffd5; color: #070b12; border: 0; }
+        .btn-visit:hover { box-shadow: 0 0 15px #00ffd5; }
+
+        /* شاشة المعاينة الحية المباشرة (Iframe) */
+        .iframe-wrapper { background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.05); border-radius: 24px; overflow: hidden; display: flex; flex-direction: column; height: 550px; }
+        .iframe-header { background: #182533; padding: 12px 20px; text-align: right; font-size: 13px; font-weight: 700; color: #a0aec0; border-bottom: 1px solid rgba(0,0,0,0.2); display: flex; justify-content: space-between; align-items: center; }
+        .iframe-header span::before { content: ''; inline-block; width: 8px; height: 8px; background: #ff4a4a; border-radius: 50%; margin-left: 8px; display: inline-block; }
+        .live-iframe { width: 100%; height: 100%; border: 0; background: #fff; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        @media(max-width:992px) {
+            .dashboard-container { flex-direction: column; padding-top: 100px; }
+            .preview-panel { order: 2; }
+            .control-panel { order: 1; }
+        }
+    </style>
+</head>
+<body>
+
+<canvas id="bg"></canvas>
+
+<header>
+    <div class="nav-container">
+        <a href="index.html" class="logo">SERVER<span>NET</span></a>
+        <div class="nav-links">
+            <a href="index.html#features">تقنيات التداول</a>
+            <a href="lp.html">صانع صفحات الهبوط</a>
+            <a href="index.html#about">من نحن</a>
+            <a href="index.html#privacy">سياسة الخصوصية</a>
+            <a href="index.html#order">اطلب بوتك المالي</a>
+        </div>
+    </div>
+</header>
+
+<div class="dashboard-container">
+    
+    <div class="control-panel">
+        <h2><i class="fa-solid fa-sliders" style="color: #00ffd5; margin-left: 10px;"></i> مهندس الصفحات الفوري</h2>
+        <form id="generatorForm" onsubmit="generateLandingPage(event)">
+            
+            <label for="pageTemplate">اختر نوع القالب الأساسي:</label>
+            <select id="pageTemplate" required onchange="updateLivePreview()">
+                <option value="free">قالب مجاني (ثيم أزرق خفيف - اقتناص إشارات)</option>
+                <option value="premium">قالب النخبة المدفوع (ثيم ملكي داكن - عداد تنازلي وآراء عملاء)</option>
+            </select>
+
+            <label for="pageTitle">عنوان الصفحة الرئيسي (Title):</label>
+            <input type="text" id="pageTitle" placeholder="مثال: أكاديمية النخبة لتداول الأوبشن" value="أكاديمية النخبة لتداول الأوبشن" required oninput="updateLivePreview()">
+
+            <label for="pageDesc">الوصف والرسالة التسويقية:</label>
+            <textarea id="pageDesc" rows="3" placeholder="اكتب تفاصيل العرض الفوري هنا..." required oninput="updateLivePreview()">انضم الآن إلى أقوى نظام لإدارة استراتيجيات أسواق المال واستغل العرض التنازلي قبل فوات الأوان! ⚡</textarea>
+
+            <label for="pagePhone">رقم الواتساب لاستقبال الصفقات والاشتراكات:</label>
+            <input type="tel" id="pagePhone" placeholder="مثال: 966500000000" value="966500000000" required oninput="updateLivePreview()">
+
+            <label for="pageMsg">النص التلقائي الجاهز في رسالة الواتساب:</label>
+            <input type="text" id="pageMsg" placeholder="مثال: مرحباً أريد تفعيل اشتراك الـ VIP الفوري" value="مرحباً أريد تفعيل اشتراك الـ VIP الفوري" required oninput="updateLivePreview()">
+
+            <button type="submit" class="generate-btn"><i class="fa-solid fa-wand-magic-sparkles"></i> استخراج الرابط ونشر الصفحة فوراً</button>
+        </form>
+    </div>
+
+    <div class="preview-panel">
+        
+        <div class="result-box" id="resultBox">
+            <h3><i class="fa-solid fa-circle-check" style="color: #00ff66; margin-left: 8px;"></i> تم النشر بنجاح دون تعديل أكواد!</h3>
+            <p style="color: #a0aec0; font-size: 13px; margin-bottom: 10px;">رابط صفحتك الحية المباشر والجاهز للإعلانات وقنوات التلجرام:</p>
+            <div class="url-display" id="finalUrlDisplay"></div>
+            <div class="action-btns">
+                <button class="btn-action btn-copy" onclick="copyLink()"><i class="fa-solid fa-copy"></i> نسخ الرابط</button>
+                <a href="#" id="visitBtn" class="btn-action btn-visit" target="_blank"><i class="fa-solid fa-arrow-up-right-from-square"></i> زيارة الصفحة الحية</a>
+            </div>
+        </div>
+
+        <div class="iframe-wrapper">
+            <div class="iframe-header">
+                <div><span>المعاينة الحية التفاعلية (تحديث فوري)</span></div>
+                <div style="font-size: 11px; color:#00ffd5;"><i class="fa-solid fa-rotate"></i> مزامنة تلقائية</div>
+            </div>
+            <iframe id="livePreviewIframe" class="live-iframe" src=""></iframe>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+/* نفس كود أنيميشن الـ Canvas في الصفحة الرئيسية لتوحيد الواجهات */
+const canvas = document.getElementById('bg');
+const ctx = canvas.getContext('2d');
+function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+resizeCanvas(); window.addEventListener('resize', resizeCanvas);
+
+const lines = [];
+for(let i=0; i<35; i++){
+    lines.push({x1:Math.random()*canvas.width, y1:Math.random()*canvas.height,
+                 x2:Math.random()*canvas.width, y2:Math.random()*canvas.height,
+                 dx:(Math.random()-0.5)*1.2, dy:(Math.random()-0.5)*1.2});
+}
+function animate(){
+    ctx.fillStyle = 'rgba(7,11,18,0.15)'; ctx.fillRect(0,0,canvas.width,canvas.height);
+    lines.forEach(l=>{
+        ctx.beginPath(); ctx.moveTo(l.x1,l.y1); ctx.lineTo(l.x2,l.y2);
+        ctx.strokeStyle = 'rgba(0,255,213,0.3)'; ctx.lineWidth = 1.2; ctx2=ctx; ctx.stroke();
+        l.x1+=l.dx; l.y1+=l.dy; l.x2+=l.dx; l.y2+=l.dy;
+        if(l.x1<0||l.x1>canvas.width||l.x2<0||l.x2>canvas.width) l.dx*=-1;
+        if(l.y1<0||l.y1>canvas.height||l.y2<0||l.y2>canvas.height) l.dy*=-1;
+    });
+    requestAnimationFrame(animate);
+}
+animate();
+
+/* بناء المسار والتحديث الديناميكي للمعاينة والنشر */
+function buildParamUrl() {
+    const template = document.getElementById('pageTemplate').value;
+    const title = encodeURIComponent(document.getElementById('pageTitle').value);
+    const desc = encodeURIComponent(document.getElementById('pageDesc').value);
+    const phone = encodeURIComponent(document.getElementById('pagePhone').value);
+    const msg = encodeURIComponent(document.getElementById('pageMsg').value);
+
+    // بناء رابط المحرك الموحد المرفوع بجانب هذا الملف
+    const baseUrl = window.location.href.split('/').slice(0, -1).join('/');
+    return `${baseUrl}/template-engine.html?type=${template}&title=${title}&desc=${desc}&phone=${phone}&msg=${msg}`;
+}
+
+// دالة التحديث الفوري داخل الـ Iframe أثناء الكتابة لتسريع تجربة المستخدم
+function updateLivePreview() {
+    const iframe = document.getElementById('livePreviewIframe');
+    iframe.src = buildParamUrl();
+}
+
+// تشغيل المعاينة لأول مرة تلقائياً بناءً على البيانات الافتراضية بالفورم
+window.onload = function() {
+    updateLivePreview();
+};
+
+// دالة استخراج الرابط النهائي عند ضغط زر النشر
+function generateLandingPage(e) {
+    e.preventDefault();
+    const finalUrl = buildParamUrl();
+    
+    document.getElementById('finalUrlDisplay').innerText = finalUrl;
+    document.getElementById('visitBtn').href = finalUrl;
+    document.getElementById('resultBox').style.display = 'block';
+    
+    // سحب الصفحة تلقائياً للأعلى لتظهر نتائج توليد الرابط بوضوح لعميلك
+    document.getElementById('resultBox').scrollIntoView({ behavior: 'smooth' });
+}
+
+// دالة نسخ الرابط الفوري للحافظة
+function copyLink() {
+    const urlText = document.getElementById('finalUrlDisplay').innerText;
+    navigator.clipboard.writeText(urlText).then(() => {
+        alert('✅ تم نسخ رابط الصفحة بنجاح! جاهز للنشر الفوري.');
+    });
+}
+</script>
+</body>
+</html>

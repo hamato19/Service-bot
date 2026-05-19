@@ -1,216 +1,285 @@
-<!doctype html>
-<html lang="ar" dir="rtl">
-<head>
-    <script src="protection.js"></script>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ServerNet | لوحة التحكم وبناء الأكواد المباشرة</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght=400;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <style>
-        body { -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
-        * { box-sizing: border-box; scroll-behavior: smooth; }
-        body { margin: 0; font-family: 'Cairo', sans-serif; color: #fff; background-color: #070b12; overflow-x: hidden; }
-        canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
-
-        header { position: fixed; top: 0; width: 100%; background: rgba(7,11,18,0.8); backdrop-filter: blur(10px); z-index: 10; border-bottom: 1px solid rgba(0,255,213,0.1); }
-        .nav-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; }
-        .logo { font-size: 22px; font-weight: 900; color: #00ffd5; text-decoration: none; }
-        .logo span { color: #fff; }
-        .nav-links a { color: #fff; text-decoration: none; margin-right: 20px; font-size: 14px; font-weight: 700; transition: 0.3s; }
-        .nav-links a:hover { color: #00ffd5; }
-
-        .dashboard-container { position: relative; z-index: 1; padding: 120px 20px 60px; max-width: 1300px; margin: 0 auto; display: flex; gap: 30px; }
-        .control-panel { flex: 1.1; background: rgba(0,0,0,0.5); padding: 30px; border-radius: 24px; border: 1px solid rgba(0,255,213,0.15); backdrop-filter: blur(15px); text-align: right; }
-        .control-panel h2 { color: #00ffd5; margin-top: 0; margin-bottom: 25px; font-size: 22px; font-weight: 900; border-bottom: 1px solid rgba(0,255,213,0.1); padding-bottom: 10px; }
-        
-        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 14px; color: #e2e8f0; }
-        input, select, textarea { width: 100%; padding: 14px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 20px; font-size: 14px; background: rgba(7,11,18,0.7); color: #fff; font-family: inherit; }
-        input:focus, select:focus, textarea:focus { outline: none; border-color: #00ffd5; box-shadow: 0 0 10px rgba(0,255,213,0.2); }
-        input:disabled { background: rgba(255,255,255,0.05); color: #718096; cursor: not-allowed; }
-
-        /* تجميل محرّر الأكواد */
-        .code-editor { font-family: 'Consolas', 'Monaco', monospace; direction: ltr; text-align: left; background: #020408; color: #00ff66; border: 1px solid #00ffd5; line-height: 1.5; font-size: 13px; resize: vertical; }
-
-        .generate-btn { width: 100%; padding: 15px; border-radius: 12px; border: 0; background: linear-gradient(135deg,#00ffd5,#00bfa5); color: #070b12; font-weight: 900; font-size: 16px; cursor: pointer; transition: 0.3s; font-family: inherit; }
-        .generate-btn:hover { transform: scale(1.02); box-shadow: 0 10px 25px rgba(0,255,213,0.3); }
-
-        .preview-panel { flex: 0.9; display: flex; flex-direction: column; gap: 20px; }
-        .result-box { background: rgba(10, 17, 28, 0.7); border: 1px dashed rgba(0, 255, 213, 0.3); padding: 25px; border-radius: 24px; text-align: right; display: none; animation: fadeIn 0.4s ease; }
-        .result-box h3 { color: #00ffd5; margin-top: 0; font-size: 18px; }
-        
-        .iframe-wrapper { background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.05); border-radius: 24px; overflow: hidden; display: flex; flex-direction: column; height: 550px; }
-        .iframe-header { background: #182533; padding: 12px 20px; text-align: right; font-size: 13px; font-weight: 700; color: #a0aec0; display: flex; justify-content: space-between; align-items: center; }
-        .live-iframe { width: 100%; height: 100%; border: 0; background: #fff; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        @media(max-width:992px) { .dashboard-container { flex-direction: column; padding-top: 100px; } }
-    </style>
-</head>
-<body>
-
-<canvas id="bg"></canvas>
-
-<header>
-    <div class="nav-container">
-        <a href="index.html" class="logo">SERVER<span>NET</span></a>
-        <div class="nav-links">
-            <a href="index.html#features">تقنيات التداول</a>
-            <a href="lp.html">متجر القوالب</a>
-            <a href="#" style="color:#00ffd5;">لوحة التحكم</a>
-            <a href="index.html#order">اطلب بوتك المالي</a>
-        </div>
-    </div>
-</header>
-
-<div class="dashboard-container">
-    
-    <div class="control-panel">
-        <h2><i class="fa-solid fa-code" style="color: #00ffd5; margin-left: 10px;"></i> محرر بناء ونشر الأكواد الفوري</h2>
-        <form id="generatorForm" onsubmit="publishTemplate(event)">
-            
-            <label for="templateId">معرّف المنتج الفريد (ID بالإنجليزية):</label>
-            <input type="text" id="templateId" placeholder="مثال: custom_landing_page" required>
-
-            <label for="templateTitle">اسم القالب الموضح في المتجر:</label>
-            <input type="text" id="templateTitle" placeholder="مثال: صفحة هبوط اقتناص صفقات السلع" required>
-
-            <label for="templateDesc">وصف المنتج القصير (خارجياً):</label>
-            <textarea id="templateDesc" rows="2" placeholder="اكتب نبذة عن ميزات هذا الكود الرقمي..." required></textarea>
-
-            <label for="templateTech">نوع التقنية ونظام الملفات:</label>
-            <select id="templateTech" required onchange="handleTechChange()">
-                <option value="html">صفحة هبوط مستقلة (HTML / CSS / JS)</option>
-                <option value="python">سكربت أتمتة وبوتات ذكية (Python)</option>
-            </select>
-
-            <label for="templateType">نوع التسعير:</label>
-            <select id="templateType" required onchange="togglePriceField()">
-                <option value="free">مجاني بالكامل (Free)</option>
-                <option value="premium">مدفوع نُخبة (Premium)</option>
-            </select>
-
-            <label for="templatePrice">سعر المنتج (بالريال السعودي SAR):</label>
-            <input type="text" id="templatePrice" value="مجاني" disabled required>
-
-            <label for="templateImage">رابط صورة الكفر التعبيري بالمتجر:</label>
-            <input type="url" id="templateImage" value="https://via.placeholder.com/400x200/070b12/00ffd5?text=ServerNet+Product">
-
-            <label for="templateCode" id="codeLabel">اكتب أو الصق كود الـ HTML الكامل هنا:</label>
-            <textarea id="templateCode" class="code-editor" rows="12" placeholder="ضع كودك هنا مباشرة..." required oninput="updateLivePreview()"><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>صفحة مخصصة فريش</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ServerNet | لوحة تحكم إدارة المتجر والأكواد</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght=400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { background: #0b132b; color: #fff; text-align: center; font-family: sans-serif; padding-top: 50px; }
-        h1 { color: #00ffd5; }
-        .btn { background: #00ffd5; color: #000; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-weight: bold; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
+        body { background-color: #0c111d; color: #fff; padding: 40px 20px; }
+        .wrapper { max-width: 900px; margin: 0 auto; }
+        
+        h1 { font-size: 28px; font-weight: 900; color: #00ffd5; margin-bottom: 10px; text-shadow: 0 0 15px rgba(0, 255, 213, 0.2); }
+        .subtitle { color: #9ca3af; margin-bottom: 30px; font-size: 14px; }
+
+        .form-card, .table-card { background: rgba(17, 24, 39, 0.7); border: 1px solid rgba(0, 255, 213, 0.1); border-radius: 20px; padding: 30px; box-shadow: 0 20px 40px rgba(0,0,0,0.3); margin-bottom: 30px; }
+        .card-title { font-size: 18px; font-weight: 700; margin-bottom: 25px; color: #fff; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 10px; }
+
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .form-group { margin-bottom: 20px; text-align: right; }
+        label { display: block; font-size: 13px; color: #9ca3af; font-weight: 700; margin-bottom: 8px; }
+        
+        .form-control, select, textarea { width: 100%; padding: 14px; background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; color: #fff; font-size: 14px; outline: none; transition: 0.3s; }
+        .form-control:focus, select:focus, textarea:focus { border-color: #00ffd5; box-shadow: 0 0 10px rgba(0, 255, 213, 0.15); }
+        
+        /* مظهر مخصص لرفع الملفات */
+        .file-input-wrapper { position: relative; display: inline-block; width: 100%; }
+        .file-custom { display: block; padding: 14px; background: rgba(0, 255, 213, 0.05); border: 1px dashed rgba(0, 255, 213, 0.3); border-radius: 12px; text-align: center; cursor: pointer; color: #00ffd5; font-size: 14px; font-weight: 700; transition: 0.3s; }
+        .file-custom:hover { background: rgba(0, 255, 213, 0.1); }
+        input[type="file"] { position: absolute; left: 0; top: 0; opacity: 0; width: 100%; height: 100%; cursor: pointer; }
+        
+        .img-preview { max-width: 120px; max-height: 70px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); margin-top: 10px; display: none; object-fit: cover; }
+
+        .btn-submit { width: 100%; padding: 16px; background: linear-gradient(135deg, #00ffd5, #00bfa5); color: #0c111d; border: 0; border-radius: 12px; font-size: 15px; font-weight: 900; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(0, 255, 213, 0.25); }
+        
+        /* جدول إدارة القوالب القابلة للتعديل */
+        table { width: 100%; border-collapse: collapse; text-align: right; font-size: 13.5px; }
+        th { background: rgba(0, 255, 213, 0.05); padding: 12px; color: #00ffd5; font-weight: 700; border-bottom: 1px solid rgba(0, 255, 213, 0.1); }
+        td { padding: 14px 12px; border-bottom: 1px solid rgba(255,255,255,0.03); color: #e5e7eb; vertical-align: middle; }
+        .tbl-img { width: 50px; height: 35px; object-fit: cover; border-radius: 4px; border: 1px solid rgba(255,255,255,0.05); }
+        
+        .btn-edit { background: rgba(245, 158, 11, 0.15); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.3); padding: 6px 12px; border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: 700; margin-left: 5px; }
+        .btn-edit:hover { background: #f59e0b; color: #000; }
+        .btn-del { background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); padding: 6px 12px; border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: 700; }
+        .btn-del:hover { background: #ef4444; color: #fff; }
+
+        @media (max-width: 768px) { .grid-2 { grid-template-columns: 1fr; gap: 0; } }
     </style>
 </head>
 <body>
-    <h1>🚀 قالبك المخصص الجديد يعمل بنجاح!</h1>
-    <p>هذه الصفحة تم بناؤها بالكامل عبر مربع الأكواد الخاص بلوحة تحكم ServerNet</p>
-    <br><br>
-    <a href="https://wa.me/966500000000" class="btn">تواصل معنا الآن</a>
-</body>
-</html></textarea>
 
-            <button type="submit" class="generate-btn"><i class="fa-solid fa-cloud-arrow-up"></i> اعتماد ونشر الكود بالمتجر فوراً</button>
+<div class="wrapper">
+    <h1>لوحة تحكم منظومة ServerNet</h1>
+    <p class="subtitle">قم برفع وتحديث وإدارة قوالب صفحات الهبوط والسكربتات الذكية المعروضة في المتجر المباشر</p>
+
+    <div class="form-card">
+        <div class="card-title" id="formTitle"><i class="fa-solid fa-plus-circle" style="color: #00ffd5;"></i> إضافة منتج برمي جديد للمتجر</div>
+        <form id="templateForm" onsubmit="saveTemplate(event)">
+            <input type="hidden" id="editIndex" value="-1"> <div class="grid-2">
+                <div class="form-group">
+                    <label>معرّف المنتج الفريد (ID - بدون مسافات)</label>
+                    <input type="text" id="tmplId" class="form-control" placeholder="مثال: us_market_suite" required>
+                </div>
+                <div class="form-group">
+                    <label>اسم القالب / السكربت</label>
+                    <input type="text" id="tmplTitle" class="form-control" placeholder="اسم احترافي جذاب للعميل" required>
+                </div>
+            </div>
+
+            <div class="grid-2">
+                <div class="form-group">
+                    <label>نوع التقنية المستخدمة</label>
+                    <select id="tmplTech">
+                        <option value="html">واجهة صفحة هبوط مستقلة (HTML5)</option>
+                        <option value="python">سكربت أتمتة خلفي (Python)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>نوع التسعير في المتجر</label>
+                    <select id="tmplType" onchange="togglePriceField()">
+                        <option value="free">مجاني بالكامل (Free)</option>
+                        <option value="premium">مدفوع / تواصل للشراء (Premium)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="grid-2">
+                <div class="form-group" id="priceGroup" style="display:none;">
+                    <label>السعر المعروض (أو نص مثل: تواصل معنا)</label>
+                    <input type="text" id="tmplPrice" class="form-control" value="مجاني" placeholder="مثال: 150 ريال">
+                </div>
+                <div class="form-group">
+                    <label>غلاف وصورة عرض القالب</label>
+                    <div class="file-input-wrapper">
+                        <span class="file-custom" id="fileStatus"><i class="fa-solid fa-upload"></i> اختر صورة العرض من جهازك</span>
+                        <input type="file" id="tmplFile" accept="image/*" onchange="previewAndConvertImage(this)">
+                    </div>
+                    <input type="hidden" id="tmplImgBase64"> <img id="previewImgElement" class="img-preview" src="">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>وصف تسويقي قصير وجذاب للمنتج</label>
+                <input type="text" id="tmplDesc" class="form-control" placeholder="اكتب سطراً تسويقياً يشرح فائدة القالب للعميل قبل التحميل..." required>
+            </div>
+
+            <div class="form-group">
+                <label>الأكواد والبرمجيات الكاملة (Source Code)</label>
+                <textarea id="tmplCode" rows="10" placeholder="قم بلصق أكواد الـ HTML5 أو أكواد الـ Python بالكامل هنا..." required></textarea>
+            </div>
+
+            <button type="submit" class="btn-submit" id="submitBtn">
+                <i class="fa-solid fa-cloud-arrow-up"></i>
+                <span id="btnText">اعتماد ونشر المنتج بالمتجر فوراً</span>
+            </button>
         </form>
     </div>
 
-    <div class="preview-panel">
-        <div class="result-box" id="resultBox">
-            <h3><i class="fa-solid fa-rocket" style="color: #00ff66; margin-left: 8px;"></i> نُشر بنجاح!</h3>
-            <p style="color: #a0aec0; font-size: 13px; margin-bottom: 10px;">تم حفظ وحقن الكود بنجاح داخل النظام السحابي للمتجر دون لمس ملفات السيرفر.</p>
-            <a href="lp.html" class="btn-action generate-btn" style="text-align:center; text-decoration:none; display:block;"><i class="fa-solid fa-store"></i> فتح المتجر الآن وتجربته</a>
-        </div>
-
-        <div class="iframe-wrapper">
-            <div class="iframe-header">
-                <div><span>شاشة المعاينة التفاعلية الفورية للكود المكتوب</span></div>
-                <div style="font-size: 11px; color:#00ffd5;"><i class="fa-solid fa-sync"></i> مباشر</div>
-            </div>
-            <iframe id="livePreviewIframe" class="live-iframe"></iframe>
+    <div class="table-card">
+        <div class="card-title"><i class="fa-solid fa-list-check" style="color: #f59e0b;"></i> إدارة وتعديل الأكواد المنشورة حالياً</div>
+        <div style="overflow-x: auto;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>الصورة</th>
+                        <th>اسم القالب</th>
+                        <th>المعرف</th>
+                        <th>النوع</th>
+                        <th>التسعير</th>
+                        <th>التحكم والإجراء</th>
+                    </tr>
+                </thead>
+                <tbody id="managementTableBody">
+                    </tbody>
+            </table>
         </div>
     </div>
-
 </div>
 
 <script>
-/* تشغيل تأثير الـ Canvas */
-const canvas = document.getElementById('bg'); const ctx = canvas.getContext('2d');
-function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-resizeCanvas(); window.addEventListener('resize', resizeCanvas);
-const lines = [];
-for(let i=0; i<35; i++){ lines.push({x1:Math.random()*canvas.width, y1:Math.random()*canvas.height, x2:Math.random()*canvas.width, y2:Math.random()*canvas.height, dx:(Math.random()-0.5)*1.2, dy:(Math.random()-0.5)*1.2}); }
-function animate(){ ctx.fillStyle = 'rgba(7,11,18,0.15)'; ctx.fillRect(0,0,canvas.width,canvas.height); lines.forEach(l=>{ ctx.beginPath(); ctx.moveTo(l.x1,l.y1); ctx.lineTo(l.x2,l.y2); ctx.strokeStyle = 'rgba(0,255,213,0.3)'; ctx.lineWidth = 1.2; ctx.stroke(); l.x1+=l.dx; l.y1+=l.dy; l.x2+=l.dx; l.y2+=l.dy; if(l.x1<0||l.x1>canvas.width||l.x2<0||l.x2>canvas.width) l.dx*=-1; if(l.y1<0||l.y1>canvas.height||l.y2<0||l.y2>canvas.height) l.dy*=-1; }); requestAnimationFrame(animate); }
-animate();
-
-function togglePriceField() {
-    const type = document.getElementById('templateType').value;
-    const priceInput = document.getElementById('templatePrice');
-    if (type === 'premium') { priceInput.disabled = false; priceInput.value = '199 ريال'; priceInput.focus(); }
-    else { priceInput.disabled = true; priceInput.value = 'مجاني'; }
-}
-
-function handleTechChange() {
-    const tech = document.getElementById('templateTech').value;
-    const label = document.getElementById('codeLabel');
-    const editor = document.getElementById('templateCode');
-    const iframeWrapper = document.querySelector('.iframe-wrapper');
-
-    if(tech === 'python') {
-        label.innerText = 'اكتب أو الصق سكربت الـ Python الخاص بك هنا:';
-        editor.value = `# سكربت بايثون مخصص لربط تنبيهات الإشارات\nimport requests\n\ndef handle_webhook(data):\n    print("تم استقبال الإشارة من TradingView:", data)\n    # اكتب منطق التنفيذ هنا`;
-        iframeWrapper.style.opacity = '0.4'; // تعطيل المعاينة التفاعلية لأن البايثون لا يعمل داخل المتصفح مباشرة
-    } else {
-        label.innerText = 'اكتب أو الصق كود الـ HTML الكامل هنا:';
-        editor.value = `<!DOCTYPE html>\n<html lang="ar" dir="rtl">\n<body>\n    <h1>قالب HTML مخصص جديد</h1>\n</body>\n</html>`;
-        iframeWrapper.style.opacity = '1';
-        updateLivePreview();
+    // دالة فحص وتخزين الصورة المرفوعة من الجهاز وتحويلها إلى صيغة مفهومة فوراً
+    function previewAndConvertImage(input) {
+        const file = input.files[0];
+        if (file) {
+            document.getElementById('fileStatus').innerHTML = `<i class="fa-solid fa-file-image"></i> ${file.name}`;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('tmplImgBase64').value = e.target.result;
+                const preview = document.getElementById('previewImgElement');
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+            }
+            reader.readAsDataURL(file);
+        }
     }
-}
 
-// دالة تحديث الـ Iframe ديناميكياً بناءً على ما يكتبه المستخدم في مربع الـ HTML
-function updateLivePreview() {
-    const tech = document.getElementById('templateTech').value;
-    if(tech === 'python') return;
-    
-    const code = document.getElementById('templateCode').value;
-    const iframe = document.getElementById('livePreviewIframe');
-    const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-    
-    iframeDoc.open();
-    iframeDoc.write(code);
-    iframeDoc.close();
-}
-window.onload = updateLivePreview;
+    function togglePriceField() {
+        const type = document.getElementById('tmplType').value;
+        const priceGroup = document.getElementById('priceGroup');
+        if(type === 'premium') {
+            priceGroup.style.display = 'block';
+            document.getElementById('tmplPrice').value = '';
+        } else {
+            priceGroup.style.display = 'none';
+            document.getElementById('tmplPrice').value = 'مجاني';
+        }
+    }
 
-function publishTemplate(e) {
-    e.preventDefault();
-    
-    const newTemplate = {
-        id: document.getElementById('templateId').value,
-        title: document.getElementById('templateTitle').value,
-        description: document.getElementById('templateDesc').value,
-        tech: document.getElementById('templateTech').value,
-        type: document.getElementById('templateType').value,
-        price: document.getElementById('templatePrice').value,
-        previewImage: document.getElementById('templateImage').value,
-        rawCode: document.getElementById('templateCode').value // حفظ الكود الأصلي المدخل بالكامل
-    };
+    // دالة جلب وعرض القوالب في جدول الإدارة والتعديل
+    function loadManagementTable() {
+        const tbody = document.getElementById('managementTableBody');
+        tbody.innerHTML = '';
+        const templates = JSON.parse(localStorage.getItem('servernet_custom_templates')) || [];
 
-    let localTemplates = JSON.parse(localStorage.getItem('servernet_custom_templates')) || [];
-    localTemplates = localTemplates.filter(t => t.id !== newTemplate.id);
-    localTemplates.push(newTemplate);
-    
-    localStorage.setItem('servernet_custom_templates', JSON.stringify(localTemplates));
-    document.getElementById('resultBox').style.display = 'block';
-    document.getElementById('resultBox').scrollIntoView({ behavior: 'smooth' });
-}
+        if(templates.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:20px; color:#6b7280;">لا توجد أكواد منشورة حالياً في الذاكرة السحابية للمتجر.</td></tr>`;
+            return;
+        }
+
+        templates.forEach((tmpl, index) => {
+            tbody.innerHTML += `
+                <tr>
+                    <td><img src="${tmpl.previewImage || 'https://via.placeholder.com/50'}" class="tbl-img"></td>
+                    <td><strong>${tmpl.title}</strong></td>
+                    <td><code>${tmpl.id}</code></td>
+                    <td><span style="color:${tmpl.tech==='html'?'#e34f26':'#3776ab'}">${tmpl.tech.toUpperCase()}</span></td>
+                    <td><span style="color:${tmpl.type==='free'?'#10b981':'#f59e0b'}">${tmpl.type==='free'?'مجاني':tmpl.price}</span></td>
+                    <td>
+                        <button class="btn-edit" onclick="startEditTemplate(${index})"><i class="fa-solid fa-pen-to-square"></i> تعديل</button>
+                        <button class="btn-del" onclick="deleteTemplate(${index})"><i class="fa-solid fa-trash"></i> حذف</button>
+                    </td>
+                </tr>
+            `;
+        });
+    }
+
+    // دالة تفعيل وضع التعديل وسحب بيانات القالب القديم إلى الفورم
+    function startEditTemplate(index) {
+        const templates = JSON.parse(localStorage.getItem('servernet_custom_templates')) || [];
+        const tmpl = templates[index];
+
+        document.getElementById('editIndex').value = index; // حفظ الترتيب الحالي للتعديل
+        document.getElementById('tmplId').value = tmpl.id;
+        document.getElementById('tmplTitle').value = tmpl.title;
+        document.getElementById('tmplTech').value = tmpl.tech;
+        document.getElementById('tmplType').value = tmpl.type;
+        document.getElementById('tmplPrice').value = tmpl.price;
+        document.getElementById('tmplDesc').value = tmpl.description;
+        document.getElementById('tmplCode').value = tmpl.rawCode || tmpl.templateCode;
+        
+        // جلب واستعراض الصورة السابقة المرفوعة للقالب
+        if(tmpl.previewImage) {
+            document.getElementById('tmplImgBase64').value = tmpl.previewImage;
+            const preview = document.getElementById('previewImgElement');
+            preview.src = tmpl.previewImage;
+            preview.style.display = 'block';
+            document.getElementById('fileStatus').innerHTML = `<i class="fa-solid fa-image"></i> تم الاحتفاظ بالصورة المرفوعة سابقاً`;
+        }
+
+        togglePriceField();
+
+        // تحويل مظهر الفوم ليعرف العميل أنه في وضع التعديل الآن
+        document.getElementById('formTitle').innerHTML = `<i class="fa-solid fa-pen-to-square" style="color:#f59e0b;"></i> أنت الآن في وضع تعديل قالب: ${tmpl.title}`;
+        document.getElementById('btnText').innerText = "حفظ التعديلات وتحديث القالب بالمتجر فوراً";
+        document.getElementById('submitBtn').style.background = "linear-gradient(135deg, #f59e0b, #d97706)";
+        
+        window.scrollTo({ top: 0, behavior: 'smooth' }); // صعود للأعلى للبدء بالتعديل
+    }
+
+    // دالة حفظ القالب (سواء كان جديداً أو تحديثاً لقالب قديم مرفوع)
+    function saveTemplate(e) {
+        e.preventDefault();
+
+        const index = parseInt(document.getElementById('editIndex').value);
+        const id = document.getElementById('tmplId').value;
+        const title = document.getElementById('tmplTitle').value;
+        const tech = document.getElementById('tmplTech').value;
+        const type = document.getElementById('tmplType').value;
+        const price = document.getElementById('tmplPrice').value;
+        const description = document.getElementById('tmplDesc').value;
+        const rawCode = document.getElementById('tmplCode').value;
+        const previewImage = document.getElementById('tmplImgBase64').value || 'https://via.placeholder.com/300x190';
+
+        const templates = JSON.parse(localStorage.getItem('servernet_custom_templates')) || [];
+        const templateData = { id, title, tech, type, price, description, rawCode, previewImage };
+
+        if(index === -1) {
+            // إضافة منتج جديد تماماً
+            templates.push(templateData);
+            alert("🎉 تم إضافة ونشر قالبك المخصص الجديد بالمتجر بنجاح!");
+        } else {
+            // تحديث وتعديل منتج منشأ سابقاً في نفس الترتيب
+            templates[index] = templateData;
+            alert("✅ تم حفظ التعديلات وتحديث كود ومحتوى القالب في المتجر بنجاح!");
+            
+            // إعادة تعيين واجهة الفورم للوضع الطبيعي
+            document.getElementById('editIndex').value = "-1";
+            document.getElementById('formTitle').innerHTML = `<i class="fa-solid fa-plus-circle" style="color: #00ffd5;"></i> إضافة منتج برمي جديد للمتجر`;
+            document.getElementById('btnText').innerText = "اعتماد ونشر المنتج بالمتجر فوراً";
+            document.getElementById('submitBtn').style.background = "linear-gradient(135deg, #00ffd5, #00bfa5)";
+        }
+
+        localStorage.setItem('servernet_custom_templates', JSON.stringify(templates));
+        document.getElementById('templateForm').reset();
+        document.getElementById('previewImgElement').style.display = 'none';
+        document.getElementById('fileStatus').innerHTML = `<i class="fa-solid fa-upload"></i> اختر صورة العرض من جهازك`;
+        
+        loadManagementTable();
+    }
+
+    function deleteTemplate(index) {
+        if(confirm("هل أنت متأكد من رغبتك في حذف هذا الكود نهائياً من المتجر؟")) {
+            const templates = JSON.parse(localStorage.getItem('servernet_custom_templates')) || [];
+            templates.splice(index, 1);
+            localStorage.setItem('servernet_custom_templates', JSON.stringify(templates));
+            loadManagementTable();
+        }
+    }
+
+    window.onload = loadManagementTable;
 </script>
 </body>
 </html>

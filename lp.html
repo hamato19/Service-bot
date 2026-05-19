@@ -2,14 +2,18 @@
 <html lang="ar" dir="rtl">
 <head>
     <script src="protection.js"></script>
+    <meta name="description" content="منصة ServerNet لأتمتة البوتات، صناعة صفحات الهبوط الاحترافية، وحلول البرمجة السحابية الذكية لخدماتك التسويقية والتجارية.">
+    <meta name="keywords" content="أتمتة, بوتات, صفحات هبوط, تليجرام, واتساب, ServerNet, برمجة">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/webp" href="1000015120.webp">
+
     <title>ServerNet | متجر قوالب صفحات الهبوط الاحترافية</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* الحفاظ على خاصية منع تحديد النصوص الخاصة بموقعك */
+        /* الحفاظ على خاصية منع تحديد النصوص الخاصة بموقعك لضمان الحماية */
         body {
             -webkit-user-select: none;
             -moz-user-select: none;
@@ -68,7 +72,7 @@
         .btn-demo { background: rgba(255,255,255,0.05); color: #fff; border: 1px solid rgba(255,255,255,0.1); }
         .btn-demo:hover { background: rgba(255,255,255,0.1); border-color: rgba(0,255,213,0.3); }
 
-        .btn-use { background: linear-gradient(135deg,#00ffd5,#00bfa5); color: #070b12; border: 0; }
+        .btn-use { background: linear-gradient(135deg,#00ffd5,#00bfa5); color: #070b12; border: 0; cursor: pointer; }
         .btn-use:hover { transform: scale(1.03); box-shadow: 0 5px 15px rgba(0,255,213,0.3); }
 
         @media(max-width:768px) {
@@ -110,8 +114,7 @@
         <button class="filter-btn" onclick="filterTemplates('premium')">القوالب المدفوعة النخبة <i class="fa-solid fa-crown" style="margin-right: 4px;"></i></button>
     </div>
 
-    <div class="templates-grid" id="templatesGrid">
-        </div>
+    <div class="templates-grid" id="templatesGrid"></div>
 </section>
 
 <footer>
@@ -144,7 +147,7 @@ function animate2(){
 }
 animate2();
 
-/* مصفوفة البيانات الخاصة بمتجر قوالبك */
+/* مصفوفة البيانات ومسارات الربط المباشرة مع محرك تشغيل القوالب */
 const templates = [
     {
         id: 'free_lead',
@@ -152,8 +155,8 @@ const templates = [
         description: 'قالب ذكي وسريع مخصص لجمع أرقام هواتف وبيانات العملاء المهتمين بنظام إشاراتك للتواصل التلقائي معهم.',
         type: 'free',
         previewImage: 'https://via.placeholder.com/400x200/070b12/00ffd5?text=Lead+Capture+Free',
-        demoUrl: '#',
-        useUrl: '#'
+        demoUrl: 'template-engine.html?type=free&title=مركز اقتناص الإشارات المجاني&desc=سجل معنا الآن لتصلك أقوى تنبيهات التداول مباشرة على حسابك دون أي تأخير ⚡',
+        useUrl: 'index.html#order'
     },
     {
         id: 'premium_vip',
@@ -161,8 +164,8 @@ const templates = [
         description: 'تصميم فخم يحتوي على عداد تنازلي ذكي للعروض، آراء عملاء تفاعلية، ومجهز لربط الويب هوك وبوابات الدفع الفوري.',
         type: 'premium',
         previewImage: 'https://via.placeholder.com/400x200/070b12/00ffd5?text=VIP+Subscription+Pro',
-        demoUrl: '#',
-        useUrl: '#'
+        demoUrl: 'template-engine.html?type=premium&title=أكاديمية تداول النخبة النخبة VIP&desc=انضم الآن إلى أقوى نظام لإدارة استراتيجيات أسواق المال واستغل العرض التنازلي قبل فوات الأوان! 🏆',
+        useUrl: 'index.html#order'
     },
     {
         id: 'free_whatsapp',
@@ -170,8 +173,8 @@ const templates = [
         description: 'صفحة هبوط مركزة تهدف لتحويل الزوار بضغطة واحدة إلى محادثة الدعم الفني بالواتساب بنصوص مجهزة مسبقاً.',
         type: 'free',
         previewImage: 'https://via.placeholder.com/400x200/070b12/00ffd5?text=WhatsApp+Redirect+Free',
-        demoUrl: '#',
-        useUrl: '#'
+        demoUrl: 'template-engine.html?type=free&title=الدعم الفني المباشر | ServerNet&desc=اضغط على الزر بالأسفل ليتم توجيهك فوراً لمحادثة مهندس الأتمتة وصياغة بوتك الخاص بالكامل.',
+        useUrl: 'index.html#order'
     },
     {
         id: 'premium_trading',
@@ -179,8 +182,8 @@ const templates = [
         description: 'قالب احترافي عالي الأداء ومدمج بأدوات رصد وتتبع البكسل (Pixel Tracking) لتحقيق أعلى عائد من الإعلانات الممولة.',
         type: 'premium',
         previewImage: 'https://via.placeholder.com/400x200/070b12/00ffd5?text=Automated+Trading+Pro',
-        demoUrl: '#',
-        useUrl: '#'
+        demoUrl: 'template-engine.html?type=premium&title=منظومة التداول الذاتي الفورية AI&desc=هندسة متكاملة تربط مؤشراتك السحابية بحسابات التداول لتنفيذ الصفقات آلياً بسرعة فائقة.',
+        useUrl: 'index.html#order'
     }
 ];
 
@@ -212,7 +215,11 @@ function renderTemplates(data) {
 function filterTemplates(type) {
     const buttons = document.querySelectorAll('.filter-btn');
     buttons.forEach(btn => btn.classList.remove('active'));
-    event.target.classList.add('active');
+    
+    // تأمين جلب الزر الذي تم ضغطه وإضافة فئة النشاط له
+    if(event && event.target) {
+        event.target.classList.add('active');
+    }
 
     if (type === 'all') {
         renderTemplates(templates);
@@ -222,7 +229,7 @@ function filterTemplates(type) {
     }
 }
 
-// العرض الأولي للقوالب عند تشغيل الصفحة
+// العرض الأولي المستقر للمتجر
 renderTemplates(templates);
 </script>
 </body>

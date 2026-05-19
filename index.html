@@ -52,6 +52,12 @@ p.subtitle{font-size:18px;color:#a0aec0;max-width:600px;margin-bottom:35px;line-
 .card h3{color:#00ffd5;margin:0 0 10px;font-size:20px}
 .card p{color:#a0aec0;font-size:14px;line-height:1.6;margin:0}
 
+/* الأقسام النصية الجديدة (من نحن والخصوصية) */
+.text-section{background:rgba(0,0,0,0.4);padding:40px;border-radius:24px;border:1px solid rgba(0,255,213,0.1);backdrop-filter:blur(15px);text-align:right;margin-bottom:40px}
+.text-section h2{color:#00ffd5;font-size:24px;margin-top:0;font-weight:900}
+.text-section p{color:#a0aec0;font-size:15px;line-height:1.8}
+.text-section ul{color:#a0aec0;font-size:15px;line-height:1.8;padding-right:20px}
+
 /* نموذج الطلب وأقسام النماذج */
 .form-box{max-width:650px;margin:40px auto 0;background:rgba(0,0,0,0.5);padding:40px;border-radius:24px;backdrop-filter:blur(15px);border:1px solid rgba(0,255,213,0.15);box-shadow:0 20px 50px rgba(0,0,0,0.5);text-align:right}
 .form-box h2{color:#00ffd5;margin-top:0;margin-bottom:20px;font-size:24px;text-align:center}
@@ -133,7 +139,8 @@ footer{position:relative;z-index:1;padding:30px 20px;text-align:center;border-to
         <a href="#" class="logo">SERVER<span>NET</span></a>
         <div class="nav-links">
             <a href="#features">تقنيات التداول</a>
-            <a href="#lp.html">صانع صفحات الهبوط</a>
+            <a href="lp.html">صانع صفحات الهبوط</a> <a href="#about">من نحن</a>
+            <a href="#privacy">سياسة الخصوصية</a>
             <a href="#order">اطلب بوتك المالي</a>
         </div>
     </div>
@@ -174,49 +181,22 @@ footer{position:relative;z-index:1;padding:30px 20px;text-align:center;border-to
     </div>
 </section>
 
-<section id="generator" class="generator-section">
-    <div class="form-box" style="margin:0 auto; background:none; border:0; box-shadow:none;">
-        <h2>🛠️ صانع صفحات الهبوط الفورية وقنوات الـ VIP</h2>
-        <p style="color: #a0aec0; text-align:center; margin-bottom: 25px; font-size:14px;">أنشئ صفحة هبوط تسويقية مخصصة وجاهزة للعملات، الأسهم، أو البوتات في ثوانٍ معدودة.</p>
-        
-        <form id="lpGeneratorForm">
-            <label style="color:#00ffd5; font-size:14px; font-weight:700;">عنوان الصفحة التسويقي العريض:</label>
-            <input type="text" id="lpTitle" placeholder="مثال: أكاديمية النخبة لتوصيات الأسهم الأمريكية الذكية" required>
-            
-            <label style="color:#00ffd5; font-size:14px; font-weight:700;">الوصف التسويقي العريض والفرعي:</label>
-            <textarea id="lpDesc" rows="3" placeholder="مثال: انضم لأقوى قناة VIP لمراقبة عقود الأوبشن والسيولة الفورية بأدوات الأتمتة الفورية والذكاء الاصطناعي." required></textarea>
-            
-            <label style="color:#00ffd5; font-size:14px; font-weight:700;">رابط التحويل المباشر (رابط قناتك أو البوت):</label>
-            <input type="url" id="lpLink" placeholder="مثال: https://t.me/YourBotOrChannel" required>
-            
-            <label style="color:#00ffd5; font-size:14px; font-weight:700;">نص زر الاشتراك والتحويل:</label>
-            <input type="text" id="lpBtnText" placeholder="مثال: اشترك الآن في قناة الـ VIP مجاناً 🚀" required>
-            
-            <label style="color:#00ffd5; font-size:14px; font-weight:700;">الهوية اللونية للصفحة:</label>
-            <select id="lpColor" required>
-                <option value="#00ffd5">النيون الأخضر السايبير (ServerNet Theme)</option>
-                <option value="#0088cc">الأزرق الاحترافي (Telegram Style)</option>
-                <option value="#ff9900">الذهبي اللامع (Crypto Gold)</option>
-                <option value="#e91e63">الوردي الناري (Premium VIP)</option>
-            </select>
-            
-            <button type="button" onclick="generateLandingPage()" class="submit-btn" style="background: linear-gradient(135deg,#00ffd5,#00e676)">⚡ توليد وبناء صفحة الهبوط فوراً</button>
-        </form>
+<section id="about">
+    <div class="text-section">
+        <h2>ℹ️ من نحن</h2>
+        <p>مجموعة <strong>ServerNet</strong> هي واجهتكم البرمجية الرائدة المتخصصة في هندسة حلول الأتمتة السحابية المتقدمة، وربط أسواق المال والذكاء الاصطناعي. نهدف إلى تمكين المستثمرين، المتداولين، وأصحاب القنوات والـ VIP من إداراة استراتيجياتهم المخططة بدقة متناهية وسرعة فائقة من خلال تكنولوجيا البوتات الذكية وسيرفرات الويب هوك (Webhook)، واختزال الجهد البشري لبناء بيئة تداول متكاملة وفورية تتماشى مع رؤية التحول الرقمي الحديث لأسواق المال (السعودية والعالمية).</p>
+    </div>
+</section>
 
-        <div class="output-box" id="lpOutputContainer">
-            <h3>🎉 تم توليد صفحة الهبوط بنجاح!</h3>
-            <p style="color:#a0aec0; font-size:13px;">انسخ كود الـ HTML البرمجي بالأسفل واحفظه بملف باسم `index.html` أو عاين النتيجة مباشرة:</p>
-            <div class="code-area" id="lpGeneratedCode"></div>
-            
-            <div class="action-btns">
-                <button class="secondary-btn btn-copy" onclick="copyLpCode()">📋 نسخ كود الصفحة</button>
-                <button class="secondary-btn btn-preview" onclick="previewLpPage()">👁️ معاينة حية سريعة</button>
-            </div>
-            
-            <div class="preview-iframe-container" id="lpPreviewContainer">
-                <iframe class="preview-iframe" id="lpIframe"></iframe>
-            </div>
-        </div>
+<section id="privacy">
+    <div class="text-section">
+        <h2>🔒 سياسة الخصوصية</h2>
+        <p>نحن في <strong>ServerNet</strong> نولي سرية البيانات وأمان أنظمة التداول الخاصة بكم وبمشتريكم أعلى درجات الأهمية القصوى والمطلقة. إليكم توضيح ركائز الخصوصية لدينا:</p>
+        <ul>
+            <li><strong>حماية إشارات التداول:</strong> جميع التنبيهات، مفاتيح الربط البرمجي (API Keys)، والويب هوك التي تتم معالجتها عبر سيرفراتنا مشفرة بالكامل ولا يتم تخزينها أو كشفها لأي طرف ثالث.</li>
+            <li><strong>بيانات العملاء:</strong> المعلومات الواردة عبر نماذج الطلبات تُستخدم حصرياً للتواصل الفني وبناء الأنظمة المخصصة ولا يتم مشاركتها تسويقياً.</li>
+            <li><strong>توليد صفحات الهبوط:</strong> النظام يعمل بالكامل على معالجة البيانات الطرفية (Client-Side) باستخدام تقنيات المتصفح الفريدة، مما يعني أن بيانات صفحاتكم المتولدة لا تُحفظ في قواعد بياناتنا، بل تنتمي وتُشفر داخل الرابط الخاص بكم مباشرة لضمان الخصوصية والملكية الكاملة.</li>
+        </ul>
     </div>
 </section>
 
@@ -288,79 +268,6 @@ function animate2(){
     requestAnimationFrame(animate2);
 }
 animate2();
-
-/* 🧠 جافا سكريبت لتوليد وبناء صفحة الهبوط ديناميكياً 🧠 */
-let generatedHtmlCode = "";
-
-function generateLandingPage() {
-    const title = document.getElementById('lpTitle').value;
-    const desc = document.getElementById('lpDesc').value;
-    const link = document.getElementById('lpLink').value;
-    const btnText = document.getElementById('lpBtnText').value;
-    const themeColor = document.getElementById('lpColor').value;
-
-    if(!title || !desc || !link || !btnText) {
-        alert("الرجاء تعبئة كافة حقول صفحة الهبوط أولاً.");
-        return;
-    }
-
-    // بناء قالب صفحة الهبوط بشكل احترافي ومتجاوب كامل
-    generatedHtmlCode = `<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>${title}</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
-    <style>
-        body { margin:0; font-family:'Cairo', sans-serif; background:#0b0f19; color:#fff; display:flex; justify-content:center; align-items:center; min-height:100vh; padding:20px; text-align:center; box-sizing:border-box; }
-        .lp-card { max-width:600px; width:100%; background:rgba(255,255,255,0.03); padding:40px 30px; border-radius:28px; border:1px solid ${themeColor}40; box-shadow:0 20px 50px rgba(0,0,0,0.3); backdrop-filter:blur(10px); }
-        h1 { font-size:32px; font-weight:900; color:#fff; margin-bottom:20px; line-height:1.4; }
-        h1 span { color:${themeColor}; }
-        p { font-size:16px; color:#a0aec0; line-height:1.8; margin-bottom:35px; }
-        .action-btn { display:inline-block; width:100%; max-width:400px; padding:16px; border-radius:14px; font-size:18px; font-weight:900; text-decoration:none; color:#0b0f19; background:${themeColor}; box-shadow:0 10px 30px ${themeColor}40; transition:0.3s; }
-        .action-btn:hover { transform:translateY(-3px); box-shadow:0 15px 40px ${themeColor}70; }
-        footer { margin-top:40px; font-size:12px; color:#4a5568; }
-    </style>
-</head>
-<body>
-    <div class="lp-card">
-        <h1><span>${title.split(' ')[0]}</span> ${title.substring(title.indexOf(' ') + 1)}</h1>
-        <p>${desc}</p>
-        <a href="${link}" target="_blank" class="action-btn">${btnText}</a>
-        <footer>تمت الاستضافة والأتمتة بواسطة ServerNet</footer>
-    </div>
-</body>
-</html>`;
-
-    // عرض الكود والواجهة للمستخدم
-    document.getElementById('lpGeneratedCode').innerText = generatedHtmlCode;
-    document.getElementById('lpOutputContainer').style.display = 'block';
-    document.getElementById('lpPreviewContainer').style.display = 'none'; // إعادة تعيين المعاينة
-    
-    // سحب الشاشة بسلاسة للمخرجات لمعاينتها
-    document.getElementById('lpOutputContainer').scrollIntoView({ behavior: 'smooth' });
-}
-
-function copyLpCode() {
-    navigator.clipboard.writeText(generatedHtmlCode);
-    alert("✅ تم نسخ كود صفحة الهبوط البرمجي بنجاح!");
-}
-
-function previewLpPage() {
-    const container = document.getElementById('lpPreviewContainer');
-    const iframe = document.getElementById('lpIframe');
-    
-    container.style.display = 'block';
-    
-    // حقن الكود المولد مباشرة داخل الـ Iframe للمعاينة دون الحاجة لرفع ملفات
-    const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-    iframeDoc.open();
-    iframeDoc.write(generatedHtmlCode);
-    iframeDoc.close();
-    
-    container.scrollIntoView({ behavior: 'smooth' });
-}
 
 /* ⚙️ كود إدارة نظام شات التلجرام المالي التفاعلي المحاكي ⚙️ */
 let chatInitialized = false;

@@ -3,29 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>متجر قوالب صفحات الهبوط</title>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <title>قوالب صفحات الهبوط | Service Bot</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
+        /* التمويه والألوان المتطابقة مع الهوية الرئيسية للموقع */
         :root {
-            --primary-color: #2563eb;
-            --accent-color: #7c3aed;
+            --bg-main: #0b0f19;
+            --bg-card: #131c2e;
+            --primary: #3b82f6;
+            --primary-hover: #2563eb;
+            --text-main: #ffffff;
+            --text-muted: #94a3b8;
             --free-color: #10b981;
             --premium-color: #f59e0b;
-            --bg-color: #f8fafc;
-            --text-color: #1e293b;
+            --border-color: rgba(255, 255, 255, 0.05);
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Tajawal', sans-serif;
+            font-family: 'Cairo', sans-serif;
         }
 
         body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            padding: 40px 20px;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            padding: 60px 20px;
+            min-height: 100vh;
         }
 
         .container {
@@ -35,59 +42,63 @@
 
         header {
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 50px;
         }
 
         header h1 {
             font-size: 2.5rem;
-            color: #0f172a;
-            margin-bottom: 10px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            background: linear-gradient(45deg, #fff, var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         header p {
-            color: #64748b;
+            color: var(--text-muted);
             font-size: 1.1rem;
         }
 
-        /* أزرار الفلترة */
+        /* أزرار الفلترة المتناسقة مع ستايل الموقع */
         .filter-buttons {
             display: flex;
             justify-content: center;
-            gap: 15px;
-            margin-bottom: 40px;
+            gap: 12px;
+            margin-bottom: 45px;
         }
 
         .filter-btn {
             padding: 10px 24px;
-            border: none;
-            border-radius: 30px;
-            background-color: #ffffff;
-            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background-color: var(--bg-card);
+            color: var(--text-main);
             cursor: pointer;
-            font-weight: 500;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            font-size: 0.95rem;
+            font-weight: 600;
             transition: all 0.3s ease;
         }
 
         .filter-btn.active, .filter-btn:hover {
-            background-color: var(--primary-color);
-            color: white;
+            background-color: var(--primary);
+            border-color: var(--primary);
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
         }
 
-        /* شبكة القوالب */
+        /* شبكة القوالب بستايل كروت الخدمة الأصلية */
         .templates-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
             gap: 30px;
         }
 
-        /* كرت القالب */
+        /* كرت القالب المطابق للرئيسية */
         .template-card {
-            background: white;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
             border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
             position: relative;
             display: flex;
             flex-direction: column;
@@ -95,105 +106,114 @@
 
         .template-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+            border-color: rgba(59, 130, 246, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         }
 
-        /* شارة مجاني / مدفوع */
+        /* الشارات فوق الصورة */
         .badge {
             position: absolute;
             top: 15px;
-            left: 15px;
+            right: 15px;
             padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: bold;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 700;
             color: white;
             z-index: 10;
+            letter-spacing: 0.5px;
         }
 
         .badge.free { background-color: var(--free-color); }
         .badge.premium { background-color: var(--premium-color); }
 
-        /* صورة القالب المعاين */
+        /* منطقة المعاينة الصورية للكرت */
         .template-preview {
             width: 100%;
-            height: 200px;
-            background-color: #e2e8f0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #94a3b8;
-            font-weight: bold;
-            position: relative;
+            height: 190px;
+            background-color: #1e293b;
             background-size: cover;
             background-position: top center;
+            border-bottom: 1px solid var(--border-color);
         }
 
         .template-info {
-            padding: 20px;
+            padding: 24px;
             display: flex;
             flex-direction: column;
             flex-grow: 1;
         }
 
         .template-info h3 {
-            font-size: 1.3rem;
-            margin-bottom: 8px;
-            color: #0f172a;
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--text-main);
         }
 
         .template-info p {
-            font-size: 0.95rem;
-            color: #64748b;
-            margin-bottom: 20px;
-            line-height: 1.5;
+            font-size: 0.90rem;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+            line-height: 1.6;
+            flex-grow: 1;
         }
 
-        /* أزرار التحكم بالكرت */
+        /* أزرار التحكم والروابط أسفل الكرت */
         .card-actions {
-            margin-top: auto;
             display: flex;
-            gap: 10px;
+            gap: 12px;
+            margin-top: auto;
         }
 
         .btn {
             flex: 1;
-            padding: 10px;
-            border-radius: 8px;
+            padding: 12px;
+            border-radius: 10px;
             text-align: center;
             text-decoration: none;
-            font-size: 0.95rem;
-            font-weight: 500;
-            transition: background 0.2s;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
 
         .btn-demo {
-            background-color: #f1f5f9;
-            color: #475569;
+            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
         }
 
-        .btn-demo:hover { background-color: #e2e8f0; }
+        .btn-demo:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
 
         .btn-use {
-            background-color: var(--primary-color);
+            background-color: var(--primary);
             color: white;
         }
 
-        .btn-use:hover { background-color: #1d4ed8; }
+        .btn-use:hover {
+            background-color: var(--primary-hover);
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
     <header>
-        <h1>معرض قوالب صفحات الهبوط</h1>
-        <p>اختر القالب المناسب لحملتك الإعلانية وابدأ التخصيص فوراً</p>
+        <h1>متجر قوالب صفحات الهبوط</h1>
+        <p>اختر من بين مجموعة قوالب احترافية مجهزة ومؤتمتة بالكامل لبدء نشاطك</p>
     </header>
 
     <div class="filter-buttons">
         <button class="filter-btn active" onclick="filterTemplates('all')">الكل</button>
         <button class="filter-btn" onclick="filterTemplates('free')">المجانية</button>
-        <button class="filter-btn" onclick="filterTemplates('premium')">المدفوعة ⭐</button>
+        <button class="filter-btn" onclick="filterTemplates('premium')">المدفوعة <i class="fa-solid fa-crown" style="color: var(--premium-color); margin-right: 4px;"></i></button>
     </div>
 
     <div class="templates-grid" id="templatesGrid">
@@ -201,47 +221,46 @@
 </div>
 
 <script>
-    // قاعدة بيانات القوالب المتاحة في متجرك
+    // مصفوفة بيانات القوالب - قم بتعديل الروابط والصور بناءً على قوالبك الفلعرية
     const templates = [
         {
             id: 'free_lead',
-            title: 'قالب جمع البيانات البسيط',
-            description: 'قالب خفيف وسريع مخصص لجمع أرقام هواتف وإيميلات العملاء المهتمين، مناسب للمبتدئين.',
+            title: 'قالب جمع البيانات السريع',
+            description: 'قالب خفيف متناسق وممتاز لجمع بيانات العملاء المهتمين واستهدافهم برمجياً لاحقاً.',
             type: 'free',
-            previewImage: 'https://via.placeholder.com/400x200/e2e8f0/64748b?text=Free+Template', // يمكنك وضع رابط صورة حقيقية لاحقاً
-            demoUrl: '#', // رابط معانية القالب الحقيقي
-            useUrl: '#'  // رابط البوت أو صفحة التعديل
+            previewImage: 'https://via.placeholder.com/400x200/131c2e/94a3b8?text=Lead+Generation',
+            demoUrl: '#',
+            useUrl: '#'
         },
         {
             id: 'premium_salla',
-            title: 'قالب متجر المنتجات الرقمية',
-            description: 'تصميم احترافي مخصص لبيع المنتجات الرقمية والحسابات، يحتوي على عداد تنازلي وسجل آراء عملاء تفاعلي.',
+            title: 'قالب المنتجات الرقمية الاحترافي',
+            description: 'يحتوي على عداد تنازلي ذكي، قسم مراجعات تفاعلي، مجهز بالكامل لربط الـ Webhooks والدفع.',
             type: 'premium',
-            previewImage: 'https://via.placeholder.com/400x200/cbd5e1/475569?text=Premium+Template',
+            previewImage: 'https://via.placeholder.com/400x200/131c2e/94a3b8?text=Digital+Products',
             demoUrl: '#',
             useUrl: '#'
         },
         {
             id: 'free_whatsapp',
-            title: 'قالب تحويل الواتساب السريع',
-            description: 'صفحة هبوط مركزة على زر تحويل مباشر إلى محادثة الواتساب مع كتابة نص مجهز مسبقاً.',
+            title: 'قالب تحويل الواتساب الفوري',
+            description: 'صفحة هبوط مركزة ومباشرة ومصممة خصيصاً لتوجيه العميل إلى شات الواتساب بنصوص مسبقة الإعداد.',
             type: 'free',
-            previewImage: 'https://via.placeholder.com/400x200/e2e8f0/64748b?text=WhatsApp+Template',
+            previewImage: 'https://via.placeholder.com/400x200/131c2e/94a3b8?text=WhatsApp+Direct',
             demoUrl: '#',
             useUrl: '#'
         },
         {
-            id: 'premium_course',
-            title: 'قالب تسويق الدورات والاستشارات',
-            description: 'قالب متكامل لعرض تفاصيل كورساتك أو خدماتك الاستشارية مع ربط مباشر ببوابات الدفع وبكسل التتبع.',
+            id: 'premium_landing',
+            title: 'قالب تسويق الخدمات المتكامل',
+            description: 'قالب مخصص لأصحاب الخدمات الرقمية مدمج به تتبع البكسل (Pixel Tracking) لعائد إعلاني أعلى.',
             type: 'premium',
-            previewImage: 'https://via.placeholder.com/400x200/cbd5e1/475569?text=Course+Template',
+            previewImage: 'https://via.placeholder.com/400x200/131c2e/94a3b8?text=Premium+Services',
             demoUrl: '#',
             useUrl: '#'
         }
     ];
 
-    // دالة لتوليد وعرض الكروت
     function renderTemplates(data) {
         const grid = document.getElementById('templatesGrid');
         grid.innerHTML = '';
@@ -250,17 +269,16 @@
             const isFree = tmpl.type === 'free';
             const card = document.createElement('div');
             card.className = `template-card`;
-            card.setAttribute('data-type', tmpl.type);
 
             card.innerHTML = `
-                <span class="badge ${tmpl.type}">${isFree ? 'مجاني' : 'مدفوع ⭐'}</span>
+                <span class="badge ${tmpl.type}">${isFree ? 'مجاني' : 'مدفوع نُخبة'}</span>
                 <div class="template-preview" style="background-image: url('${tmpl.previewImage}')"></div>
                 <div class="template-info">
                     <h3>${tmpl.title}</h3>
                     <p>${tmpl.description}</p>
                     <div class="card-actions">
-                        <a href="${tmpl.demoUrl}" class="btn btn-demo" target="_blank">معاينة</a>
-                        <a href="${tmpl.useUrl}" class="btn btn-use">${isFree ? 'استخدام مجاني' : 'شراء وتفعيل'}</a>
+                        <a href="${tmpl.demoUrl}" class="btn btn-demo" target="_blank"><i class="fa-solid fa-eye"></i> معاينة</a>
+                        <a href="${tmpl.useUrl}" class="btn btn-use">${isFree ? '<i class="fa-solid fa-bolt"></i> استخدام مجاني' : '<i class="fa-solid fa-credit-card"></i> شراء وتفعيل'}</a>
                     </div>
                 </div>
             `;
@@ -268,9 +286,7 @@
         });
     }
 
-    // دالة الفلترة (كل / مجاني / مدفوع)
     function filterTemplates(type) {
-        // تحديث حالة الأزرار النشطة
         const buttons = document.querySelectorAll('.filter-btn');
         buttons.forEach(btn => btn.classList.remove('active'));
         event.target.classList.add('active');
@@ -283,7 +299,7 @@
         }
     }
 
-    // تشغيل العرض الأولي عند فتح الصفحة
+    // التشغيل المبدئي
     renderTemplates(templates);
 </script>
 </body>

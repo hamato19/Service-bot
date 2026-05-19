@@ -1,306 +1,229 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
+    <script src="protection.js"></script>
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>قوالب صفحات الهبوط | Service Bot</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>ServerNet | متجر قوالب صفحات الهبوط الاحترافية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* التمويه والألوان المتطابقة مع الهوية الرئيسية للموقع */
-        :root {
-            --bg-main: #0b0f19;
-            --bg-card: #131c2e;
-            --primary: #3b82f6;
-            --primary-hover: #2563eb;
-            --text-main: #ffffff;
-            --text-muted: #94a3b8;
-            --free-color: #10b981;
-            --premium-color: #f59e0b;
-            --border-color: rgba(255, 255, 255, 0.05);
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Cairo', sans-serif;
-        }
-
+        /* الحفاظ على خاصية منع تحديد النصوص الخاصة بموقعك */
         body {
-            background-color: var(--bg-main);
-            color: var(--text-main);
-            padding: 60px 20px;
-            min-height: 100vh;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
+        /* إعدادات التصميم المتطابقة تماماً مع الرئيسية */
+        * { box-sizing: border-box; scroll-behavior: smooth; }
+        body { margin: 0; font-family: 'Cairo', sans-serif; color: #fff; background-color: #070b12; overflow-x: hidden; }
+        canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+
+        /* الهيدر وقائمة التنقل المطابقة */
+        header { position: fixed; top: 0; width: 100%; background: rgba(7,11,18,0.8); backdrop-filter: blur(10px); z-index: 10; border-bottom: 1px solid rgba(0,255,213,0.1); }
+        .nav-container { max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; }
+        .logo { font-size: 22px; font-weight: 900; color: #00ffd5; text-decoration: none; }
+        .logo span { color: #fff; }
+        .nav-links a { color: #fff; text-decoration: none; margin-right: 20px; font-size: 14px; font-weight: 700; transition: 0.3s; }
+        .nav-links a:hover { color: #00ffd5; }
+
+        /* حاوية المعرض الرئيسية */
+        section { position: relative; z-index: 1; padding: 140px 20px 80px; max-width: 1100px; margin: 0 auto; text-align: center; }
+        h1 { font-size: 42px; font-weight: 900; color: #fff; margin-top: 0; margin-bottom: 15px; line-height: 1.4; }
+        h1 span { color: #00ffd5; }
+        p.subtitle { font-size: 18px; color: #a0aec0; max-width: 600px; margin: 0 auto 40px; line-height: 1.6; }
+
+        /* أزرار الفلترة المخصصة لتطابق ستايل الموقع */
+        .filter-buttons { display: flex; justify-content: center; gap: 15px; margin-bottom: 45px; }
+        .filter-btn { padding: 12px 30px; border: 1px solid rgba(0,255,213,0.15); border-radius: 14px; background: rgba(0,0,0,0.4); color: #fff; cursor: pointer; font-size: 15px; font-weight: 700; font-family: inherit; transition: 0.3s; backdrop-filter: blur(15px); }
+        .filter-btn.active, .filter-btn:hover { background: linear-gradient(135deg,#00ffd5,#00bfa5); color: #070b12; border-color: transparent; box-shadow: 0 10px 25px rgba(0,255,213,0.3); }
+
+        /* شبكة الكروت المتوافقة مع أبعاد ومسافات كروت موقعك */
+        .templates-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 20px; }
+        
+        /* تصميم الكرت مطابق للـ .card بالرئيسية مع إضافات المتجر */
+        .template-card { background: rgba(0,0,0,0.4); border: 1px solid rgba(0,255,213,0.1); border-radius: 24px; backdrop-filter: blur(15px); text-align: right; transition: 0.3s; overflow: hidden; position: relative; display: flex; flex-direction: column; }
+        .template-card:hover { transform: translateY(-5px); border-color: #00ffd5; box-shadow: 0 15px 40px rgba(0,255,213,0.15); }
+
+        /* شارات التمييز للمجاني والمدفوع */
+        .badge { position: absolute; top: 15px; right: 15px; padding: 6px 14px; border-radius: 10px; font-size: 12px; font-weight: 900; color: #070b12; z-index: 10; font-family: inherit; }
+        .badge.free { background: #10b981; color: #fff; }
+        .badge.premium { background: linear-gradient(135deg, #ffca28, #f59e0b); color: #070b12; }
+
+        /* مساحة صورة المعاينة */
+        .template-preview { width: 100%; height: 190px; background-color: rgba(7,11,18,0.6); background-size: cover; background-position: top center; border-bottom: 1px solid rgba(0,255,213,0.1); }
+
+        /* تفاصيل الكرت */
+        .template-info { padding: 25px; display: flex; flex-direction: column; flex-grow: 1; }
+        .template-info h3 { color: #00ffd5; margin: 0 0 10px; font-size: 20px; font-weight: 700; }
+        .template-info p { color: #a0aec0; font-size: 14px; line-height: 1.6; margin: 0 0 25px; flex-grow: 1; }
+
+        /* أزرار الإجراءات المتوافقة مع أزرار موقعك الأساسي */
+        .card-actions { display: flex; gap: 12px; margin-top: auto; }
+        .btn { flex: 1; padding: 12px; border-radius: 12px; text-align: center; text-decoration: none; font-size: 14px; font-weight: 900; transition: 0.3s; display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-family: inherit; }
+        
+        .btn-demo { background: rgba(255,255,255,0.05); color: #fff; border: 1px solid rgba(255,255,255,0.1); }
+        .btn-demo:hover { background: rgba(255,255,255,0.1); border-color: rgba(0,255,213,0.3); }
+
+        .btn-use { background: linear-gradient(135deg,#00ffd5,#00bfa5); color: #070b12; border: 0; }
+        .btn-use:hover { transform: scale(1.03); box-shadow: 0 5px 15px rgba(0,255,213,0.3); }
+
+        @media(max-width:768px) {
+            section { padding-top: 120px; }
+            h1 { font-size: 30px; }
+            p.subtitle { font-size: 15px; }
+            .nav-links { display: none; }
+            .filter-buttons { flex-wrap: wrap; }
+            .filter-btn { padding: 10px 20px; font-size: 13px; }
         }
 
-        header {
-            text-align: center;
-            margin-bottom: 50px;
-        }
-
-        header h1 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 15px;
-            background: linear-gradient(45deg, #fff, var(--primary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        header p {
-            color: var(--text-muted);
-            font-size: 1.1rem;
-        }
-
-        /* أزرار الفلترة المتناسقة مع ستايل الموقع */
-        .filter-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            margin-bottom: 45px;
-        }
-
-        .filter-btn {
-            padding: 10px 24px;
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            background-color: var(--bg-card);
-            color: var(--text-main);
-            cursor: pointer;
-            font-size: 0.95rem;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        .filter-btn.active, .filter-btn:hover {
-            background-color: var(--primary);
-            border-color: var(--primary);
-            box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
-        }
-
-        /* شبكة القوالب بستايل كروت الخدمة الأصلية */
-        .templates-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 30px;
-        }
-
-        /* كرت القالب المطابق للرئيسية */
-        .template-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            overflow: hidden;
-            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .template-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(59, 130, 246, 0.3);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-        }
-
-        /* الشارات فوق الصورة */
-        .badge {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            padding: 6px 14px;
-            border-radius: 8px;
-            font-size: 0.8rem;
-            font-weight: 700;
-            color: white;
-            z-index: 10;
-            letter-spacing: 0.5px;
-        }
-
-        .badge.free { background-color: var(--free-color); }
-        .badge.premium { background-color: var(--premium-color); }
-
-        /* منطقة المعاينة الصورية للكرت */
-        .template-preview {
-            width: 100%;
-            height: 190px;
-            background-color: #1e293b;
-            background-size: cover;
-            background-position: top center;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .template-info {
-            padding: 24px;
-            display: flex;
-            flex-direction: column;
-            flex-grow: 1;
-        }
-
-        .template-info h3 {
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin-bottom: 10px;
-            color: var(--text-main);
-        }
-
-        .template-info p {
-            font-size: 0.90rem;
-            color: var(--text-muted);
-            margin-bottom: 24px;
-            line-height: 1.6;
-            flex-grow: 1;
-        }
-
-        /* أزرار التحكم والروابط أسفل الكرت */
-        .card-actions {
-            display: flex;
-            gap: 12px;
-            margin-top: auto;
-        }
-
-        .btn {
-            flex: 1;
-            padding: 12px;
-            border-radius: 10px;
-            text-align: center;
-            text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 600;
-            transition: all 0.2s ease;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .btn-demo {
-            background-color: rgba(255, 255, 255, 0.05);
-            color: var(--text-main);
-            border: 1px solid var(--border-color);
-        }
-
-        .btn-demo:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-        }
-
-        .btn-use {
-            background-color: var(--primary);
-            color: white;
-        }
-
-        .btn-use:hover {
-            background-color: var(--primary-hover);
-            box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
-        }
+        footer { position: relative; z-index: 1; padding: 30px 20px; text-align: center; border-top: 1px solid rgba(255,255,255,0.05); background: rgba(7,11,18,0.9); color: #718096; font-size: 14px; margin-top: 60px; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <header>
-        <h1>متجر قوالب صفحات الهبوط</h1>
-        <p>اختر من بين مجموعة قوالب احترافية مجهزة ومؤتمتة بالكامل لبدء نشاطك</p>
-    </header>
+<canvas id="bg"></canvas>
+
+<header>
+    <div class="nav-container">
+        <a href="index.html" class="logo">SERVER<span>NET</span></a>
+        <div class="nav-links">
+            <a href="index.html#features">تقنيات التداول</a>
+            <a href="#">صانع صفحات الهبوط</a>
+            <a href="index.html#about">من نحن</a>
+            <a href="index.html#privacy">سياسة الخصوصية</a>
+            <a href="index.html#order">اطلب بوتك المالي</a>
+        </div>
+    </div>
+</header>
+
+<section>
+    <h1>متجر وقوالب <span>صفحات الهبوط الاحترافية</span></h1>
+    <p class="subtitle">اختر من مكتبة القوالب الجاهزة والمعدّة برمجياً بأعلى معايير السرعة لتلائم حملاتك التسويقية وأنظمة أتمتة الإشارات</p>
 
     <div class="filter-buttons">
-        <button class="filter-btn active" onclick="filterTemplates('all')">الكل</button>
-        <button class="filter-btn" onclick="filterTemplates('free')">المجانية</button>
-        <button class="filter-btn" onclick="filterTemplates('premium')">المدفوعة <i class="fa-solid fa-crown" style="color: var(--premium-color); margin-right: 4px;"></i></button>
+        <button class="filter-btn active" onclick="filterTemplates('all')">كل القوالب</button>
+        <button class="filter-btn" onclick="filterTemplates('free')">القوالب المجانية</button>
+        <button class="filter-btn" onclick="filterTemplates('premium')">القوالب المدفوعة النخبة <i class="fa-solid fa-crown" style="margin-right: 4px;"></i></button>
     </div>
 
     <div class="templates-grid" id="templatesGrid">
         </div>
-</div>
+</section>
+
+<footer>
+    <p>&copy; 2026 ServerNet. جميع الحقوق محفوظة لـ خدمات الإنترنت.</p>
+</footer>
 
 <script>
-    // مصفوفة بيانات القوالب - قم بتعديل الروابط والصور بناءً على قوالبك الفلعرية
-    const templates = [
-        {
-            id: 'free_lead',
-            title: 'قالب جمع البيانات السريع',
-            description: 'قالب خفيف متناسق وممتاز لجمع بيانات العملاء المهتمين واستهدافهم برمجياً لاحقاً.',
-            type: 'free',
-            previewImage: 'https://via.placeholder.com/400x200/131c2e/94a3b8?text=Lead+Generation',
-            demoUrl: '#',
-            useUrl: '#'
-        },
-        {
-            id: 'premium_salla',
-            title: 'قالب المنتجات الرقمية الاحترافي',
-            description: 'يحتوي على عداد تنازلي ذكي، قسم مراجعات تفاعلي، مجهز بالكامل لربط الـ Webhooks والدفع.',
-            type: 'premium',
-            previewImage: 'https://via.placeholder.com/400x200/131c2e/94a3b8?text=Digital+Products',
-            demoUrl: '#',
-            useUrl: '#'
-        },
-        {
-            id: 'free_whatsapp',
-            title: 'قالب تحويل الواتساب الفوري',
-            description: 'صفحة هبوط مركزة ومباشرة ومصممة خصيصاً لتوجيه العميل إلى شات الواتساب بنصوص مسبقة الإعداد.',
-            type: 'free',
-            previewImage: 'https://via.placeholder.com/400x200/131c2e/94a3b8?text=WhatsApp+Direct',
-            demoUrl: '#',
-            useUrl: '#'
-        },
-        {
-            id: 'premium_landing',
-            title: 'قالب تسويق الخدمات المتكامل',
-            description: 'قالب مخصص لأصحاب الخدمات الرقمية مدمج به تتبع البكسل (Pixel Tracking) لعائد إعلاني أعلى.',
-            type: 'premium',
-            previewImage: 'https://via.placeholder.com/400x200/131c2e/94a3b8?text=Premium+Services',
-            demoUrl: '#',
-            useUrl: '#'
-        }
-    ];
+/* نفس كود أنيميشن الـ Canvas في الصفحة الرئيسية لضمان تطابق كامل وحيوي */
+const canvas2 = document.getElementById('bg');
+const ctx2 = canvas2.getContext('2d');
+function resizeCanvas() { canvas2.width = window.innerWidth; canvas2.height = window.innerHeight; }
+resizeCanvas(); window.addEventListener('resize', resizeCanvas);
 
-    function renderTemplates(data) {
-        const grid = document.getElementById('templatesGrid');
-        grid.innerHTML = '';
+const lines2 = [];
+for(let i=0; i<35; i++){
+    lines2.push({x1:Math.random()*canvas2.width, y1:Math.random()*canvas2.height,
+                 x2:Math.random()*canvas2.width, y2:Math.random()*canvas2.height,
+                 dx:(Math.random()-0.5)*1.2, dy:(Math.random()-0.5)*1.2});
+}
+function animate2(){
+    ctx2.fillStyle = 'rgba(7,11,18,0.15)'; ctx2.fillRect(0,0,canvas2.width,canvas2.height);
+    lines2.forEach(l=>{
+        ctx2.beginPath(); ctx2.moveTo(l.x1,l.y1); ctx2.lineTo(l.x2,l.y2);
+        ctx2.strokeStyle = 'rgba(0,255,213,0.3)'; ctx2.lineWidth = 1.2; ctx2.stroke();
+        l.x1+=l.dx; l.y1+=l.dy; l.x2+=l.dx; l.y2+=l.dy;
+        if(l.x1<0||l.x1>canvas2.width||l.x2<0||l.x2>canvas2.width) l.dx*=-1;
+        if(l.y1<0||l.y1>canvas2.height||l.y2<0||l.y2>canvas2.height) l.dy*=-1;
+    });
+    requestAnimationFrame(animate2);
+}
+animate2();
 
-        data.forEach(tmpl => {
-            const isFree = tmpl.type === 'free';
-            const card = document.createElement('div');
-            card.className = `template-card`;
+/* مصفوفة البيانات الخاصة بمتجر قوالبك */
+const templates = [
+    {
+        id: 'free_lead',
+        title: 'قالب اقتناص الإشارات والبيانات',
+        description: 'قالب ذكي وسريع مخصص لجمع أرقام هواتف وبيانات العملاء المهتمين بنظام إشاراتك للتواصل التلقائي معهم.',
+        type: 'free',
+        previewImage: 'https://via.placeholder.com/400x200/070b12/00ffd5?text=Lead+Capture+Free',
+        demoUrl: '#',
+        useUrl: '#'
+    },
+    {
+        id: 'premium_vip',
+        title: 'قالب اشتراكات الـ VIP المتكامل',
+        description: 'تصميم فخم يحتوي على عداد تنازلي ذكي للعروض، آراء عملاء تفاعلية، ومجهز لربط الويب هوك وبوابات الدفع الفوري.',
+        type: 'premium',
+        previewImage: 'https://via.placeholder.com/400x200/070b12/00ffd5?text=VIP+Subscription+Pro',
+        demoUrl: '#',
+        useUrl: '#'
+    },
+    {
+        id: 'free_whatsapp',
+        title: 'قالب التحويل المباشر للواتساب',
+        description: 'صفحة هبوط مركزة تهدف لتحويل الزوار بضغطة واحدة إلى محادثة الدعم الفني بالواتساب بنصوص مجهزة مسبقاً.',
+        type: 'free',
+        previewImage: 'https://via.placeholder.com/400x200/070b12/00ffd5?text=WhatsApp+Redirect+Free',
+        demoUrl: '#',
+        useUrl: '#'
+    },
+    {
+        id: 'premium_trading',
+        title: 'قالب تسويق أنظمة التداول الآلي',
+        description: 'قالب احترافي عالي الأداء ومدمج بأدوات رصد وتتبع البكسل (Pixel Tracking) لتحقيق أعلى عائد من الإعلانات الممولة.',
+        type: 'premium',
+        previewImage: 'https://via.placeholder.com/400x200/070b12/00ffd5?text=Automated+Trading+Pro',
+        demoUrl: '#',
+        useUrl: '#'
+    }
+];
 
-            card.innerHTML = `
-                <span class="badge ${tmpl.type}">${isFree ? 'مجاني' : 'مدفوع نُخبة'}</span>
-                <div class="template-preview" style="background-image: url('${tmpl.previewImage}')"></div>
-                <div class="template-info">
-                    <h3>${tmpl.title}</h3>
-                    <p>${tmpl.description}</p>
-                    <div class="card-actions">
-                        <a href="${tmpl.demoUrl}" class="btn btn-demo" target="_blank"><i class="fa-solid fa-eye"></i> معاينة</a>
-                        <a href="${tmpl.useUrl}" class="btn btn-use">${isFree ? '<i class="fa-solid fa-bolt"></i> استخدام مجاني' : '<i class="fa-solid fa-credit-card"></i> شراء وتفعيل'}</a>
-                    </div>
+function renderTemplates(data) {
+    const grid = document.getElementById('templatesGrid');
+    grid.innerHTML = '';
+
+    data.forEach(tmpl => {
+        const isFree = tmpl.type === 'free';
+        const card = document.createElement('div');
+        card.className = `template-card`;
+
+        card.innerHTML = `
+            <span class="badge ${tmpl.type}">${isFree ? 'مجاني' : 'مدفوع نُخبة <i class="fa-solid fa-crown"></i>'}</span>
+            <div class="template-preview" style="background-image: url('${tmpl.previewImage}')"></div>
+            <div class="template-info">
+                <h3>${tmpl.title}</h3>
+                <p>${tmpl.description}</p>
+                <div class="card-actions">
+                    <a href="${tmpl.demoUrl}" class="btn btn-demo" target="_blank"><i class="fa-solid fa-eye"></i> معاينة</a>
+                    <a href="${tmpl.useUrl}" class="btn btn-use">${isFree ? '<i class="fa-solid fa-bolt"></i> استخدام القالب' : '<i class="fa-solid fa-credit-card"></i> تفعيل والبدء'}</a>
                 </div>
-            `;
-            grid.appendChild(card);
-        });
+            </div>
+        `;
+        grid.appendChild(card);
+    });
+}
+
+function filterTemplates(type) {
+    const buttons = document.querySelectorAll('.filter-btn');
+    buttons.forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+
+    if (type === 'all') {
+        renderTemplates(templates);
+    } else {
+        const filtered = templates.filter(t => t.type === type);
+        renderTemplates(filtered);
     }
+}
 
-    function filterTemplates(type) {
-        const buttons = document.querySelectorAll('.filter-btn');
-        buttons.forEach(btn => btn.classList.remove('active'));
-        event.target.classList.add('active');
-
-        if (type === 'all') {
-            renderTemplates(templates);
-        } else {
-            const filtered = templates.filter(t => t.type === type);
-            renderTemplates(filtered);
-        }
-    }
-
-    // التشغيل المبدئي
-    renderTemplates(templates);
+// العرض الأولي للقوالب عند تشغيل الصفحة
+renderTemplates(templates);
 </script>
 </body>
 </html>

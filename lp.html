@@ -9,7 +9,7 @@
 <title>منشئ صفحات الهبوط الاحترافي الذكي | ServerNet</title>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
 <style>
-/* إعدادات التصميم الافتراضية الخاصة بك */
+/* إعدادات التصميم الاحترافية الخاصة بك */
 *{box-sizing:border-box;scroll-behavior:smooth}
 body{margin:0;font-family:'Cairo', sans-serif;color:#fff;background-color:#04080f;min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:40px 20px;overflow-x:hidden}
 canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
@@ -78,12 +78,17 @@ input:focus, select:focus, textarea:focus{outline:none;border-color:#00ffd5;box-
 
 <div class="builder-container" id="builderInterface">
     <h2>🛠️ منشئ صفحات الهبوط السحابي الذكي (AI)</h2>
-    <p class="subtitle">أنشئ واجهات تسويقية احترافية معززة بالذكاء الاصطناعي لتحسين النصوص وصياغتها فوراً بضغطة زر واحدة.</p>
+    <p class="subtitle">أنشئ واجهات تسويقية احترافية مخصصة باسم العميل أو المتجر مع توليد وحفظ فوري سحابي ذكي.</p>
     
     <form id="generatorForm">
         <div class="form-group">
             <label>عنوان الصفحة التسويقي الأساسي:</label>
-            <input type="text" id="lpTitle" placeholder="مثال: أكاديمية النخبة لتوصيات ومؤشرات الأسهم" required>
+            <input type="text" id="lpTitle" placeholder="مثال: متجر عطور الفخامة الرقمي" required>
+        </div>
+
+        <div class="form-group">
+            <label>اسم الرابط المخصص (اسم العميل / المتجر / المنتج):</label>
+            <input type="text" id="lpCustomSlug" placeholder="مثال: salla-store أو elias-perfume (بالإنجليزي بدون فواصل)" required>
         </div>
         
         <div class="form-group">
@@ -97,17 +102,17 @@ input:focus, select:focus, textarea:focus{outline:none;border-color:#00ffd5;box-
 
         <div class="form-group">
             <label>وصف العرض أو الخدمة (سيقوم الذكاء الاصطناعي بتحسينه تسويقياً):</label>
-            <textarea id="lpDesc" rows="3" placeholder="اكتب فكرة موقعك بشكل مبسط..." required></textarea>
+            <textarea id="lpDesc" rows="3" placeholder="اكتب فكرة موقعك بشكل مبسط ليتولى الذكاء الاصطناعي صياغتها الفاخرة..." required></textarea>
         </div>
         
         <div class="form-group">
             <label>رابط التوجيه المستهدف (تليجرام / واتساب):</label>
-            <input type="url" id="lpLink" placeholder="https://t.me/your_channel" required>
+            <input type="url" id="lpLink" placeholder="https://api.whatsapp.com/send?phone=xxx" required>
         </div>
         
         <div class="form-group">
             <label>نص زر الاشتراك الافتراضي:</label>
-            <input type="text" id="lpBtnText" placeholder="مثال: انضم الآن مجاناً 🚀" required>
+            <input type="text" id="lpBtnText" placeholder="مثال: اطلب الآن مجاناً 🚀" required>
         </div>
         
         <div class="form-group">
@@ -129,14 +134,14 @@ input:focus, select:focus, textarea:focus{outline:none;border-color:#00ffd5;box-
     <div class="output-box" id="outputBox">
         <h3 id="outputStatusTitle">🎉 تم تحضير وتوليد الأصول بنجاح!</h3>
         <div class="tabs-nav">
-            <button class="tab-link active" onclick="switchTab('urlTab', this)">🔗 رابط قصير ومختصر</button>
+            <button class="tab-link active" onclick="switchTab('urlTab', this)">🔗 رابط ذكي مخصص ومباشر</button>
             <button class="tab-link" onclick="switchTab('htmlTab', this)">💻 كود HTML مستقل</button>
         </div>
         
         <div id="urlTab" class="display-area active">جاري معالجة وتوليد الرابط بالذكاء الاصطناعي...</div>
         <div id="htmlTab" class="display-area"></div>
         
-        <button class="copy-btn" id="copyActionBtn" onclick="copyActiveOutput()">📋 نسخ الرابط المختصر</button>
+        <button class="copy-btn" id="copyActionBtn" onclick="copyActiveOutput()">📋 نسخ الرابط الذكي</button>
     </div>
 
     <div class="contact-group">
@@ -167,7 +172,7 @@ input:focus, select:focus, textarea:focus{outline:none;border-color:#00ffd5;box-
 </div>
 
 <script>
-/* كود الخلفية المتحركة الافتراضي */
+/* كود الخلفية الفني */
 const canvas=document.getElementById('bg'); const ctx=canvas.getContext('2d');
 function resize() { canvas.width=window.innerWidth; canvas.height=window.innerHeight; }
 resize(); window.addEventListener('resize', resize);
@@ -182,7 +187,7 @@ function handleFileSelect(input) {
     const file = input.files[0];
     if (file) {
         if (file.size > 1500000) {
-            alert("⚠️ حجم الصورة كبير جداً! يرجى اختيار صورة بحجم أقل من 1.5 ميجا لضمان سرعة توليد الرابط.");
+            alert("⚠️ حجم الصورة كبير جداً! يرجى اختيار صورة بحجم أقل من 1.5 ميجا.");
             input.value = "";
             return;
         }
@@ -228,33 +233,32 @@ function closeLivePreview() {
     document.getElementById('previewModal').classList.remove('open');
 }
 
-/* ⚙️ استدعاء الذكاء الاصطناعي وبناء الأصول مباشرة من المتصفح ⚙️ */
+/* ⚙️ استدعاء الذكاء الاصطناعي وبناء الأصول مباشرة وتخصيص الرابط ⚙️ */
 async function generateLpAssets() {
     const titleInput = document.getElementById('lpTitle').value.trim();
+    const customSlug = document.getElementById('lpCustomSlug').value.trim().replace(/\s+/g, '-').toLowerCase();
     const descInput = document.getElementById('lpDesc').value.trim();
     const link = document.getElementById('lpLink').value.trim();
     const btnTextInput = document.getElementById('lpBtnText').value.trim();
     const color = document.getElementById('lpColor').value;
     const btnGenMain = document.getElementById('btnGenMain');
 
-    if(!titleInput || !descInput || !link || !btnTextInput) {
-        alert("الرجاء إكمال كافة الحقول الأساسية أولاً.");
+    if(!titleInput || !customSlug || !descInput || !link || !btnTextInput) {
+        alert("الرجاء إكمال كافة الحقول الأساسية بما فيها اسم الرابط المخصص.");
         return;
     }
 
-    // تفعيل وضعية التحميل
     btnGenMain.disabled = true;
-    btnGenMain.innerHTML = `⏳ جاري معالجة العقل التسويقي...`;
+    btnGenMain.innerHTML = `⏳ جاري ضبط العقل التسويقي...`;
     document.getElementById('outputBox').style.display = 'block';
-    document.getElementById('urlTab').innerText = "🧠 الذكاء الاصطناعي يقوم الآن بإعادة صياغة وتحسين نصوصك تسويقياً لرفع مبيعاتك...";
+    document.getElementById('urlTab').innerText = "🧠 الذكاء الاصطناعي يصيغ نصوصاً تسويقية مذهلة لعميلك الآن...";
     document.getElementById('outputBox').scrollIntoView({ behavior: 'smooth' });
 
-    // 🔑 ربط مفتاح الـ API لـ Gemini بشكل مباشر وآمن للتشغيل السريع
+    // 🔑 Gemini 2.5 Flash API
     const API_KEY = "AIzaSyCqKFF5uJcyyYV0nzzM_vKwa_gEUwvxRXo";
     const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`;
 
-    // إعداد برومبت التعديل الصارم لكي يعيد نصوص تسويقية مطورة بنظام الـ JSON لسهولة تفكيكها
-    const systemInstruction = `أنت خبير Copywriter محترف ومستشار مبيعات رقمية. مهمتك تحسين النص الذي يقدمه العميل لصفحة هبوط لتصبح جذابة ومحفزة على الاشتراك بنسبة 100%.
+    const systemInstruction = `أنت خبير Copywriter محترف ومستشار مبيعات رقمية في السوق السعودي. مهمتك تحسين النص لصفحة هبوط لتصبح جذابة ومحفزة على الاشتراك بنسبة 100%.
     يجب أن تعيد الإجابة بصيغة JSON كلين فقط تحتوي على المفاتيح التالية:
     {
       "improved_title": "عنوان جذاب جداً ومثير للاهتمام بناءً على فكرته",
@@ -283,36 +287,28 @@ async function generateLpAssets() {
             const aiText = aiData.candidates[0].content.parts[0].text;
             const parsedData = JSON.parse(aiText.trim());
             
-            // استبدال البيانات المكتوبة يدويًا بالصياغة الفخمة للذكاء الاصطناعي
             finalTitle = parsedData.improved_title;
             finalDesc = parsedData.improved_desc;
             finalBtnText = parsedData.improved_btn;
         }
     } catch (aiErr) {
-        console.error("فشل استدعاء تحسين النصوص عبر الـ AI، سيتم استخدام النصوص المدخلة تلقائياً:", aiErr);
+        console.error("تم التوليد بالنصوص الأساسية المكتوبة:", aiErr);
     }
 
-    // 1. تشفير البيانات المحسنة والجديدة بالكامل عبر الـ Hash
+    // 1. تشفير البيانات عبر الهاش
     const dataObject = { t: finalTitle, i: base64ImageString, d: finalDesc, l: link, b: finalBtnText, c: color };
     const jsonString = JSON.stringify(dataObject);
     const encodedData = btoa(unescape(encodeURIComponent(jsonString)));
+    
+    // 2. 🌟 صناعة الرابط النظيف المخصص باسم العميل أو المتجر 🌟
     const currentUrl = window.location.href.split('#')[0];
-    const longGeneratedUrl = `${currentUrl}#data=${encodedData}`;
+    // الرابط النهائي يظهر هكذا: site.com/lp.html#name=custom-slug&data=XYZ
+    const finalCleanUrl = `${currentUrl}#name=${customSlug}&data=${encodedData}`;
 
-    // 2. تقصير الرابط عبر بوابة TinyURL الحرة
-    try {
-        const response = await fetch(`https://tinyurl.com/api-create.php?url=${encodeURIComponent(longGeneratedUrl)}`);
-        if (response.ok) {
-            const shortUrl = await response.text();
-            document.getElementById('urlTab').innerText = shortUrl;
-        } else {
-            document.getElementById('urlTab').innerText = longGeneratedUrl;
-        }
-    } catch (err) {
-        document.getElementById('urlTab').innerText = longGeneratedUrl;
-    }
+    // عرض الرابط النظيف المخصص مباشرة للعميل
+    document.getElementById('urlTab').innerText = finalCleanUrl;
 
-    // 3. توليد كود HTML المستقل المحسّن ترويجياً بالكامل
+    // 3. توليد كود HTML مستقل
     const generatedHtmlCode = `<!doctype html>
 <html lang="ar" dir="rtl">
 <head>
@@ -342,8 +338,6 @@ async function generateLpAssets() {
 </html>`;
 
     document.getElementById('htmlTab').innerText = generatedHtmlCode;
-    
-    // إعادة تعيين حالة زر التوليد الرئيسي
     btnGenMain.disabled = false;
     btnGenMain.innerHTML = `⚡ توليد بالذكاء الاصطناعي`;
 }
@@ -358,7 +352,7 @@ function switchTab(tabId, btn) {
 
     const actionBtn = document.getElementById('copyActionBtn');
     if(tabId === 'urlTab') {
-        actionBtn.innerText = "📋 نسخ الرابط المختصر";
+        actionBtn.innerText = "📋 نسخ الرابط الذكي المخصص";
     } else {
         actionBtn.innerText = "💾 نسخ كود HTML المخصص";
     }
@@ -367,15 +361,16 @@ function switchTab(tabId, btn) {
 function copyActiveOutput() {
     const copyText = document.getElementById(activeTab).innerText;
     navigator.clipboard.writeText(copyText);
-    alert("✅ تم نسخ المحتوى بنجاح إلى الحافظة!");
+    alert("✅ تم نسخ الرابط المخصص بنجاح إلى الحافظة!");
 }
 
-/* 👁️ فحص التوجيه وفك شفرة الـ Hash للعملاء الزوار */
+/* 👁️ فحص التوجيه وفك شفرة الـ Hash للزوار المستهدفين */
 function checkRouting() {
     const hash = window.location.hash;
-    if (hash && hash.startsWith('#data=')) {
+    // تم تعديل الشرط ليقرأ بذكاء وجود الاسم المخصص للعميل
+    if (hash && hash.includes('&data=')) {
         try {
-            const encodedData = hash.replace('#data=', '');
+            const encodedData = hash.split('&data=')[1];
             const decodedString = decodeURIComponent(escape(atob(encodedData)));
             const data = JSON.parse(decodedString);
 

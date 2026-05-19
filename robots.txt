@@ -1,0 +1,11 @@
+# خريطة توجيه الروبوتات لـ ServerNet Services
+User-agent: *
+Allow: /
+Allow: /index.html
+Allow: /lp.html
+
+# منع الروبوتات من أرشفة روابط البيانات المشفرة الطويلة لتجنب المحتوى المكرر
+Disallow: /*#data=
+
+# رابط خريطة الموقع لتسهيل الوصول الفوري لبوتات قوقل
+Sitemap: https://service-bot-8fxg.onrender.com/sitemap.xml

@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="ar" dir="rtl">
 <head>
+<script src="protection.js"></script>
 
     <meta name="description" content="منصة ServerNet لأتمتة البوتات، صناعة صفحات الهبوط الاحترافية، وحلول البرمجة السحابية الذكية لخدماتك التسويقية والتجارية.">
 <meta name="keywords" content="أتمتة, بوتات, صفحات هبوط, تليجرام, واتساب, ServerNet, برمجة">
@@ -15,6 +16,23 @@
 <title>ServerNet | أتمتة وبوتات أسواق المال والتداول الاحترافية بالذكاء الاصطناعي</title>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
+
+    /* تعطيل تحديد النصوص في الواجهة لجميع المتصفحات */
+body {
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none;    /* Firefox */
+    -ms-user-select: none;     /* IE / Edge */
+    user-select: none;         /* النسخة القياسية */
+}
+
+/* استثناء صناديق النصوص لضمان أريحية العميل أثناء استخدام أدواتك */
+input, textarea, [contenteditable="true"] {
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+}
+
 /* إعدادات التصميم العامة */
 *{box-sizing:border-box;scroll-behavior:smooth}
 body{margin:0;font-family:'Cairo', sans-serif;color:#fff;background-color:#070b12;overflow-x:hidden}

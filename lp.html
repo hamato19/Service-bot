@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/webp" href="1000015120.webp">
+<title>صانع صفحات الهبوط الذكي | ServerNet</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+/* إعدادات التصميم العامة */
+*{box-sizing:border-box;scroll-behavior:smooth}
+body{margin:0;font-family:'Cairo', sans-serif;color:#fff;background-color:#070b12;min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:20px;overflow-x:hidden}
+canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
+
+/* حاوية منشئ الصفحات (الوضع الافتراضي) */
+.builder-container {position:relative;z-index:1;max-width:650px;width:100%;background:rgba(10, 17, 28, 0.75);padding:40px;border-radius:32px;backdrop-filter:blur(15px);border:1px solid rgba(0, 255, 213, 0.2);box-shadow:0 20px 50px rgba(0,0,0,0.5);text-align:right}
+.builder-container h2 {color:#00ffd5;margin-top:0;margin-bottom:10px;font-size:26px;text-align:center;font-weight:900}
+.builder-container p.subtitle {color:#a0aec0;text-align:center;margin-bottom:30px;font-size:14px}
+
+label{color:#00ffd5;font-size:14px;font-weight:700;display:block;margin-bottom:5px}
+input, select, textarea{width:100%;padding:16px;border-radius:14px;border:1px solid rgba(255,255,255,0.1);margin-bottom:20px;font-size:15px;background:rgba(7,11,18,0.6);color:#fff;font-family:inherit}
+input:focus, select:focus, textarea:focus{outline:none;border-color:#00ffd5;box-shadow:0 0 10px rgba(0,255,213,0.2)}
+
+.submit-btn{width:100%;padding:16px;border-radius:14px;border:0;background:linear-gradient(135deg,#00ffd5,#00bfa5);color:#070b12;font-weight:900;font-size:16px;cursor:pointer;transition:0.3s;font-family:inherit}
+.submit-btn:hover{transform:scale(1.02);box-shadow:0 10px 25px rgba(0,255,213,0.4)}
+
+/* مخرجات الرابط المتولد */
+.output-box {margin-top:25px;display:none;background:rgba(0,0,0,0.4);padding:20px;border-radius:16px;border:1px solid rgba(0,255,213,0.3)}
+.output-box h3 {color:#00ffd5;margin-top:0;font-size:18px}
+.url-display {background:#111;color:#00ff66;padding:15px;border-radius:12px;font-family:monospace;font-size:14px;word-break:break-all;direction:ltr;text-align:left;border:1px solid #333;margin-bottom:15px}
+.copy-btn {background:#242f3d;color:#fff;border:1px solid rgba(255,255,255,0.1);padding:12px;width:100%;border-radius:12px;font-weight:700;cursor:pointer;font-family:inherit;transition:0.2s}
+.copy-btn:hover {background:#00ffd5;color:#070b12}
+
+/* 📥 تصميم صفحة الهبوط المتولدة النهائية عند العرض 📥 */
+.view-container {display:none;position:relative;z-index:1;max-width:600px;width:100%;background:rgba(255,255,255,0.03);padding:50px 40px;border-radius:28px;backdrop-filter:blur(15px);text-align:center;box-shadow:0 20px 50px rgba(0,0,0,0.4);animation:fadeIn 0.5s ease}
+.view-container h1 {font-size:36px;font-weight:900;margin-bottom:20px;line-height:1.4}
+.view-container p {font-size:17px;color:#a0aec0;line-height:1.8;margin-bottom:40px}
+.action-link {display:inline-block;width:100%;max-width:400px;padding:18px;border-radius:16px;font-size:18px;font-weight:900;text-decoration:none;transition:0.3s}
+.action-link:hover {transform:translateY(-4px)}
+.lp-footer {margin-top:40px;font-size:12px;color:#4a5568}
+
+@keyframes fadeIn { from{opacity:0;transform:translateY(15px)} to{opacity:1;transform:translateY(0)} }
+@media(max-width:768px){ .builder-container, .view-container { padding:25px 20px; } .view-container h1{font-size:28px} }
+</style>
+</head>
+<body>
+
+<canvas id="bg"></canvas>
+
+<div class="builder-container" id="builderInterface">
+    <h2>🛠️ منشئ صفحات الهبوط الفورية الذكي</h2>
+    <p class="subtitle">أدخل بيانات العرض لتوليد رابط مباشر لصفحة هبوط مخصصة ومستضافة فوراً.</p>
+    
+    <form id="generatorForm">
+        <label>عنوان الصفحة التسويقي:</label>
+        <input type="text" id="lpTitle" placeholder="مثال: أكاديمية النخبة لتوصيات الأسهم الأمريكية" required>
+        
+        <label>الوصف التسويقي للخدمة أو القناة:</label>
+        <textarea id="lpDesc" rows="3" placeholder="مثال: انضم لأقوى قناة توصيات ومراقبة عقود الأوبشن الفورية المدعومة بأدوات الذكاء الاصطناعي السحابية." required></textarea>
+        
+        <label>رابط الزر (رابط قناتك بالتليجرام أو الواتساب):</label>
+        <input type="url" id="lpLink" placeholder="https://t.me/your_channel" required>
+        
+        <label>النص المكتوب داخل زر الاشتراك:</label>
+        <input type="text" id="lpBtnText" placeholder="مثال: اشترك الآن في القناة مجاناً 🚀" required>
+        
+        <label>الهوية اللونية للصفحة المخصصة:</label>
+        <select id="lpColor" required>
+            <option value="#00ffd5">الأخضر النيون السايبير (ServerNet)</option>
+            <option value="#0088cc">الأزرق الاحترافي (Telegram Style)</option>
+            <option value="#ff9900">الذهبي الاستثماري (Crypto Gold)</option>
+            <option value="#e91e63">الوردي الفاخر (VIP Premium)</option>
+        </select>
+        
+        <button type="button" onclick="generateLpLink()" class="submit-btn">⚡ توليد رابط صفحة الهبوط المباشر</button>
+    </form>
+
+    <div class="output-box" id="outputBox">
+        <h3>🎉 تم توليد الرابط بنجاح!</h3>
+        <p style="color:#a0aec0; font-size:13px; margin-bottom:10px;">انسخ الرابط بالأسفل وانشره مباشرة لعملائك ومتابعيك:</p>
+        <div class="url-display" id="urlDisplay"></div>
+        <button class="copy-btn" onclick="copyGeneratedUrl()">📋 نسخ الرابط الفريد</button>
+    </div>
+</div>
+
+<div class="view-container" id="viewInterface">
+    <h1 id="viewTitle"></h1>
+    <p id="viewDesc"></p>
+    <a href="#" id="viewBtn" target="_blank" class="action-link"></a>
+    <div class="lp-footer">تمت الأتمتة والاستضافة عبر <a href="index.html" style="color:#00ffd5; text-decoration:none; font-weight:700;">ServerNet</a></div>
+</div>
+
+<script>
+/* كود الـ Canvas الخلفية المتحركة */
+const canvas=document.getElementById('bg'); const ctx=canvas.getContext('2d');
+function resize() { canvas.width=window.innerWidth; canvas.height=window.innerHeight; }
+resize(); window.addEventListener('resize', resize);
+const lines=[]; for(let i=0;i<30;i++){ lines.push({x1:Math.random()*canvas.width,y1:Math.random()*canvas.height,x2:Math.random()*canvas.width,y2:Math.random()*canvas.height,dx:(Math.random()-0.5)*1,dy:(Math.random()-0.5)*1}); }
+function animate(){ ctx.fillStyle='rgba(7,11,18,0.15)'; ctx.fillRect(0,0,canvas.width,canvas.height); lines.forEach(l=>{ ctx.beginPath(); ctx.moveTo(l.x1,l.y1); ctx.lineTo(l.x2,l.y2); ctx.strokeStyle='rgba(0,255,213,0.15)'; ctx.lineWidth=1; ctx.stroke(); l.x1+=l.dx; l.y1+=l.dy; l.x2+=l.dx; l.y2+=l.dy; if(l.x1<0||l.x1>canvas.width||l.x2<0||l.x2>canvas.width) l.dx*=-1; if(l.y1<0||l.y1>canvas.height||l.y2<0||l.y2>canvas.height) l.dy*=-1; }); requestAnimationFrame(animate); }
+animate();
+
+/* ⚙️ منطق تشفير البيانات وتوليد الرابط المستقل ⚙️ */
+function generateLpLink() {
+    const title = document.getElementById('lpTitle').value;
+    const desc = document.getElementById('lpDesc').value;
+    const link = document.getElementById('lpLink').value;
+    const btnText = document.getElementById('lpBtnText').value;
+    const color = document.getElementById('lpColor').value;
+
+    if(!title || !desc || !link || !btnText) {
+        alert("الرجاء إكمال كافة الحقول المخصصة أولاً.");
+        return;
+    }
+
+    // تجميع البيانات في كائن واحد
+    const dataObject = { t: title, d: desc, l: link, b: btnText, c: color };
+    
+    // تحويل الكائن إلى نص مدمج وتشفيره بصيغة Base64 الآمنة للروابط
+    const jsonString = JSON.stringify(dataObject);
+    const encodedData = btoa(unescape(encodeURIComponent(jsonString)));
+
+    // بناء الرابط المباشر بناءً على موقع الصفحة الحالي
+    const currentUrl = window.location.href.split('#')[0];
+    const finalGeneratedUrl = `${currentUrl}#data=${encodedData}`;
+
+    // عرض النتيجة
+    document.getElementById('urlDisplay').innerText = finalGeneratedUrl;
+    document.getElementById('outputBox').style.display = 'block';
+    document.getElementById('outputBox').scrollIntoView({ behavior: 'smooth' });
+}
+
+function copyGeneratedUrl() {
+    const urlText = document.getElementById('urlDisplay').innerText;
+    navigator.clipboard.writeText(urlText);
+    alert("✅ تم نسخ رابط صفحة الهبوط الفريد! جاهز للنشر الآن.");
+}
+
+/* 👁️ فحص الرابط عند دخول الصفحة (هل الزائر داخل يشاهد أم داخل يصنع صفحة؟) 👁️ */
+function checkRouting() {
+    const hash = window.location.hash;
+    if (hash && hash.startsWith('#data=')) {
+        try {
+            const encodedData = hash.replace('#data=', '');
+            // فك التشفير عن البيانات المستلمة في الرابط
+            const decodedString = decodeURIComponent(escape(atob(encodedData)));
+            const data = JSON.parse(decodedString);
+
+            // إخفاء واجهة المنشئ وعرض واجهة صفحة الهبوط المستهدفة مباشرة
+            document.getElementById('builderInterface').style.display = 'none';
+            const view = document.getElementById('viewInterface');
+            view.style.display = 'block';
+
+            // حقن البيانات في التصميم المخصص
+            document.getElementById('viewTitle').innerHTML = `<span>${data.t.split(' ')[0]}</span> ${data.t.substring(data.t.indexOf(' ') + 1)}`;
+            document.getElementById('viewTitle').style.color = '#fff';
+            document.querySelector('#viewInterface h1 span').style.color = data.c;
+            document.getElementById('viewDesc').innerText = data.d;
+            
+            // تخصيص الزر
+            const btn = document.getElementById('viewBtn');
+            btn.innerText = data.b;
+            btn.href = data.l;
+            btn.style.background = data.c;
+            btn.style.color = (data.c === '#00ffd5' || data.c === '#ff9900') ? '#070b12' : '#fff';
+            btn.style.boxShadow = `0 10px 30px ${data.c}40`;
+            
+            // تغيير عنوان المتصفح ليتطابق مع عنوان العميل المخصص
+            document.title = data.t;
+
+            // ضبط بوردر خفيف متناسق للحاوية مع اللون المختار
+            view.style.border = `1px solid ${data.c}30`;
+
+        } catch (e) {
+            console.error("خطأ في قراءة بيانات رابط صفحة الهبوط:", e);
+            alert("⚠️ عذراً، الرابط المفتوح غير صحيح أو تالف.");
+            document.getElementById('builderInterface').style.display = 'block';
+        }
+    } else {
+        // إذا لم يوجد الهاش، نظهر واجهة توليد الصفحات الافتراضية
+        document.getElementById('builderInterface').style.display = 'block';
+        document.getElementById('viewInterface').style.display = 'none';
+    }
+}
+
+// تشغيل الفحص فور تحميل الصفحة وعند حدوث تغيير بالهاش
+window.addEventListener('DOMContentLoaded', checkRouting);
+window.addEventListener('hashchange', checkRouting);
+</script>
+</body>
+</html>

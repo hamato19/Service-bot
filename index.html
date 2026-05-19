@@ -52,14 +52,28 @@ p.subtitle{font-size:18px;color:#a0aec0;max-width:600px;margin-bottom:35px;line-
 .card h3{color:#00ffd5;margin:0 0 10px;font-size:20px}
 .card p{color:#a0aec0;font-size:14px;line-height:1.6;margin:0}
 
-/* نموذج الطلب */
-.form-box{max-width:500px;margin:40px auto 0;background:rgba(0,0,0,0.5);padding:40px;border-radius:24px;backdrop-filter:blur(15px);border:1px solid rgba(255,255,255,0.05);box-shadow:0 20px 50px rgba(0,0,0,0.5)}
-.form-box h2{color:#00ffd5;margin-top:0;margin-bottom:20px;font-size:24px}
+/* نموذج الطلب وأقسام النماذج */
+.form-box{max-width:650px;margin:40px auto 0;background:rgba(0,0,0,0.5);padding:40px;border-radius:24px;backdrop-filter:blur(15px);border:1px solid rgba(0,255,213,0.15);box-shadow:0 20px 50px rgba(0,0,0,0.5);text-align:right}
+.form-box h2{color:#00ffd5;margin-top:0;margin-bottom:20px;font-size:24px;text-align:center}
 input, select, textarea{width:100%;padding:16px;border-radius:14px;border:1px solid rgba(255,255,255,0.1);margin-bottom:15px;font-size:15px;background:rgba(7,11,18,0.6);color:#fff;font-family:inherit}
-input:focus, select:focus{outline:none;border-color:#00ffd5}
+input:focus, select:focus, textarea:focus{outline:none;border-color:#00ffd5}
 .submit-btn{width:100%;padding:16px;border-radius:14px;border:0;background:linear-gradient(135deg,#00ffd5,#00bfa5);color:#070b12;font-weight:900;font-size:16px;cursor:pointer;transition:0.3s;font-family:inherit}
 .submit-btn:hover{transform:scale(1.02);box-shadow:0 10px 25px rgba(0,255,213,0.3)}
-.form-message {margin-top:15px;font-weight:700;display:none}
+.form-message {margin-top:15px;font-weight:700;display:none;text-align:center}
+
+/* 📊 أدوات ومخرجات منشئ صفحات الهبوط 📊 */
+.generator-section {border: 1px solid rgba(0, 255, 213, 0.2); background: rgba(10, 17, 28, 0.7); border-radius: 32px;}
+.output-box {margin-top: 25px; display: none; text-align: right;}
+.output-box h3 {color: #00ffd5; font-size: 18px;}
+.code-area {background: #111; color: #00ff66; padding: 15px; border-radius: 12px; font-family: monospace; font-size: 13px; height: 180px; overflow-y: auto; direction: ltr; text-align: left; border: 1px solid #333; margin-bottom: 15px;}
+.action-btns {display: flex; gap: 15px;}
+.secondary-btn {flex: 1; padding: 14px; text-align: center; border-radius: 12px; font-weight: 700; text-decoration: none; cursor: pointer; transition: 0.3s; font-family: inherit;}
+.btn-copy {background: #242f3d; color: #fff; border: 1px solid rgba(255,255,255,0.1);}
+.btn-copy:hover {background: #344457;}
+.btn-preview {background: #00ffd5; color: #070b12; border: 0;}
+.btn-preview:hover {box-shadow: 0 0 15px #00ffd5;}
+.preview-iframe-container {margin-top: 20px; border: 2px dashed rgba(0,255,213,0.3); border-radius: 16px; overflow: hidden; display: none; height: 450px; background: #fff;}
+.preview-iframe {width: 100%; height: 100%; border: 0;}
 
 /* 🔵 تصميم نافذة البوت التفاعلي المحاكي للتليجرام المالي (باليمين) 🔵 */
 .chat-widget {position:fixed;bottom:25px;right:25px;z-index:1000;direction:rtl;text-align:right}
@@ -83,7 +97,6 @@ input:focus, select:focus{outline:none;border-color:#00ffd5}
 .whatsapp-float {position:fixed;bottom:25px;left:25px;z-index:1000;width:60px;height:60px;background-color:#25d366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(37,211,102,0.4);transition:0.3s;text-decoration:none}
 .whatsapp-float:hover {transform:scale(1.1)}
 .whatsapp-float svg {width:32px;height:32px;fill:#fff}
-/* تأثير النبض الدائري الخلفي لجذب الانتباه */
 .whatsapp-float::before {content:'';position:absolute;width:100%;height:100%;background-color:#25d366;border-radius:50%;z-index:-1;animation:whatsapp-pulse 2s infinite;opacity:0.4}
 
 @keyframes whatsapp-pulse {
@@ -92,7 +105,7 @@ input:focus, select:focus{outline:none;border-color:#00ffd5}
 }
 
 @keyframes fadeIn { from {opacity:0;transform:translateY(10px)} to {opacity:1;transform:translateY(0)} }
-@media(max-width:768px){
+@media(max-width:768px) {
     .hero{flex-direction:column;text-align:center;padding-top:120px;gap:20px}
     .btn-group{justify-content:center}
     h1{font-size:30px}
@@ -103,6 +116,7 @@ input:focus, select:focus{outline:none;border-color:#00ffd5}
     .whatsapp-float, .chat-trigger { width:52px; height:52px; bottom:20px }
     .whatsapp-float { left:20px }
     .chat-trigger { right:20px }
+    .action-btns { flex-direction: column; }
 }
 @media(max-width:400px){ .chat-window { width:300px; height:450px; right:-10px } }
 
@@ -119,6 +133,7 @@ footer{position:relative;z-index:1;padding:30px 20px;text-align:center;border-to
         <a href="#" class="logo">SERVER<span>NET</span></a>
         <div class="nav-links">
             <a href="#features">تقنيات التداول</a>
+            <a href="#generator">صانع صفحات الهبوط</a>
             <a href="#order">اطلب بوتك المالي</a>
         </div>
     </div>
@@ -155,6 +170,52 @@ footer{position:relative;z-index:1;padding:30px 20px;text-align:center;border-to
             <span class="card-icon">💎</span>
             <h3>مراقبة الأوبشن والسيولة الفورية</h3>
             <p>تنقية وفلترة تدفق عقود الأوبشن غير الاعتيادية للأسهم الأمريكية (Unusual Options)، وتتبع أحجام السيولة اللحظية لشركات تداول والسوق الأمريكي لتوفير تحليلات متكاملة للمشتركين.</p>
+        </div>
+    </div>
+</section>
+
+<section id="generator" class="generator-section">
+    <div class="form-box" style="margin:0 auto; background:none; border:0; box-shadow:none;">
+        <h2>🛠️ صانع صفحات الهبوط الفورية وقنوات الـ VIP</h2>
+        <p style="color: #a0aec0; text-align:center; margin-bottom: 25px; font-size:14px;">أنشئ صفحة هبوط تسويقية مخصصة وجاهزة للعملات، الأسهم، أو البوتات في ثوانٍ معدودة.</p>
+        
+        <form id="lpGeneratorForm">
+            <label style="color:#00ffd5; font-size:14px; font-weight:700;">عنوان الصفحة التسويقي العريض:</label>
+            <input type="text" id="lpTitle" placeholder="مثال: أكاديمية النخبة لتوصيات الأسهم الأمريكية الذكية" required>
+            
+            <label style="color:#00ffd5; font-size:14px; font-weight:700;">الوصف التسويقي العريض والفرعي:</label>
+            <textarea id="lpDesc" rows="3" placeholder="مثال: انضم لأقوى قناة VIP لمراقبة عقود الأوبشن والسيولة الفورية بأدوات الأتمتة الفورية والذكاء الاصطناعي." required></textarea>
+            
+            <label style="color:#00ffd5; font-size:14px; font-weight:700;">رابط التحويل المباشر (رابط قناتك أو البوت):</label>
+            <input type="url" id="lpLink" placeholder="مثال: https://t.me/YourBotOrChannel" required>
+            
+            <label style="color:#00ffd5; font-size:14px; font-weight:700;">نص زر الاشتراك والتحويل:</label>
+            <input type="text" id="lpBtnText" placeholder="مثال: اشترك الآن في قناة الـ VIP مجاناً 🚀" required>
+            
+            <label style="color:#00ffd5; font-size:14px; font-weight:700;">الهوية اللونية للصفحة:</label>
+            <select id="lpColor" required>
+                <option value="#00ffd5">النيون الأخضر السايبير (ServerNet Theme)</option>
+                <option value="#0088cc">الأزرق الاحترافي (Telegram Style)</option>
+                <option value="#ff9900">الذهبي اللامع (Crypto Gold)</option>
+                <option value="#e91e63">الوردي الناري (Premium VIP)</option>
+            </select>
+            
+            <button type="button" onclick="generateLandingPage()" class="submit-btn" style="background: linear-gradient(135deg,#00ffd5,#00e676)">⚡ توليد وبناء صفحة الهبوط فوراً</button>
+        </form>
+
+        <div class="output-box" id="lpOutputContainer">
+            <h3>🎉 تم توليد صفحة الهبوط بنجاح!</h3>
+            <p style="color:#a0aec0; font-size:13px;">انسخ كود الـ HTML البرمجي بالأسفل واحفظه بملف باسم `index.html` أو عاين النتيجة مباشرة:</p>
+            <div class="code-area" id="lpGeneratedCode"></div>
+            
+            <div class="action-btns">
+                <button class="secondary-btn btn-copy" onclick="copyLpCode()">📋 نسخ كود الصفحة</button>
+                <button class="secondary-btn btn-preview" onclick="previewLpPage()">👁️ معاينة حية سريعة</button>
+            </div>
+            
+            <div class="preview-iframe-container" id="lpPreviewContainer">
+                <iframe class="preview-iframe" id="lpIframe"></iframe>
+            </div>
         </div>
     </div>
 </section>
@@ -227,6 +288,79 @@ function animate2(){
     requestAnimationFrame(animate2);
 }
 animate2();
+
+/* 🧠 جافا سكريبت لتوليد وبناء صفحة الهبوط ديناميكياً 🧠 */
+let generatedHtmlCode = "";
+
+function generateLandingPage() {
+    const title = document.getElementById('lpTitle').value;
+    const desc = document.getElementById('lpDesc').value;
+    const link = document.getElementById('lpLink').value;
+    const btnText = document.getElementById('lpBtnText').value;
+    const themeColor = document.getElementById('lpColor').value;
+
+    if(!title || !desc || !link || !btnText) {
+        alert("الرجاء تعبئة كافة حقول صفحة الهبوط أولاً.");
+        return;
+    }
+
+    // بناء قالب صفحة الهبوط بشكل احترافي ومتجاوب كامل
+    generatedHtmlCode = `<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${title}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body { margin:0; font-family:'Cairo', sans-serif; background:#0b0f19; color:#fff; display:flex; justify-content:center; align-items:center; min-height:100vh; padding:20px; text-align:center; box-sizing:border-box; }
+        .lp-card { max-width:600px; width:100%; background:rgba(255,255,255,0.03); padding:40px 30px; border-radius:28px; border:1px solid ${themeColor}40; box-shadow:0 20px 50px rgba(0,0,0,0.3); backdrop-filter:blur(10px); }
+        h1 { font-size:32px; font-weight:900; color:#fff; margin-bottom:20px; line-height:1.4; }
+        h1 span { color:${themeColor}; }
+        p { font-size:16px; color:#a0aec0; line-height:1.8; margin-bottom:35px; }
+        .action-btn { display:inline-block; width:100%; max-width:400px; padding:16px; border-radius:14px; font-size:18px; font-weight:900; text-decoration:none; color:#0b0f19; background:${themeColor}; box-shadow:0 10px 30px ${themeColor}40; transition:0.3s; }
+        .action-btn:hover { transform:translateY(-3px); box-shadow:0 15px 40px ${themeColor}70; }
+        footer { margin-top:40px; font-size:12px; color:#4a5568; }
+    </style>
+</head>
+<body>
+    <div class="lp-card">
+        <h1><span>${title.split(' ')[0]}</span> ${title.substring(title.indexOf(' ') + 1)}</h1>
+        <p>${desc}</p>
+        <a href="${link}" target="_blank" class="action-btn">${btnText}</a>
+        <footer>تمت الاستضافة والأتمتة بواسطة ServerNet</footer>
+    </div>
+</body>
+</html>`;
+
+    // عرض الكود والواجهة للمستخدم
+    document.getElementById('lpGeneratedCode').innerText = generatedHtmlCode;
+    document.getElementById('lpOutputContainer').style.display = 'block';
+    document.getElementById('lpPreviewContainer').style.display = 'none'; // إعادة تعيين المعاينة
+    
+    // سحب الشاشة بسلاسة للمخرجات لمعاينتها
+    document.getElementById('lpOutputContainer').scrollIntoView({ behavior: 'smooth' });
+}
+
+function copyLpCode() {
+    navigator.clipboard.writeText(generatedHtmlCode);
+    alert("✅ تم نسخ كود صفحة الهبوط البرمجي بنجاح!");
+}
+
+function previewLpPage() {
+    const container = document.getElementById('lpPreviewContainer');
+    const iframe = document.getElementById('lpIframe');
+    
+    container.style.display = 'block';
+    
+    // حقن الكود المولد مباشرة داخل الـ Iframe للمعاينة دون الحاجة لرفع ملفات
+    const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+    iframeDoc.open();
+    iframeDoc.write(generatedHtmlCode);
+    iframeDoc.close();
+    
+    container.scrollIntoView({ behavior: 'smooth' });
+}
 
 /* ⚙️ كود إدارة نظام شات التلجرام المالي التفاعلي المحاكي ⚙️ */
 let chatInitialized = false;
@@ -312,15 +446,6 @@ function askForAction() {
         }}
     ]);
 }
-
-/* التوجيه التلقائي وسحب الشاشة لقسم الطلب فور دخول الرابط الأساسي */
-window.addEventListener('DOMContentLoaded', () => {
-    if (window.location.hash === '' && document.getElementById('order')) {
-        setTimeout(() => {
-            document.getElementById('order').scrollIntoView({ behavior: 'smooth' });
-        }, 600);
-    }
-});
 
 /* ⚙️ كود إرسال طلبات الفورم للتلجرام الخاص بك */
 document.getElementById('botOrderForm').addEventListener('submit', function(e) {

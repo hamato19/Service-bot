@@ -4,7 +4,7 @@
     <script src="protection.js"></script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ServerNet | لوحة تحكم ونشر القوالب المتقدمة</title>
+    <title>ServerNet | لوحة التحكم وبناء الأكواد المباشرة</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght=400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -21,31 +21,26 @@
         .nav-links a { color: #fff; text-decoration: none; margin-right: 20px; font-size: 14px; font-weight: 700; transition: 0.3s; }
         .nav-links a:hover { color: #00ffd5; }
 
-        .dashboard-container { position: relative; z-index: 1; padding: 120px 20px 60px; max-width: 1200px; margin: 0 auto; display: flex; gap: 30px; }
-        .control-panel { flex: 1; background: rgba(0,0,0,0.5); padding: 30px; border-radius: 24px; border: 1px solid rgba(0,255,213,0.15); backdrop-filter: blur(15px); text-align: right; }
+        .dashboard-container { position: relative; z-index: 1; padding: 120px 20px 60px; max-width: 1300px; margin: 0 auto; display: flex; gap: 30px; }
+        .control-panel { flex: 1.1; background: rgba(0,0,0,0.5); padding: 30px; border-radius: 24px; border: 1px solid rgba(0,255,213,0.15); backdrop-filter: blur(15px); text-align: right; }
         .control-panel h2 { color: #00ffd5; margin-top: 0; margin-bottom: 25px; font-size: 22px; font-weight: 900; border-bottom: 1px solid rgba(0,255,213,0.1); padding-bottom: 10px; }
         
         label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 14px; color: #e2e8f0; }
         input, select, textarea { width: 100%; padding: 14px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 20px; font-size: 14px; background: rgba(7,11,18,0.7); color: #fff; font-family: inherit; }
         input:focus, select:focus, textarea:focus { outline: none; border-color: #00ffd5; box-shadow: 0 0 10px rgba(0,255,213,0.2); }
-        
-        /* تجميل حقل السعر المقفل */
-        input:disabled { background: rgba(255,255,255,0.05); color: #718096; border-color: rgba(255,255,255,0.05); cursor: not-allowed; }
+        input:disabled { background: rgba(255,255,255,0.05); color: #718096; cursor: not-allowed; }
+
+        /* تجميل محرّر الأكواد */
+        .code-editor { font-family: 'Consolas', 'Monaco', monospace; direction: ltr; text-align: left; background: #020408; color: #00ff66; border: 1px solid #00ffd5; line-height: 1.5; font-size: 13px; resize: vertical; }
 
         .generate-btn { width: 100%; padding: 15px; border-radius: 12px; border: 0; background: linear-gradient(135deg,#00ffd5,#00bfa5); color: #070b12; font-weight: 900; font-size: 16px; cursor: pointer; transition: 0.3s; font-family: inherit; }
         .generate-btn:hover { transform: scale(1.02); box-shadow: 0 10px 25px rgba(0,255,213,0.3); }
 
-        .preview-panel { flex: 1.2; display: flex; flex-direction: column; gap: 20px; }
+        .preview-panel { flex: 0.9; display: flex; flex-direction: column; gap: 20px; }
         .result-box { background: rgba(10, 17, 28, 0.7); border: 1px dashed rgba(0, 255, 213, 0.3); padding: 25px; border-radius: 24px; text-align: right; display: none; animation: fadeIn 0.4s ease; }
         .result-box h3 { color: #00ffd5; margin-top: 0; font-size: 18px; }
-        .url-display { background: #111; color: #00ff66; padding: 12px; border-radius: 10px; font-family: monospace; font-size: 13px; direction: ltr; text-align: left; overflow-x: auto; border: 1px solid #222; margin-bottom: 15px; white-space: nowrap; }
         
-        .action-btns { display: flex; gap: 10px; }
-        .btn-action { flex: 1; padding: 12px; text-align: center; border-radius: 10px; font-weight: 700; text-decoration: none; cursor: pointer; transition: 0.2s; font-family: inherit; font-size: 14px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
-        .btn-copy { background: #242f3d; color: #fff; border: 1px solid rgba(255,255,255,0.1); }
-        .btn-visit { background: #00ffd5; color: #070b12; border: 0; }
-
-        .iframe-wrapper { background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.05); border-radius: 24px; overflow: hidden; display: flex; flex-direction: column; height: 500px; }
+        .iframe-wrapper { background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.05); border-radius: 24px; overflow: hidden; display: flex; flex-direction: column; height: 550px; }
         .iframe-header { background: #182533; padding: 12px 20px; text-align: right; font-size: 13px; font-weight: 700; color: #a0aec0; display: flex; justify-content: space-between; align-items: center; }
         .live-iframe { width: 100%; height: 100%; border: 0; background: #fff; }
 
@@ -72,22 +67,22 @@
 <div class="dashboard-container">
     
     <div class="control-panel">
-        <h2><i class="fa-solid fa-folder-plus" style="color: #00ffd5; margin-left: 10px;"></i> إضافة وتصنيف منتج رقمي جديد</h2>
+        <h2><i class="fa-solid fa-code" style="color: #00ffd5; margin-left: 10px;"></i> محرر بناء ونشر الأكواد الفوري</h2>
         <form id="generatorForm" onsubmit="publishTemplate(event)">
             
             <label for="templateId">معرّف المنتج الفريد (ID بالإنجليزية):</label>
-            <input type="text" id="templateId" placeholder="مثال: custom_python_bot" required>
+            <input type="text" id="templateId" placeholder="مثال: custom_landing_page" required>
 
-            <label for="templateTitle">اسم القالب أو السكربت الرقمي:</label>
-            <input type="text" id="templateTitle" placeholder="مثال: بوت بايثون لربط ويب هوك TradingView" required oninput="updateLivePreview()">
+            <label for="templateTitle">اسم القالب الموضح في المتجر:</label>
+            <input type="text" id="templateTitle" placeholder="مثال: صفحة هبوط اقتناص صفقات السلع" required>
 
-            <label for="templateDesc">وصف المنتج القصير (يظهر في كرت المتجر):</label>
-            <textarea id="templateDesc" rows="2" placeholder="اكتب ميزات السكربت أو الصفحة هنا لجذب العملاء..." required></textarea>
+            <label for="templateDesc">وصف المنتج القصير (خارجياً):</label>
+            <textarea id="templateDesc" rows="2" placeholder="اكتب نبذة عن ميزات هذا الكود الرقمي..." required></textarea>
 
             <label for="templateTech">نوع التقنية ونظام الملفات:</label>
-            <select id="templateTech" required>
-                <option value="html"><i class="fa-brands fa-html5"></i> صفحة هبوط مستقلة (HTML / CSS)</option>
-                <option value="python"><i class="fa-brands fa-python"></i> سكربت أتمتة وبوتات ذكية (Python)</option>
+            <select id="templateTech" required onchange="handleTechChange()">
+                <option value="html">صفحة هبوط مستقلة (HTML / CSS / JS)</option>
+                <option value="python">سكربت أتمتة وبوتات ذكية (Python)</option>
             </select>
 
             <label for="templateType">نوع التسعير:</label>
@@ -99,59 +94,53 @@
             <label for="templatePrice">سعر المنتج (بالريال السعودي SAR):</label>
             <input type="text" id="templatePrice" value="مجاني" disabled required>
 
-            <label for="templateImage">رابط كفر المعاينة والصورة للمتجر:</label>
+            <label for="templateImage">رابط صورة الكفر التعبيري بالمتجر:</label>
             <input type="url" id="templateImage" value="https://via.placeholder.com/400x200/070b12/00ffd5?text=ServerNet+Product">
 
-            <div style="border-top: 1px solid rgba(0,255,213,0.1); margin-top:20px; padding-top:15px;">
-                <p style="color:#00ffd5; font-size:13px; font-weight:900; margin-bottom:15px;">🛠️ إعدادات المحرك التفاعلي لقوالب الـ HTML:</p>
-                
-                <label for="pageTemplate">تأثير الثيم المدمج داخل المعاينة:</label>
-                <select id="pageTemplate" required onchange="updateLivePreview()">
-                    <option value="free">ثيم أزرق خفيف (افتراضي)</option>
-                    <option value="premium">ثيم ملكي داكن (عداد تفاعلي وآراء عملاء)</option>
-                </select>
+            <label for="templateCode" id="codeLabel">اكتب أو الصق كود الـ HTML الكامل هنا:</label>
+            <textarea id="templateCode" class="code-editor" rows="12" placeholder="ضع كودك هنا مباشرة..." required oninput="updateLivePreview()"><!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>صفحة مخصصة فريش</title>
+    <style>
+        body { background: #0b132b; color: #fff; text-align: center; font-family: sans-serif; padding-top: 50px; }
+        h1 { color: #00ffd5; }
+        .btn { background: #00ffd5; color: #000; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>🚀 قالبك المخصص الجديد يعمل بنجاح!</h1>
+    <p>هذه الصفحة تم بناؤها بالكامل عبر مربع الأكواد الخاص بلوحة تحكم ServerNet</p>
+    <br><br>
+    <a href="https://wa.me/966500000000" class="btn">تواصل معنا الآن</a>
+</body>
+</html></textarea>
 
-                <label for="pageTitle">العنوان الداخلي الافتراضي للصفحة:</label>
-                <input type="text" id="pageTitle" value="منظومة التداول الذكي المتكاملة" oninput="updateLivePreview()">
-
-                <label for="pageDesc">الرسالة النصية التسويقية الداخلية:</label>
-                <textarea id="pageDesc" rows="2" oninput="updateLivePreview()">شغل استراتيجيتك الفورية الآن عبر ربط إشاراتك ببوت التداول التلقائي الفاخر ⚡</textarea>
-
-                <label for="pagePhone">رقم اتصال العميل بالواتساب الافتراضي:</label>
-                <input type="tel" id="pagePhone" value="966500000000" oninput="updateLivePreview()">
-
-                <label for="pageMsg">نص الرسالة الافتتاحية التلقائي:</label>
-                <input type="text" id="pageMsg" value="مرحباً ServerNet، أريد تفعيل وشراء المنتج فوراً" oninput="updateLivePreview()">
-            </div>
-
-            <button type="submit" class="generate-btn"><i class="fa-solid fa-circle-check"></i> اعتماد ونشر المنتج بالمتجر فوراً</button>
+            <button type="submit" class="generate-btn"><i class="fa-solid fa-cloud-arrow-up"></i> اعتماد ونشر الكود بالمتجر فوراً</button>
         </form>
     </div>
 
     <div class="preview-panel">
         <div class="result-box" id="resultBox">
-            <h3><i class="fa-solid fa-rocket" style="color: #00ff66; margin-left: 8px;"></i> طار للمتجر بنجاح!</h3>
-            <p style="color: #a0aec0; font-size: 13px; margin-bottom: 10px;">تم النشر التلقائي وربطه بمتجر بيكاليكا الذكي. رابط تشغيل ومعاينة الصفحة التفاعلية:</p>
-            <div class="url-display" id="finalUrlDisplay"></div>
-            <div class="action-btns">
-                <button class="btn-action btn-copy" onclick="copyLink()"><i class="fa-solid fa-copy"></i> نسخ الرابط</button>
-                <a href="lp.html" class="btn-action btn-visit"><i class="fa-solid fa-store"></i> الذهاب للمتجر وعرض المنتجات</a>
-            </div>
+            <h3><i class="fa-solid fa-rocket" style="color: #00ff66; margin-left: 8px;"></i> نُشر بنجاح!</h3>
+            <p style="color: #a0aec0; font-size: 13px; margin-bottom: 10px;">تم حفظ وحقن الكود بنجاح داخل النظام السحابي للمتجر دون لمس ملفات السيرفر.</p>
+            <a href="lp.html" class="btn-action generate-btn" style="text-align:center; text-decoration:none; display:block;"><i class="fa-solid fa-store"></i> فتح المتجر الآن وتجربته</a>
         </div>
 
         <div class="iframe-wrapper">
             <div class="iframe-header">
-                <div><span>محاكاة البناء المباشر للثيمات الـ HTML</span></div>
-                <div style="font-size: 11px; color:#00ffd5;"><i class="fa-solid fa-sync-alt"></i> متزامن فوري</div>
+                <div><span>شاشة المعاينة التفاعلية الفورية للكود المكتوب</span></div>
+                <div style="font-size: 11px; color:#00ffd5;"><i class="fa-solid fa-sync"></i> مباشر</div>
             </div>
-            <iframe id="livePreviewIframe" class="live-iframe" src=""></iframe>
+            <iframe id="livePreviewIframe" class="live-iframe"></iframe>
         </div>
     </div>
 
 </div>
 
 <script>
-/* تشغيل تأثير الـ Canvas المضيء للموقع */
+/* تشغيل تأثير الـ Canvas */
 const canvas = document.getElementById('bg'); const ctx = canvas.getContext('2d');
 function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
 resizeCanvas(); window.addEventListener('resize', resizeCanvas);
@@ -160,50 +149,58 @@ for(let i=0; i<35; i++){ lines.push({x1:Math.random()*canvas.width, y1:Math.rand
 function animate(){ ctx.fillStyle = 'rgba(7,11,18,0.15)'; ctx.fillRect(0,0,canvas.width,canvas.height); lines.forEach(l=>{ ctx.beginPath(); ctx.moveTo(l.x1,l.y1); ctx.lineTo(l.x2,l.y2); ctx.strokeStyle = 'rgba(0,255,213,0.3)'; ctx.lineWidth = 1.2; ctx.stroke(); l.x1+=l.dx; l.y1+=l.dy; l.x2+=l.dx; l.y2+=l.dy; if(l.x1<0||l.x1>canvas.width||l.x2<0||l.x2>canvas.width) l.dx*=-1; if(l.y1<0||l.y1>canvas.height||l.y2<0||l.y2>canvas.height) l.dy*=-1; }); requestAnimationFrame(animate); }
 animate();
 
-// دالة التحكم التلقائي بفتح وإغلاق حقل السعر حسب نوع التسعير
 function togglePriceField() {
     const type = document.getElementById('templateType').value;
     const priceInput = document.getElementById('templatePrice');
-    if (type === 'premium') {
-        priceInput.disabled = false;
-        priceInput.value = '150'; // قيمة افتراضية مرنة للمدفوع
-        priceInput.focus();
+    if (type === 'premium') { priceInput.disabled = false; priceInput.value = '199 ريال'; priceInput.focus(); }
+    else { priceInput.disabled = true; priceInput.value = 'مجاني'; }
+}
+
+function handleTechChange() {
+    const tech = document.getElementById('templateTech').value;
+    const label = document.getElementById('codeLabel');
+    const editor = document.getElementById('templateCode');
+    const iframeWrapper = document.querySelector('.iframe-wrapper');
+
+    if(tech === 'python') {
+        label.innerText = 'اكتب أو الصق سكربت الـ Python الخاص بك هنا:';
+        editor.value = `# سكربت بايثون مخصص لربط تنبيهات الإشارات\nimport requests\n\ndef handle_webhook(data):\n    print("تم استقبال الإشارة من TradingView:", data)\n    # اكتب منطق التنفيذ هنا`;
+        iframeWrapper.style.opacity = '0.4'; // تعطيل المعاينة التفاعلية لأن البايثون لا يعمل داخل المتصفح مباشرة
     } else {
-        priceInput.disabled = true;
-        priceInput.value = 'مجاني';
+        label.innerText = 'اكتب أو الصق كود الـ HTML الكامل هنا:';
+        editor.value = `<!DOCTYPE html>\n<html lang="ar" dir="rtl">\n<body>\n    <h1>قالب HTML مخصص جديد</h1>\n</body>\n</html>`;
+        iframeWrapper.style.opacity = '1';
+        updateLivePreview();
     }
 }
 
-function buildParamUrl() {
-    const template = document.getElementById('pageTemplate').value;
-    const title = encodeURIComponent(document.getElementById('pageTitle').value);
-    const desc = encodeURIComponent(document.getElementById('pageDesc').value);
-    const phone = encodeURIComponent(document.getElementById('pagePhone').value);
-    const msg = encodeURIComponent(document.getElementById('pageMsg').value);
-    const baseUrl = window.location.href.split('/').slice(0, -1).join('/');
-    return `${baseUrl}/template-engine.html?type=${template}&title=${title}&desc=${desc}&phone=${phone}&msg=${msg}`;
-}
-
+// دالة تحديث الـ Iframe ديناميكياً بناءً على ما يكتبه المستخدم في مربع الـ HTML
 function updateLivePreview() {
-    document.getElementById('livePreviewIframe').src = buildParamUrl();
+    const tech = document.getElementById('templateTech').value;
+    if(tech === 'python') return;
+    
+    const code = document.getElementById('templateCode').value;
+    const iframe = document.getElementById('livePreviewIframe');
+    const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+    
+    iframeDoc.open();
+    iframeDoc.write(code);
+    iframeDoc.close();
 }
 window.onload = updateLivePreview;
 
-// دالة النشر للمتجر مع حفظ تصنيف اللغة (بايثون / HTML) والسعر المخصص
 function publishTemplate(e) {
     e.preventDefault();
-    const finalUrl = buildParamUrl();
     
     const newTemplate = {
         id: document.getElementById('templateId').value,
         title: document.getElementById('templateTitle').value,
         description: document.getElementById('templateDesc').value,
-        tech: document.getElementById('templateTech').value, // html أو python
-        type: document.getElementById('templateType').value, // free أو premium
-        price: document.getElementById('templatePrice').value, // سعر مخصص أو كلمة مجاني
+        tech: document.getElementById('templateTech').value,
+        type: document.getElementById('templateType').value,
+        price: document.getElementById('templatePrice').value,
         previewImage: document.getElementById('templateImage').value,
-        demoUrl: finalUrl,
-        useUrl: 'index.html#order'
+        rawCode: document.getElementById('templateCode').value // حفظ الكود الأصلي المدخل بالكامل
     };
 
     let localTemplates = JSON.parse(localStorage.getItem('servernet_custom_templates')) || [];
@@ -211,16 +208,8 @@ function publishTemplate(e) {
     localTemplates.push(newTemplate);
     
     localStorage.setItem('servernet_custom_templates', JSON.stringify(localTemplates));
-
-    document.getElementById('finalUrlDisplay').innerText = finalUrl;
     document.getElementById('resultBox').style.display = 'block';
     document.getElementById('resultBox').scrollIntoView({ behavior: 'smooth' });
-}
-
-function copyLink() {
-    navigator.clipboard.writeText(document.getElementById('finalUrlDisplay').innerText).then(() => {
-        alert('✅ تم نسخ رابط معاينة القالب السحابي!');
-    });
 }
 </script>
 </body>
